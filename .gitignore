@@ -54,3 +54,4 @@ original/
 **/*.quarto_ipynb
 
 _site/*
+site_libs/*
