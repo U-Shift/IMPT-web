@@ -5,32 +5,55 @@ draft: true
 css: dashboard.css
 ---
 
+```{ojs, Imports}
+//| output: false
+
+require("leaflet");
+```
+
+
+```{ojs, Database}
+//| output: false
+
+MAP_DARK = 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png';
+MAP_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
+```
+
 # Sidebar {.sidebar}
+
+```{ojs, Sidebar controlls}
+viewof STATE_LIGHTMODE = Inputs.button("🌓 Change color scheme", {value: true, reduce: (light) => {
+   L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
+   return !light;
+}});
+```
 
 
 # Map
-```{ojs}
+```{ojs, Map div}
 //| output: true
-leaflet = require("leaflet");
 div = document.createElement("div");
-
 ```
 
-```{ojs}
+```{ojs, Map set up}
 //| output: false
+
+// Map library kick-off
 div.style = "height: 100%;width: 100%; min-height: 400px;";
-map = L.map(div)
-  .setView([51.505, -0.09], 13);
+STATE_MAP = L.map(div, {
+  // Map settings
+  zoomControl: false // Remove default zoom on top-left corner to avoid conflict with sidebar button
+}).setView([38.7169, -9.1399], 11);
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+// Map base layer
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-})
-  .addTo(map);
-
-L.marker([51.5, -0.09])
-  .addTo(map)
-  .bindPopup("A nice popup<br> indicating a point of interest.")
-  .openPopup();
+}).addTo(STATE_MAP);
+  
+// Map controls
+L.control.zoom({
+    position: 'bottomleft'
+}).addTo(STATE_MAP);
 ```
 
 
