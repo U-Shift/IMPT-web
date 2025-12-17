@@ -18,7 +18,9 @@ website:
         href: https://github.com/U-Shift/IMPT-web
         target: _blank
   
-
+resources:
+  - www/**
+  
 format:
   html:
     theme:
