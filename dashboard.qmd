@@ -14,20 +14,121 @@ require("leaflet");
 
 ```{ojs, Database}
 //| output: false
-
 MAP_DARK = 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png';
 MAP_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
+GRADIENT = ["#ffffe5","#f7fcc4","#e4f4ac","#c7e89b","#a2d88a","#78c578","#4eaf63","#2f944e","#15793f","#036034","#004529"]; // Alternative gradients at From https://observablehq.com/@d3/color-schemes
+GRADIENT_APPEND = "BF"; // https://gist.github.com/lopspower/03fb1cc0ac9f32ef38f4
+
+
+DATABASE = [
+  {
+    id: 0,
+    label: "Transit services (8 a.m.)",
+    source: "/www/data/sample/0800.geojson",
+    cols: [
+      {label: "Dicofre", val: "Dicofre"},
+      {label: "Municipality", val: "Concelho"},
+      {label: "Parish", val: "Freguesia"},
+      {label: "Services", val: "services"},
+      {label: "Lines", val: "lines"}
+    ],
+    zcols: [
+      {label: "Services", val: "services", max: 270}
+    ],
+  },
+  {
+    id: 0,
+    label: "Transit services (23 a.m.)",
+    source: "/www/data/sample/2300.geojson",
+    cols: [
+      {label: "Dicofre", val: "Dicofre"},
+      {label: "Municipality", val: "Concelho"},
+      {label: "Parish", val: "Freguesia"},
+      {label: "Services", val: "services"},
+      {label: "Lines", val: "lines"}
+    ],
+    zcols: [
+      {label: "Services", val: "services", max: 270}
+    ],
+  }
+]
 ```
+
 
 # Sidebar {.sidebar}
 
 ```{ojs, Sidebar controlls}
+viewof STATE_DATA = Inputs.select(
+  new Map(DATABASE.map((d) => [d.label, d])),
+  {label: "Select dataset to display:"}
+);
+
 viewof STATE_LIGHTMODE = Inputs.button("🌓 Change color scheme", {value: true, reduce: (light) => {
    L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
    return !light;
 }});
 ```
 
+```{ojs, Load data}
+//| output: true
+
+DATASET = {
+  // Get data from API
+  const res = await fetch(
+    `${STATE_DATA.source}`
+  );
+  const data = await res.json();
+  const data_max = data.features.reduce((max, feature) => {
+    const val = feature.properties.services;
+    return val > max ? val : max;
+  }, 0);
+  console.log("data", data, data_max);
+  // Update map
+  L.geoJSON(data.features, {
+    style: function (feature) {
+        let properties = feature.properties;
+        // Weight depending on 
+        let weight = 0;
+        weight = properties.services === 0 ? 0 : (properties.services / data_max) * 5; // Max weight of 5
+        if (weight < 1.5 && properties.services_sum > 0) weight = 1.5;
+  
+        // Color
+        let colorIndex = Math.min(Math.ceil(properties.services * GRADIENT.length / data_max), GRADIENT.length - 1);
+        return { 
+          color:"#FFFFFF", 
+          fillColor: GRADIENT[colorIndex],
+          fillOpacity: 0.75,
+          weight: 1
+        };
+    },
+    onEachFeature: function (feature, layer) {
+        let properties = feature.properties;
+        let operators = properties && properties.lines ? [...new Set(properties.lines.split(",").map(l => l.replace(/[0-9]/g, '').trim()))] : [];
+
+        // Replace old tooltip (optional step)
+        if (layer.getTooltip()) {
+            layer.unbindTooltip();
+        }
+
+        layer.bindPopup(`
+            <h6>${feature.properties.Freguesia}</h6>
+            <dl>
+                <dt>Concelho<dt>
+                <dd><b>${feature.properties.Concelho}</b><dd>
+                <dt>Circulações<dt>
+                <dd><b>${properties && properties.services ? Math.round(properties.services) : 0}</b></dd>
+                <dt>Serviços<dt>
+                <dd><b>${operators && operators.length > 0 ? operators.join(', ') : "-"}</b></dd>
+            </dl>
+        `);
+    }
+  }).addTo(STATE_MAP);
+  // Return JSON
+  return data;
+}
+
+display(DATASET)
+```
 
 # Map
 ```{ojs, Map div}
