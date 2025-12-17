@@ -2,7 +2,8 @@
 title: "Dashboard"
 format: dashboard
 draft: true
-css: dashboard.css
+css:
+  - dashboard.css
 ---
 
 ```{ojs, Imports}
@@ -115,10 +116,10 @@ FEATURE_TOOLTIP = function(feature, layer, title, props) {
 ```{ojs, Sidebar controlls}
 viewof STATE_DATA = Inputs.select(
   new Map(DATABASE.map((d) => [d.label, d])),
-  {label: "Select dataset to display:"}
+  {label: "Select dataset to display:", class:"teste"}
 );
 
-viewof STATE_LIGHTMODE = Inputs.button("🌓 Change color scheme", {value: true, reduce: (light) => {
+viewof STATE_LIGHTMODE = Inputs.button("🌓 Toggle base map", {value: true, reduce: (light) => {
    L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
    return !light;
 }});

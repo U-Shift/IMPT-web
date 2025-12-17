@@ -5,3 +5,14 @@ footer.footer {display: none;}
 #map .card-body {padding: 0;}
 
 .collapse-toggle {z-index: 100000;}
+
+
+aside button.btn-quarto {
+  background: transparent;
+}
+
+aside select {
+  background: transparent;
+  padding: 0.75em 0.5em;
+  border: 1px solid #363636;
+}
