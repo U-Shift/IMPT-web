@@ -1,0 +1,7 @@
+.main {padding: 0!important;}
+footer.footer {display: none;}
+#map .observablehq {flex-grow: 1;}
+#map .code-copy-outer-scaffold {display: none;}
+#map .card-body {padding: 0;}
+
+.collapse-toggle {z-index: 100000;}
