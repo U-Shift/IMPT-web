@@ -16,3 +16,5 @@ aside select {
   padding: 0.75em 0.5em;
   border: 1px solid #363636;
 }
+
+aside select[disabled] {display: none;}

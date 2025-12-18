@@ -72,7 +72,13 @@ DATABASE = [
       {key: "TIPOLOGIA", label: "Typology"},
       {key: "ANO", label: "Year"},
       {key: "COMPRIMENTO", label: "Length (m)", format: (v) => parseFloat(v).toFixed(2)},
-    ])
+    ]),
+    values: [
+      {key: "TIPOLOGIA", label: "Typology"},
+      {key: "ANO", label: "Year"},
+    ]
+    // TODO! Color by year, typology (CHECKBOXES)
+    // [disabled] display none, 
   }
 ]
 
@@ -116,13 +122,17 @@ FEATURE_TOOLTIP = function(feature, layer, title, props) {
 ```{ojs, Sidebar controlls}
 viewof STATE_DATA = Inputs.select(
   new Map(DATABASE.map((d) => [d.label, d])),
-  {label: "Select dataset to display:", class:"teste"}
+  {label: "Select dataset to display:"},
 );
+
+// viewof STATE_INDICATOR = Inputs. // TODO!!!
 
 viewof STATE_LIGHTMODE = Inputs.button("🌓 Toggle base map", {value: true, reduce: (light) => {
    L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
    return !light;
 }});
+
+
 ```
 
 ```{ojs, Load data}
