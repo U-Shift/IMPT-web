@@ -136,11 +136,19 @@ DATASET = {
       STATE_MAP.removeLayer(layer);
     }
   });
+  // Add spinner
+  const spinner = document.createElement("span");
+  spinner.className = "loader"
+  const spinner_div = document.createElement("div")
+  spinner_div.appendChild(spinner);
+  spinner_div.className = "loader-div";
+  document.querySelector(".bslib-sidebar-layout .tab-content").appendChild(spinner_div);
   // Get data from API
   const res = await fetch(
     `${STATE_DATA.source}`
   );
   const data = await res.json();
+  await new Promise(res => setTimeout(res, 3000)); // Simulate delay // TODO! Remove in production
   console.log("data", data);
   // Update map
   L.geoJSON(data.features, {
@@ -149,6 +157,8 @@ DATASET = {
   }).addTo(STATE_MAP);
   // Zoom map to feature
   STATE_MAP.fitBounds(L.geoJSON(data).getBounds());
+  // Remove spinner
+  spinner_div.remove();
   // Return JSON
   return data;
 }
@@ -157,6 +167,7 @@ display(DATASET)
 ```
 
 # Map
+
 ```{ojs, Map div}
 //| output: true
 div = document.createElement("div");
