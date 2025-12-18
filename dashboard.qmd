@@ -36,7 +36,8 @@ DATABASE = [
       Freguesia: "Parish",
       services: "Services",
       lines: "Lines"
-    }
+    },
+    zcol: "services"
   },
   {
     label: "Transit services (23 a.m.)",
@@ -46,7 +47,8 @@ DATABASE = [
         {key: "Concelho", label: "Municipality"},
         {key: "services", label: "Services", format: (v) => parseInt(v)},
         {key: "lines", label: "Lines", format: (v) => v ? [...new Set(v.split(",").map(l => l.replace(/[0-9]/g, '').trim()))].join(", ") : "-"}
-    ])
+    ]),
+    zcol: "services"
   },
   {
     label: "Metro stations",
@@ -54,7 +56,8 @@ DATABASE = [
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "NOME", [
         {key: "LINHA", label: "Services"},
         {key: "SITUACAO", label: "Status"}
-    ])
+    ]),
+    zcol: "LINHA"
   },
   {
     label: "Sports centers",
@@ -62,7 +65,8 @@ DATABASE = [
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "DESIGNACAO", [
       {key: "MORADA", label: "Address"},
       {key: "CODIGOPOSTAL", label: "Zip code"},
-    ])
+    ]),
+    zcol: "CATEGORIA"
   },
   {
     label: "Cycle lanes",
@@ -72,7 +76,8 @@ DATABASE = [
       {key: "TIPOLOGIA", label: "Typology"},
       {key: "ANO", label: "Year"},
       {key: "COMPRIMENTO", label: "Length (m)", format: (v) => parseFloat(v).toFixed(2)},
-    ])
+    ]),
+    zcol: "ANO"
   }
 ]
 
@@ -209,4 +214,12 @@ Inputs.table(DATASET.features.map(f => f.properties), {
   header: STATE_DATA.cols,
   format: STATE_DATA.format
 })
+```
+
+# Plot 
+
+${STATE_DATA.cols && STATE_DATA.cols[STATE_DATA.zcol] ?  STATE_DATA.cols[STATE_DATA.zcol] : STATE_DATA.zcol} frequency plot
+
+```{ojs, Data plot}
+Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_DATA.zcol}).plot()
 ```
