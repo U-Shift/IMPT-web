@@ -123,6 +123,12 @@ viewof STATE_LIGHTMODE = Inputs.button("🌓 Toggle base map", {value: true, red
    L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
    return !light;
 }});
+
+viewof DOWNLOAD = Inputs.button("📦 Download layer", {value: true, reduce: () => {
+   // Open STATE_DATA.source in new tab
+   window.open(STATE_DATA.source, '_blank');
+   return true;
+}});
 ```
 
 ```{ojs, Load data}
@@ -148,7 +154,7 @@ DATASET = {
     `${STATE_DATA.source}`
   );
   const data = await res.json();
-  await new Promise(res => setTimeout(res, 3000)); // Simulate delay // TODO! Remove in production
+  await new Promise(res => setTimeout(res, 1000)); // Simulate delay // TODO! Remove in production
   console.log("data", data);
   // Update map
   L.geoJSON(data.features, {
