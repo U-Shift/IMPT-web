@@ -37,7 +37,7 @@ DATABASE = [
       services: "Services",
       lines: "Lines"
     },
-    zcol: "services"
+    zcol: ["services"]
   },
   {
     label: "Transit services (23 a.m.)",
@@ -77,7 +77,7 @@ DATABASE = [
       {key: "ANO", label: "Year"},
       {key: "COMPRIMENTO", label: "Length (m)", format: (v) => parseFloat(v).toFixed(2)},
     ]),
-    zcol: "ANO"
+    zcol: ["ANO", "TIPOLOGIA"]
   }
 ]
 
@@ -122,6 +122,15 @@ FEATURE_TOOLTIP = function(feature, layer, title, props) {
 viewof STATE_DATA = Inputs.select(
   new Map(DATABASE.map((d) => [d.label, d])),
   {label: "Select dataset to display:", class:"teste"}
+);
+
+viewof STATE_ZCOL = Inputs.radio(
+  STATE_DATA.zcol instanceof Array ? STATE_DATA.zcol : [STATE_DATA.zcol],
+  {
+    value: STATE_DATA.zcol.length==1 ? STATE_DATA.zcol[0] : null,
+    label: "Select plot indicator:", 
+    format: (v) => STATE_DATA.cols && STATE_DATA.cols[v] ? STATE_DATA.cols[v] : v
+  }
 );
 
 viewof STATE_LIGHTMODE = Inputs.button("🌓 Toggle base map", {value: true, reduce: (light) => {
