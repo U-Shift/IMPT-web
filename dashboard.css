@@ -47,4 +47,13 @@ aside select {
   100% {
     transform: rotate(360deg);
   }
-} 
+}
+
+
+input[disabled] {
+  display: none;
+}
+
+form:has(input[disabled]) {
+  display: none;
+}

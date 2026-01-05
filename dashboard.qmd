@@ -48,7 +48,7 @@ DATABASE = [
         {key: "services", label: "Services", format: (v) => parseInt(v)},
         {key: "lines", label: "Lines", format: (v) => v ? [...new Set(v.split(",").map(l => l.replace(/[0-9]/g, '').trim()))].join(", ") : "-"}
     ]),
-    zcol: "services"
+    zcol: ["services"]
   },
   {
     label: "Metro stations",
@@ -57,7 +57,7 @@ DATABASE = [
         {key: "LINHA", label: "Services"},
         {key: "SITUACAO", label: "Status"}
     ]),
-    zcol: "LINHA"
+    zcol: ["LINHA"]
   },
   {
     label: "Sports centers",
@@ -66,7 +66,7 @@ DATABASE = [
       {key: "MORADA", label: "Address"},
       {key: "CODIGOPOSTAL", label: "Zip code"},
     ]),
-    zcol: "CATEGORIA"
+    zcol: ["CATEGORIA"]
   },
   {
     label: "Cycle lanes",
@@ -77,6 +77,10 @@ DATABASE = [
       {key: "ANO", label: "Year"},
       {key: "COMPRIMENTO", label: "Length (m)", format: (v) => parseFloat(v).toFixed(2)},
     ]),
+    cols: {
+     ANO: "Year",
+     TIPOLOGIA: "Typology",
+    },
     zcol: ["ANO", "TIPOLOGIA"]
   }
 ]
@@ -129,7 +133,8 @@ viewof STATE_ZCOL = Inputs.radio(
   {
     value: STATE_DATA.zcol.length==1 ? STATE_DATA.zcol[0] : null,
     label: "Select plot indicator:", 
-    format: (v) => STATE_DATA.cols && STATE_DATA.cols[v] ? STATE_DATA.cols[v] : v
+    format: (v) => STATE_DATA.cols && STATE_DATA.cols[v] ? STATE_DATA.cols[v] : v,
+    disabled: STATE_DATA.zcol.length<=1
   }
 );
 
@@ -227,8 +232,8 @@ Inputs.table(DATASET.features.map(f => f.properties), {
 
 # Plot 
 
-${STATE_DATA.cols && STATE_DATA.cols[STATE_DATA.zcol] ?  STATE_DATA.cols[STATE_DATA.zcol] : STATE_DATA.zcol} frequency plot
+${STATE_ZCOL && STATE_DATA.cols && STATE_DATA.cols[STATE_ZCOL] ?  STATE_DATA.cols[STATE_ZCOL] : STATE_ZCOL} frequency plot
 
 ```{ojs, Data plot}
-Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_DATA.zcol}).plot()
+Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_ZCOL}).plot() 
 ```
