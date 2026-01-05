@@ -235,5 +235,5 @@ Inputs.table(DATASET.features.map(f => f.properties), {
 ${STATE_ZCOL && STATE_DATA.cols && STATE_DATA.cols[STATE_ZCOL] ?  STATE_DATA.cols[STATE_ZCOL] : STATE_ZCOL} frequency plot
 
 ```{ojs, Data plot}
-Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_ZCOL}).plot() 
+STATE_ZCOL ? Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_ZCOL}).plot() : html`Please, select a lot indicator ;)`
 ```
