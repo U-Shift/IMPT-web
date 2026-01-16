@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Index for Monitoring Transport Poverty in Portugal",
+    "section": "",
+    "text": "Transport poverty refers to an individual or household inability to access essential services, opportunities, and social participation due to limited, inadequate, unaffordable, unreliable or non-existent means of transport (Mejía Dorantes and Murauskaite-Bull, 2022). However, due to the lack of a universal definition and its multidimensional nature the identification and measurement of transport poverty can be challenging.\nThis project aims to tackle this challenge by developing a multidimensional index that enables its measurement and monitoring over time at both national and regional levels, with the aim of identifying priority areas for intervention and supporting a just mobility transition."
+  },
+  {
+    "objectID": "software.html",
+    "href": "software.html",
+    "title": "Software",
+    "section": "",
+    "text": "R5R\n\n\n\nR code\n\nAccessibility\n\n\n\nr5r is an R package for rapid realistic routing on multimodal transport networks (walk, bike, public transport and car)\n\n\n\n\n\n\n\n\nNo matching items"
+  }
+]
