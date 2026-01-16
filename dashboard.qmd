@@ -23,7 +23,7 @@ GRADIENT = ["#ffffe5","#f7fcc4","#e4f4ac","#c7e89b","#a2d88a","#78c578","#4eaf63
 DATABASE = [
   {
     label: "Transit services (8 a.m.)",
-    source: "/www/data/sample/0800.geojson",
+    source: "/IMPT-web/www/data/sample/0800.geojson",
     map_style: (feature) => GRADUATE_POLYGON(feature, 270),
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "Freguesia", [
         {key: "Concelho", label: "Municipality"},
@@ -41,7 +41,7 @@ DATABASE = [
   },
   {
     label: "Transit services (23 a.m.)",
-    source: "/www/data/sample/2300.geojson",
+    source: "/IMPT-web/www/data/sample/2300.geojson",
     map_style: (feature) => GRADUATE_POLYGON(feature, 270),
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "Freguesia", [
         {key: "Concelho", label: "Municipality"},
@@ -52,7 +52,7 @@ DATABASE = [
   },
   {
     label: "Metro stations",
-    source: "/www/data/sample/metro_stations.geojson",
+    source: "/IMPT-web/www/data/sample/metro_stations.geojson",
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "NOME", [
         {key: "LINHA", label: "Services"},
         {key: "SITUACAO", label: "Status"}
@@ -61,7 +61,7 @@ DATABASE = [
   },
   {
     label: "Sports centers",
-    source: "/www/data/sample/sport_centers.geojson",
+    source: "/IMPT-web/www/data/sample/sport_centers.geojson",
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "DESIGNACAO", [
       {key: "MORADA", label: "Address"},
       {key: "CODIGOPOSTAL", label: "Zip code"},
@@ -70,7 +70,7 @@ DATABASE = [
   },
   {
     label: "Cycle lanes",
-    source: "/www/data/sample/cycle_lanes.geojson",
+    source: "/IMPT-web/www/data/sample/cycle_lanes.geojson",
     map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "DESIGNACAO", [
       {key: "HIERARQUIA", label: "Hierarchy"},
       {key: "TIPOLOGIA", label: "Typology"},
