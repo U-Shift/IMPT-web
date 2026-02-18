@@ -1,0 +1,239 @@
+---
+title: "Dashboard"
+format: dashboard
+draft: true
+css:
+  - dashboard.css
+---
+
+```{ojs, Imports}
+//| output: false
+require("leaflet");
+```
+
+
+```{ojs, Database}
+//| output: false
+MAP_DARK = 'https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png';
+MAP_LIGHT = 'https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png';
+GRADIENT = ["#ffffe5","#f7fcc4","#e4f4ac","#c7e89b","#a2d88a","#78c578","#4eaf63","#2f944e","#15793f","#036034","#004529"]; 
+// Alternative gradients at https://observablehq.com/@d3/color-schemes
+
+
+DATABASE = [
+  {
+    label: "Transit services (8 a.m.)",
+    source: "/IMPT-web/www/data/sample/0800.geojson",
+    map_style: (feature) => GRADUATE_POLYGON(feature, 270),
+    map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "Freguesia", [
+        {key: "Concelho", label: "Municipality"},
+        {key: "services", label: "Services", format: (v) => parseInt(v)},
+        {key: "lines", label: "Lines", format: (v) => v ? [...new Set(v.split(",").map(l => l.replace(/[0-9]/g, '').trim()))].join(", ") : "-"}
+    ]),
+    cols: {
+      Dicofre: "Dicofre",
+      Concelho: "Municipality",
+      Freguesia: "Parish",
+      services: "Services",
+      lines: "Lines"
+    },
+    zcol: ["services"]
+  },
+  {
+    label: "Transit services (23 a.m.)",
+    source: "/IMPT-web/www/data/sample/2300.geojson",
+    map_style: (feature) => GRADUATE_POLYGON(feature, 270),
+    map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "Freguesia", [
+        {key: "Concelho", label: "Municipality"},
+        {key: "services", label: "Services", format: (v) => parseInt(v)},
+        {key: "lines", label: "Lines", format: (v) => v ? [...new Set(v.split(",").map(l => l.replace(/[0-9]/g, '').trim()))].join(", ") : "-"}
+    ]),
+    zcol: ["services"]
+  },
+  {
+    label: "Metro stations",
+    source: "/IMPT-web/www/data/sample/metro_stations.geojson",
+    map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "NOME", [
+        {key: "LINHA", label: "Services"},
+        {key: "SITUACAO", label: "Status"}
+    ]),
+    zcol: ["LINHA"]
+  },
+  {
+    label: "Sports centers",
+    source: "/IMPT-web/www/data/sample/sport_centers.geojson",
+    map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "DESIGNACAO", [
+      {key: "MORADA", label: "Address"},
+      {key: "CODIGOPOSTAL", label: "Zip code"},
+    ]),
+    zcol: ["CATEGORIA"]
+  },
+  {
+    label: "Cycle lanes",
+    source: "/IMPT-web/www/data/sample/cycle_lanes.geojson",
+    map_onEachFeature: (feature, layer) => FEATURE_TOOLTIP(feature, layer, "DESIGNACAO", [
+      {key: "HIERARQUIA", label: "Hierarchy"},
+      {key: "TIPOLOGIA", label: "Typology"},
+      {key: "ANO", label: "Year"},
+      {key: "COMPRIMENTO", label: "Length (m)", format: (v) => parseFloat(v).toFixed(2)},
+    ]),
+    cols: {
+     ANO: "Year",
+     TIPOLOGIA: "Typology",
+    },
+    zcol: ["ANO", "TIPOLOGIA"]
+  }
+]
+
+// Custom methods
+GRADUATE_POLYGON = function(feature, data_max) { // data_max is the equivalent of 
+    let properties = feature.properties;
+    // Color
+    let colorIndex = Math.min(Math.ceil(properties.services * GRADIENT.length / data_max), GRADIENT.length - 1);
+    return { 
+      color:"#FFFFFF", 
+      fillColor: GRADIENT[colorIndex],
+      fillOpacity: 0.75,
+      weight: 1
+    };
+}
+GRADUATE_LINE = function(feature, data_max) {
+    // Weight depending on 
+    let weight = 0;
+    weight = properties.services === 0 ? 0 : (properties.services / data_max) * 5; // Max weight of 5
+    if (weight < 1.5 && properties.services_sum > 0) weight = 1.5;
+    return { 
+      ...GRADUATE_POLYGON(feature, data_max),
+      weight: weight
+    };
+}
+
+FEATURE_TOOLTIP = function(feature, layer, title, props) {
+    let properties = feature.properties;
+    let content = `<h6>${properties[title]}</h6><dl>`;
+    props.forEach(prop => {
+        content += `<dt>${prop.label}<dt><dd>${prop.format ? prop.format(properties[prop.key]) : properties[prop.key]}</dd>`;
+    });
+    content += `</dl>`;
+    layer.bindPopup(content);
+}
+```
+
+
+# Sidebar {.sidebar}
+
+```{ojs, Sidebar controlls}
+viewof STATE_DATA = Inputs.select(
+  new Map(DATABASE.map((d) => [d.label, d])),
+  {label: "Select dataset to display:", class:"teste"}
+);
+
+viewof STATE_ZCOL = Inputs.radio(
+  STATE_DATA.zcol instanceof Array ? STATE_DATA.zcol : [STATE_DATA.zcol],
+  {
+    value: STATE_DATA.zcol.length==1 ? STATE_DATA.zcol[0] : null,
+    label: "Select plot indicator:", 
+    format: (v) => STATE_DATA.cols && STATE_DATA.cols[v] ? STATE_DATA.cols[v] : v,
+    disabled: STATE_DATA.zcol.length<=1
+  }
+);
+
+viewof STATE_LIGHTMODE = Inputs.button("🌓 Toggle base map", {value: true, reduce: (light) => {
+   L.tileLayer(light ? MAP_DARK : MAP_LIGHT).addTo(STATE_MAP);
+   return !light;
+}});
+
+viewof DOWNLOAD = Inputs.button("📦 Download layer", {value: true, reduce: () => {
+   // Open STATE_DATA.source in new tab
+   window.open(STATE_DATA.source, '_blank');
+   return true;
+}});
+```
+
+```{ojs, Load data}
+//| output: true
+
+DATASET = {
+  console.log("Fetching data...");
+  // Clear map
+  STATE_MAP.eachLayer(function (layer) {
+    if (layer instanceof L.GeoJSON) {
+      STATE_MAP.removeLayer(layer);
+    }
+  });
+  // Add spinner
+  const spinner = document.createElement("span");
+  spinner.className = "loader"
+  const spinner_div = document.createElement("div")
+  spinner_div.appendChild(spinner);
+  spinner_div.className = "loader-div";
+  document.querySelector(".bslib-sidebar-layout .tab-content").appendChild(spinner_div);
+  // Get data from API
+  const res = await fetch(
+    `${STATE_DATA.source}`
+  );
+  const data = await res.json();
+  await new Promise(res => setTimeout(res, 1000)); // Simulate delay // TODO! Remove in production
+  console.log("data", data);
+  // Update map
+  L.geoJSON(data.features, {
+    style: STATE_DATA.map_style,
+    onEachFeature: STATE_DATA.map_onEachFeature
+  }).addTo(STATE_MAP);
+  // Zoom map to feature
+  STATE_MAP.fitBounds(L.geoJSON(data).getBounds());
+  // Remove spinner
+  spinner_div.remove();
+  // Return JSON
+  return data;
+}
+
+display(DATASET)
+```
+
+# Map
+
+```{ojs, Map div}
+//| output: true
+div = document.createElement("div");
+```
+
+```{ojs, Map set up}
+//| output: false
+
+// Map library kick-off
+div.style = "height: 100%;width: 100%; min-height: 400px;";
+STATE_MAP = L.map(div, {
+  // Map settings
+  zoomControl: false // Remove default zoom on top-left corner to avoid conflict with sidebar button
+}).setView([38.7169, -9.1399], 11);
+
+// Map base layer
+L.tileLayer("https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(STATE_MAP);
+  
+// Map controls
+L.control.zoom({
+    position: 'bottomleft'
+}).addTo(STATE_MAP);
+```
+
+
+# Data
+
+```{ojs, Data table}
+Inputs.table(DATASET.features.map(f => f.properties), {
+  // Docs: https://observablehq.com/framework/inputs/table
+  header: STATE_DATA.cols,
+  format: STATE_DATA.format
+})
+```
+
+# Plot 
+
+${STATE_ZCOL && STATE_DATA.cols && STATE_DATA.cols[STATE_ZCOL] ?  STATE_DATA.cols[STATE_ZCOL] : STATE_ZCOL} frequency plot
+
+```{ojs, Data plot}
+STATE_ZCOL ? Plot.auto(DATASET.features.map(f => f.properties), {x: STATE_ZCOL}).plot() : html`Please, select a lot indicator ;)`
+```

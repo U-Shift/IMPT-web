@@ -50,3 +50,8 @@ rsconnect/
 
 # Other
 original/
+/.quarto/
+**/*.quarto_ipynb
+
+_site/*
+site_libs/*
