@@ -1,0 +1,13 @@
+---
+title: "Index for Monitoring Transport Poverty in Portugal"
+draft: true
+about:
+  template: jolla
+image: images/logo/icon.png
+---
+
+
+Transport poverty refers to an individual or household inability to access essential services, opportunities, and social participation due to limited, inadequate, unaffordable, unreliable or non-existent means of transport (Mejía Dorantes and Murauskaite-Bull, 2022). However, due to the lack of a universal definition and its multidimensional nature the identification and measurement of transport poverty can be challenging.
+
+This project aims to tackle this challenge by developing a multidimensional index that enables its measurement and monitoring over time at both national and regional levels, with the aim of identifying priority areas for intervention and supporting a just mobility transition.
+

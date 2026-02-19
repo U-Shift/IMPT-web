@@ -1,0 +1,33 @@
+project:
+  type: website
+
+website:
+  title: ""
+  draft-mode: visible
+  favicon: images/logo/icon.ico
+  page-footer: "Copyright 2025, U-Shift, CERIS, Instituto Superior Técnico, University of Lisbon" 
+  navbar:
+    logo: images/logo/logo.png
+    left:
+      - href: index.qmd
+        text: Home
+      - software.qmd
+      - dashboard.qmd
+    right:
+      - icon: github
+        href: https://github.com/U-Shift/IMPT-web
+        target: _blank
+  
+resources:
+  - www/**
+  
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+
+
