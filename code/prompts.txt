@@ -391,7 +391,19 @@ I have a couple of things to ask, in order to improve the interactive dashboard.
 ----
 Response 10
 
+Trajectory ID: 1c3bee74-897d-4227-b636-50118bbf9d58
+Error: HTTP 500 Internal Server Error
+Sherlog:
+TraceID: 0xd625e564ff371304
+Headers: {"Alt-Svc":["h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000"],"Content-Length":["109"],"Content-Type":["text/event-stream"],"Date":["Thu, 19 Feb 2026 04:40:08 GMT"],"Server":["ESF"],"Server-Timing":["gfet4t7; dur=3749"],"Vary":["Origin","X-Origin","Referer"],"X-Cloudaicompanion-Trace-Id":["d625e564ff371304"],"X-Content-Type-Options":["nosniff"],"X-Frame-Options":["SAMEORIGIN"],"X-Xss-Protection":["0"]}
 
+{
+  "error": {
+    "code": 500,
+    "message": "Internal error encountered.",
+    "status": "INTERNAL"
+  }
+}
 
 
 ----
