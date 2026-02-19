@@ -113,10 +113,10 @@ const Dashboard = () => {
         const load = async () => {
             try {
                 const [f, m, h, l] = await Promise.all([
-                    fetch('/data/freguesias_data.json').then(r => r.json()),
-                    fetch('/data/municipios_data.json').then(r => r.json()),
-                    fetch('/data/hex_data.json').then(r => r.json()),
-                    fetch('/data/municipios_limits.json').then(r => r.json())
+                    fetch('data/freguesias_data.json').then(r => r.json()),
+                    fetch('data/municipios_data.json').then(r => r.json()),
+                    fetch('data/hex_data.json').then(r => r.json()),
+                    fetch('data/municipios_limits.json').then(r => r.json())
                 ]);
                 setDataState({ freguesias: f, municipios: m, hex: h, limits: l, loading: false, error: null });
             } catch (err) {
@@ -243,7 +243,7 @@ const Dashboard = () => {
             <div className={`w-[340px] flex flex-col ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'} border-r shadow-xl z-30 transition-all`}>
                 <div className={`p-7 border-b ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
                     <div className="flex items-center gap-4 mb-6">
-                        <img src="/images/logo/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+                        <img src="images/logo/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
                         <div className="flex flex-col">
                             <h1 className="text-sm font-black tracking-tighter uppercase leading-none">Mobility <span className="text-indigo-500">Poverty</span></h1>
                             <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mt-1">Lisbon Metropolis</p>
