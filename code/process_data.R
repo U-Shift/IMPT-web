@@ -3,22 +3,23 @@ library(dplyr)
 library(jsonlite)
 library(tidyr)
 library(readxl)
+library(here)
 
 # 1. Load Geometries
 message("Loading Geometries...")
-freg_geom <- st_read("data/freguesias_2024.gpkg", quiet = TRUE) %>%
+freg_geom <- st_read(here("data/freguesias_2024.gpkg"), quiet = TRUE) %>%
   st_transform(4326) %>%
   st_make_valid() %>%
   mutate(dtmnfr = as.character(dtmnfr))
 
-grid <- st_read("data/grelha_h3_r8.gpkg", quiet = TRUE) %>%
+grid <- st_read(here("data/grelha_h3_r8.gpkg"), quiet = TRUE) %>%
   st_transform(4326) %>%
   mutate(hex_id = as.character(id)) %>%
   select(hex_id, geom)
 
 # 2. Infra Ratio
-if (file.exists("data/freguesias_infrastructure_ratio.rds")) {
-  infra_data <- readRDS("data/freguesias_infrastructure_ratio.rds") %>%
+if (file.exists(here("data/freguesias_infrastructure_ratio.rds"))) {
+  infra_data <- readRDS(here("data/freguesias_infrastructure_ratio.rds")) %>%
     mutate(dtmnfr = as.character(dtmnfr)) %>%
     select(dtmnfr, pedpath_to_road_ratio, cycleway_to_road_ratio)
 } else {
@@ -26,7 +27,7 @@ if (file.exists("data/freguesias_infrastructure_ratio.rds")) {
 }
 
 # 3. Census Data
-census_pts <- st_read("data/census24_points.gpkg", quiet = TRUE) %>% st_transform(4326)
+census_pts <- st_read(here("data/census24_points.gpkg"), quiet = TRUE) %>% st_transform(4326)
 inter_pts <- st_within(census_pts, grid)
 census_pts$hex_id <- grid$hex_id[sapply(inter_pts, function(x) if (length(x) > 0) x[1] else NA)]
 
@@ -45,7 +46,7 @@ hex_census <- census_pts %>%
   rename(pop_total = pop_t)
 
 # 4. POIs
-pois <- st_read("data/pois_osm2024.gpkg", quiet = TRUE) %>% st_transform(4326)
+pois <- st_read(here("data/pois_osm2024.gpkg"), quiet = TRUE) %>% st_transform(4326)
 inter_pois <- st_within(pois, grid)
 pois$hex_id <- grid$hex_id[sapply(inter_pois, function(x) if (length(x) > 0) x[1] else NA)]
 
@@ -71,10 +72,10 @@ process_ttm <- function(path, dests, tag) {
 }
 
 poi_h_dest <- unique(pois$hex_id[pois$group == "healthcare" & !is.na(pois$hex_id)])
-res_car <- process_ttm("data/ttm_h3_res8/ttm_car_60min_202602040800.rds", poi_h_dest, "time_car")
-res_peak <- process_ttm("data/ttm_h3_res8/ttm_transit_60min_202602040800_1transfers.rds", poi_h_dest, "time_pt_peak")
-res_off <- process_ttm("data/ttm_h3_res8/ttm_transit_60min_202602082000_1transfers.rds", poi_h_dest, "time_pt_off")
-res_night <- process_ttm("data/ttm_h3_res8/ttm_transit_60min_202602040300_1transfers.rds", poi_h_dest, "time_pt_night")
+res_car <- process_ttm(here("data/ttm_h3_res8/ttm_car_60min_202602040800.rds"), poi_h_dest, "time_car")
+res_peak <- process_ttm(here("data/ttm_h3_res8/ttm_transit_60min_202602040800_1transfers.rds"), poi_h_dest, "time_pt_peak")
+res_off <- process_ttm(here("data/ttm_h3_res8/ttm_transit_60min_202602082000_1transfers.rds"), poi_h_dest, "time_pt_off")
+res_night <- process_ttm(here("data/ttm_h3_res8/ttm_transit_60min_202602040300_1transfers.rds"), poi_h_dest, "time_pt_night")
 
 hex_stats <- grid %>%
   left_join(res_car, by = "hex_id") %>%
@@ -111,11 +112,11 @@ freg_agg <- hex_stats %>%
     .groups = "drop"
   )
 
-v_freg <- readRDS("data/imob_vehicles_freg.Rds") %>%
+v_freg <- readRDS(here("data/imob_vehicles_freg.Rds")) %>%
   mutate(dtmnfr = as.character(dicofre)) %>%
   select(dtmnfr, total_motor_vehicles_per_hh, pct_hh_no_vehicle, avg_bicycles)
 
-od_freg <- st_read("data/od_freguesias_jittered_2024.gpkg", quiet = TRUE) %>%
+od_freg <- st_read(here("data/od_freguesias_jittered_2024.gpkg"), quiet = TRUE) %>%
   st_drop_geometry() %>%
   mutate(dtmnfr = as.character(Origin_dicofre24)) %>%
   group_by(dtmnfr) %>%
@@ -142,7 +143,7 @@ freg_final <- freg_geom %>%
   mutate(across(where(is.numeric), ~ replace_na(., 0)))
 
 # 7. Income
-income_df <- read_excel("data/ERendimentoNLocal2022.xlsx", sheet = "Sujeitos Passivos_pub_2022", skip = 3)
+income_df <- read_excel(here("data/ERendimentoNLocal2022.xlsx"), sheet = "Sujeitos Passivos_pub_2022", skip = 3)
 income_clean <- income_df %>%
   select(code = 1, type = 2, income = 7, gini = 36) %>%
   filter(type == "Município") %>%
@@ -192,7 +193,7 @@ freg_final <- freg_final %>% mutate(across(where(is.numeric), ~ round(., 2)))
 mun_final <- mun_final %>% mutate(across(where(is.numeric), ~ round(., 2)))
 hex_stats <- hex_stats %>% mutate(across(where(is.numeric), ~ round(., 2)))
 
-out_dir <- "dashboard/public/data"
+out_dir <- here("dashboard/public/data")
 st_write(freg_final, file.path(out_dir, "freguesias_data.json"), delete_dsn = TRUE, quiet = TRUE, driver = "GeoJSON")
 st_write(mun_final, file.path(out_dir, "municipios_data.json"), delete_dsn = TRUE, quiet = TRUE, driver = "GeoJSON")
 st_write(hex_stats %>% st_simplify(dTolerance = 0.0005), file.path(out_dir, "hex_data.json"), delete_dsn = TRUE, quiet = TRUE, driver = "GeoJSON")
