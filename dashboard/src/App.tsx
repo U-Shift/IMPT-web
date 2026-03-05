@@ -26,46 +26,12 @@ type MetricDef = {
 const METRICS: MetricDef[] = [
     { id: 'mobility_poverty_index', label: 'Mobility Poverty Index', category: 'Standalone', icon: '📈', description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.', format: (v) => (v || 0).toFixed(1), domain: [0, 80], unit: '' },
 
-    // Mobility
-    { id: 'share_pt', label: 'PT Modal Share', category: 'Mobility', icon: '🚌', format: (v) => `${((v || 0) * 100).toFixed(0)}%`, domain: [0, 0.6], unit: '%' },
-    { id: 'share_car', label: 'Car Modal Share', category: 'Mobility', icon: '🚗', format: (v) => `${((v || 0) * 100).toFixed(0)}%`, domain: [0, 0.8], invertColor: true, unit: '%' },
-    { id: 'share_walk', label: 'Walking Share', category: 'Mobility', icon: '🚶', format: (v) => `${((v || 0) * 100).toFixed(0)}%`, domain: [0, 0.5], unit: '%' },
-    { id: 'share_bike', label: 'Cycling Share', category: 'Mobility', icon: '🚲', format: (v) => `${((v || 0) * 100).toFixed(0)}%`, domain: [0, 0.1], unit: '%' },
-    { id: 'share_soft', label: 'Active Modal Share', category: 'Mobility', icon: '�', format: (v) => `${((v || 0) * 100).toFixed(0)}%`, domain: [0, 0.5], unit: '%' },
-    { id: 'total_motor_vehicles_per_hh', label: 'Motorized Vehicles /HH', category: 'Mobility', icon: '🛵', format: (v) => (v || 0).toFixed(2), domain: [0, 2], unit: 'veh/HH' },
-    { id: 'avg_bicycles', label: 'Bicycles /HH', category: 'Mobility', icon: '🚲', format: (v) => (v || 0).toFixed(2), domain: [0, 1.5], unit: 'bike/HH' },
-    { id: 'pct_hh_no_vehicle', label: '% Households no Vehicle', category: 'Mobility', icon: '🛑', format: (v) => `${(v || 0).toFixed(0)}%`, domain: [0, 50], invertColor: true, unit: '%' },
-    { id: 'n_transit_stops', label: 'Transit Stops', category: 'Mobility', icon: '🚏', format: (v) => (v || 0).toFixed(0), domain: [0, 50], unit: 'stops', isFake: true },
-    { id: 'peak_services', label: 'Peak Services', category: 'Mobility', icon: '⚡', format: (v) => (v || 0).toFixed(0), domain: [0, 300], unit: 'serv/h' },
-    { id: 'offpeak_services', label: 'Off-Peak Services', category: 'Mobility', icon: '⛅', format: (v) => (v || 0).toFixed(0), domain: [0, 100], unit: 'serv/h', isFake: true },
-    { id: 'night_services', label: 'Night Services', category: 'Mobility', icon: '🌙', format: (v) => (v || 0).toFixed(0), domain: [0, 50], unit: 'serv/h' },
-
     // Accessibility
     { id: 'accessibility_gap', label: 'Access Gap (PT vs Car)', category: 'Accessibility', icon: '⚖️', description: 'Difference in minutes between PT and Car travel times to healthcare.', format: (v) => `${(v || 0).toFixed(0)}m`, isDivergent: true, domain: [-20, 60], unit: 'min' },
     { id: 'time_pt_peak', label: 'Time to Healthcare (PT)', category: 'Accessibility', icon: '⏱️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 60], invertColor: true, unit: 'min' },
     { id: 'time_pt_off', label: 'Time to Healthcare (Off-Peak)', category: 'Accessibility', icon: '🌥️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 60], invertColor: true, unit: 'min', isFake: true },
     { id: 'time_pt_night', label: 'Time to Healthcare (Night)', category: 'Accessibility', icon: '🌑', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 80], invertColor: true, unit: 'min', isFake: true },
     { id: 'time_car', label: 'Time to Healthcare (Car)', category: 'Accessibility', icon: '🏎️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [5, 30], invertColor: true, unit: 'min' },
-
-    // Land Use
-    { id: 'infra_pedestrian', label: 'Pedestrian Infra Ratio', category: 'Land Use', icon: '👟', format: (v) => `${(v || 0).toFixed(0)}%`, domain: [0, 100], unit: '%' },
-    { id: 'infra_cycling', label: 'Cycling Infra Ratio', category: 'Land Use', icon: '🚴', format: (v) => `${(v || 0).toFixed(0)}%`, domain: [0, 100], unit: '%' },
-    { id: 'pct_pre_1945', label: 'Houses Pre-1945', category: 'Land Use', icon: '🏚️', format: (v) => `${((v || 0) * 100).toFixed(1)}%`, domain: [0, 0.5], unit: '%' },
-    { id: 'poi_amenity', label: 'Civic Amenities', category: 'Land Use', icon: '🏢', format: (v) => (v || 0).toFixed(0), domain: [0, 100], unit: 'cnt' },
-    { id: 'poi_healthcare', label: 'Health Facilities', category: 'Land Use', icon: '🏥', format: (v) => (v || 0).toFixed(0), domain: [0, 20], unit: 'cnt' },
-    { id: 'poi_leisure', label: 'Leisure Spots', category: 'Land Use', icon: '⛲', format: (v) => (v || 0).toFixed(0), domain: [0, 50], unit: 'cnt' },
-    { id: 'poi_shop', label: 'Local Shops', category: 'Land Use', icon: '🛍️', format: (v) => (v || 0).toFixed(0), domain: [0, 150], unit: 'cnt' },
-    { id: 'poi_tourism', label: 'Tourism POIs', category: 'Land Use', icon: '📸', format: (v) => (v || 0).toFixed(0), domain: [0, 30], unit: 'cnt' },
-
-    // Sociodemographic
-    { id: 'income', label: 'Avg Income /Person', category: 'Sociodemographic', icon: '💰', format: (v) => `€${(v || 0).toLocaleString()}`, domain: [5000, 25000], unit: '€/y' },
-    { id: 'gini', label: 'Gini Coefficient', category: 'Sociodemographic', icon: '⚖️', format: (v) => `${(v || 0).toFixed(1)}%`, domain: [30, 50], unit: '' },
-
-    { id: 'pop_total', label: 'Total Population', category: 'Sociodemographic', icon: '👥', format: (v) => (v || 0).toLocaleString(), domain: [0, 50000], unit: 'inh' },
-    { id: 'pop_density', label: 'Population Density', category: 'Sociodemographic', icon: '🏙️', format: (v) => `${(v || 0).toFixed(0)} /km²`, domain: [0, 15000], unit: 'inh/km²' },
-    { id: 'pct_youth', label: 'Youth Ratio (<15)', category: 'Sociodemographic', icon: '👶', format: (v) => `${((v || 0) * 100).toFixed(1)}%`, domain: [0, 0.25], unit: '%' },
-    { id: 'pct_elderly', label: 'Elderly Ratio (>65)', category: 'Sociodemographic', icon: '👵', format: (v) => `${((v || 0) * 100).toFixed(1)}%`, domain: [0, 0.4], unit: '%' },
-    { id: 'pct_women', label: '% Women', category: 'Sociodemographic', icon: '👩', format: (v) => `${((v || 0) * 100).toFixed(1)}%`, domain: [0.4, 0.6], unit: '%' },
 ];
 
 
@@ -78,24 +44,29 @@ const COLORS = {
     }
 };
 
-const ZOOM_EXTENTS = {
-    'all': { center: [38.74, -9.14], zoom: 11 },
-    'Grande Lisboa': { center: [38.85, -9.15], zoom: 11 },
-    'Península de Setúbal': { center: [38.55, -9.05], zoom: 11 }
-};
+const REGIONS = {
+    'metropolis': { name: "Metropolis", center: [38.74, -9.14], zoom: 11 },
+    '1B': { name: "Grande Lisboa", center: [38.85, -9.15], zoom: 11 },
+    '1A': { name: "Península de Setúbal", center: [38.55, -9.05], zoom: 11 }
+} as const;
 
-const ZoomHandler = ({ extent }: { extent: 'all' | 'Grande Lisboa' | 'Península de Setúbal' }) => {
+type RegionKey = keyof typeof REGIONS;
+
+const REGION_KEYS = Object.keys(REGIONS) as RegionKey[];
+const DEFAULT_REGION: RegionKey = REGION_KEYS[0];
+
+const ZoomHandler = ({ extent }: { extent: RegionKey }) => {
     const map = useMap();
     useEffect(() => {
-        const config = ZOOM_EXTENTS[extent];
+        const config = REGIONS[extent];
         map.setView(config.center as L.LatLngExpression, config.zoom);
     }, [extent, map]);
     return null;
 };
 
 const Dashboard = () => {
-    const [viewLevel, setViewLevel] = useState<'hex' | 'freguesia' | 'municipality'>('freguesia');
-    const [nutFilter, setNutFilter] = useState<'all' | 'Grande Lisboa' | 'Península de Setúbal'>('all');
+    const [viewLevel, setViewLevel] = useState<'hex' | 'freguesia' | 'municipality'>('municipality');
+    const [nutFilter, setNutFilter] = useState<RegionKey>(DEFAULT_REGION);
     const [selectedMetricId, setSelectedMetricId] = useState<string>('mobility_poverty_index');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
     const [showAbout, setShowAbout] = useState(false);
@@ -135,7 +106,7 @@ const Dashboard = () => {
         if (!raw || !raw.features) return { type: "FeatureCollection", features: [] };
 
         let features = raw.features;
-        if (nutFilter !== 'all') {
+        if (nutFilter !== REGION_KEYS[0]) {
             features = features.filter((f: any) => f.properties?.nuts2 === nutFilter);
         }
         return { ...raw, features };
@@ -341,10 +312,10 @@ const Dashboard = () => {
                             ))}
                         </div>
                         <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
-                            {(['all', 'Grande Lisboa', 'Península de Setúbal'] as const).map(n => (
+                            {REGION_KEYS.map(n => (
                                 <button key={n} onClick={() => setNutFilter(n)}
                                     className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${nutFilter === n ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
-                                >{n === 'all' ? 'Metropolis' : n}</button>
+                                >{REGIONS[n].name}</button>
                             ))}
                         </div>
                     </div>
@@ -353,7 +324,7 @@ const Dashboard = () => {
                 <div className="absolute bottom-8 left-8 z-[1000] pointer-events-none w-[280px]">
                     <div className={`p-6 rounded-[32px] border pointer-events-auto shadow-2xl backdrop-blur-xl ${isDarkMode ? 'bg-neutral-900/90 border-neutral-800' : 'bg-white/90 border-neutral-100'}`}>
                         <h4 className="flex items-center gap-2.5 text-[10px] font-black text-indigo-500 mb-5 uppercase tracking-[0.1em]">
-                            <Activity className="w-3.5 h-3.5" /> {nutFilter !== 'all' ? 'Local Rescaling' : 'Global Metric Scale'}
+                            <Activity className="w-3.5 h-3.5" /> {nutFilter !== REGION_KEYS[0] ? 'Local Rescaling' : 'Global Metric Scale'}
                         </h4>
                         <div className="space-y-5">
                             <div className="flex flex-col gap-3">
@@ -373,7 +344,7 @@ const Dashboard = () => {
 
                 <div className="flex-1">
                     <MapContainer center={[38.74, -9.14]} zoom={11} className="h-full w-full" zoomControl={false} style={{ background: isDarkMode ? '#0a0a0a' : '#f0f0f0' }}>
-                        <ZoomHandler extent={nutFilter} />
+                        <ZoomHandler extent={nutFilter === REGION_KEYS[0] ? DEFAULT_REGION : nutFilter} />
                         <TileLayer url={isDarkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"} attribution='&copy; CARTO' />
                         {activeGeoData?.features && (
                             <GeoJSON key={`${viewLevel}-${nutFilter}-${selectedMetricId}-${isDarkMode}-${selectedFeature?.dtmnfr || selectedFeature?.municipio}`} data={activeGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
