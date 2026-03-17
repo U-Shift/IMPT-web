@@ -131,13 +131,13 @@ const ZoomHandler = ({ extent }: { extent: RegionKey }) => {
     return null;
 };
 
-const SelectedFeatureCentering = ({ feature, activeGeoData }: { feature: any, activeGeoData: any }) => {
+const SelectedFeatureCentering = ({ zoomRequest, activeGeoData }: { zoomRequest: { id: string | number, timestamp: number } | null, activeGeoData: any }) => {
     const map = useMap();
     useEffect(() => {
-        if (!feature || !activeGeoData?.features) return;
+        if (!zoomRequest || !activeGeoData?.features) return;
 
         // Find the actual feature in the geojson to get its geometry
-        const geoFeature = activeGeoData.features.find((f: any) => String(f.properties.id) === String(feature.id));
+        const geoFeature = activeGeoData.features.find((f: any) => String(f.properties.id) === String(zoomRequest.id));
         if (geoFeature) {
             const layer = L.geoJSON(geoFeature);
             const bounds = layer.getBounds();
@@ -145,7 +145,7 @@ const SelectedFeatureCentering = ({ feature, activeGeoData }: { feature: any, ac
                 map.flyToBounds(bounds, { padding: [50, 50], maxZoom: 12 });
             }
         }
-    }, [feature, activeGeoData, map]);
+    }, [zoomRequest, activeGeoData, map]);
     return null;
 };
 
@@ -164,6 +164,7 @@ const Dashboard = () => {
     const [selectedMetricId, setSelectedMetricId] = useState<string>('IMPT_entropy_pca');
     const [selectedModeId, setSelectedModeId] = useState<ModeId>('all');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
+    const [zoomRequest, setZoomRequest] = useState<{ id: string | number, timestamp: number } | null>(null);
     const [showAbout, setShowAbout] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
@@ -529,7 +530,7 @@ const Dashboard = () => {
                 <div className="flex-1">
                     <MapContainer center={[38.74, -9.14]} zoom={11} className="h-full w-full" zoomControl={false} style={{ background: isDarkMode ? '#0a0a0a' : '#f0f0f0' }}>
                         <ZoomHandler extent={nutFilter === REGION_KEYS[0] ? DEFAULT_REGION : nutFilter} />
-                        <SelectedFeatureCentering feature={selectedFeature} activeGeoData={activeGeoData} />
+                        <SelectedFeatureCentering zoomRequest={zoomRequest} activeGeoData={activeGeoData} />
                         <MapDeselectHandler onDeselect={() => setSelectedFeature(null)} />
                         <TileLayer url={isDarkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"} attribution='&copy; CARTO' />
                         {activeGeoData?.features && (
@@ -679,7 +680,10 @@ const Dashboard = () => {
                                         type="highest"
                                         onSelect={(id) => {
                                             const f = activeGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
-                                            if (f) setSelectedFeature(f.properties);
+                                            if (f) {
+                                                setSelectedFeature(f.properties);
+                                                setZoomRequest({ id, timestamp: Date.now() });
+                                            }
                                         }}
                                     />
                                 </div>
@@ -694,7 +698,10 @@ const Dashboard = () => {
                                         type="lowest"
                                         onSelect={(id) => {
                                             const f = activeGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
-                                            if (f) setSelectedFeature(f.properties);
+                                            if (f) {
+                                                setSelectedFeature(f.properties);
+                                                setZoomRequest({ id, timestamp: Date.now() });
+                                            }
                                         }}
                                     />
                                 </div>
