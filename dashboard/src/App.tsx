@@ -13,7 +13,7 @@ type MetricDef = {
     id: string;
     label: string;
     category: string;
-    icon: string;
+    icon?: string;
     description?: string;
     format: (v: number) => string;
     isDivergent?: boolean;
@@ -21,31 +21,67 @@ type MetricDef = {
     unit?: string;
     viewLevel?: 'municipality' | 'all'; // Restrict visibility
     isFake?: boolean; // Label as placeholder data
+    showDetails?: boolean; // Show in "Area details" section
+    showDetailsOnlyWhenSelected?: boolean; // Show in details only when active
 };
 
 const METRICS: Record<string, MetricDef[]> = {
     'Mobility Poverty Index': [
-        { id: 'IMPT_score_pca_avg', label: 'PCA + Average', category: 'Mobility Poverty Index', icon: '📈', description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.', format: (v) => (v || 0).toFixed(1), higherTheBetter: true },
-        { id: 'IMPT_Equal_Weights_avg', label: 'Equal Weights', category: 'Mobility Poverty Index', icon: '⚖️', description: 'Simple average of all base indicators normalized to 0-100 scale.', format: (v) => (v || 0).toFixed(1), higherTheBetter: true },
+        {
+            id: 'IMPT_entropy_pca',
+            label: 'IMPT with entropy', category: 'Mobility Poverty Index',
+            description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.',
+            format: (v) => (v || 0).toFixed(1),
+            higherTheBetter: true, showDetails: true, showDetailsOnlyWhenSelected: true
+        },
+        {
+            id: 'IMPT_score_pca_geom',
+            label: 'IMPT with geometric progression', category: 'Mobility Poverty Index',
+            description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.',
+            format: (v) => (v || 0).toFixed(1),
+            higherTheBetter: true, showDetails: true, showDetailsOnlyWhenSelected: true
+        },
+        {
+            id: 'IMPT_score_pca_avg',
+            label: 'IMPT with average', category: 'Mobility Poverty Index',
+            description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.',
+            format: (v) => (v || 0).toFixed(1),
+            higherTheBetter: true, showDetails: true, showDetailsOnlyWhenSelected: true
+        }
     ],
-    'Accessibility': [
-        { id: 'access_health_walk_60min_residents', label: 'Health (60m Walk)', category: 'Accessibility', icon: '🏥', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
-        { id: 'access_groceries_walk_15min_residents', label: 'Groceries (15m Walk)', category: 'Accessibility', icon: '🛒', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
-        { id: 'access_greenspaces_walk_15min_residents', label: 'Parks (15m Walk)', category: 'Accessibility', icon: '🌳', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
-    ],
-    'Mobility': [
-        { id: 'mobility_cost_health_walk_n1_residents', label: 'Travel Time Health (Walk)', category: 'Mobility', icon: '⏱️', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: false, unit: 'min' },
-        { id: 'mobility_cost_jobs_car_n1_active', label: 'Travel Time Work (Car)', category: 'Mobility', icon: '🚗', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: false, unit: 'min' },
-        { id: 'mobility_transit_total_frequency_peak', label: 'Transit Frequency (Peak)', category: 'Mobility', icon: '🚌', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'trips/h' },
-    ],
-    'Sociodemographic': [
-        { id: 'census_residents', label: 'Total Residents', category: 'Sociodemographic', icon: '👥', format: (v) => (v || 0).toLocaleString(), higherTheBetter: true },
-        { id: 'census_families', label: 'Total Families', category: 'Sociodemographic', icon: '🏠', format: (v) => (v || 0).toLocaleString(), higherTheBetter: true },
+    'Dimensions': [
+        {
+            id: 'Accessibility_PCA',
+            label: 'Accessibility', category: 'Dimensions', icon: '👋',
+            description: 'Aggregated index for accessibility to key services and opportunities',
+            format: (v) => getQuintileRange(v || 0),
+            higherTheBetter: true, showDetails: true
+        },
+        {
+            id: 'Mobility_PCA',
+            label: 'Mobility', category: 'Dimensions', icon: '🚲',
+            description: 'Aggregated index for commuting and mobility infrastructure',
+            format: (v) => getQuintileRange(v || 0),
+            higherTheBetter: true, showDetails: true
+        },
+        {
+            id: 'Safety_PCA',
+            label: 'Safety', category: 'Dimensions', icon: '🛡️',
+            description: 'Aggregated index for safety data related to accidents',
+            format: (v) => getQuintileRange(v || 0),
+            higherTheBetter: true, showDetails: true
+        },
+        {
+            id: 'Affordability_PCA',
+            label: 'Affordability', category: 'Dimensions', icon: '💰',
+            description: 'Aggregated index for affordability, considering income and housing costs',
+            format: (v) => getQuintileRange(v || 0),
+            higherTheBetter: true, showDetails: true
+        }
     ]
 };
 
 const FLAT_METRICS = Object.values(METRICS).flat();
-
 
 const COLORS = {
     Sequential: ['#f7fbff', '#deebf7', '#c6dbef', '#9ecae1', '#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'],
@@ -67,6 +103,15 @@ type RegionKey = keyof typeof REGIONS;
 const REGION_KEYS = Object.keys(REGIONS) as RegionKey[];
 const DEFAULT_REGION: RegionKey = REGION_KEYS[0];
 
+const getQuintileRange = (value: number): string => {
+    const quintile = Math.floor(value / 20);
+    // Prevent 100-120
+    if (quintile === 5) {
+        return '80-100';
+    }
+    return `${quintile * 20}-${(quintile + 1) * 20}`;
+}
+
 const ZoomHandler = ({ extent }: { extent: RegionKey }) => {
     const map = useMap();
     useEffect(() => {
@@ -79,7 +124,7 @@ const ZoomHandler = ({ extent }: { extent: RegionKey }) => {
 const Dashboard = () => {
     const [viewLevel, setViewLevel] = useState<ViewLevel>('freguesia');
     const [nutFilter, setNutFilter] = useState<RegionKey>(DEFAULT_REGION);
-    const [selectedMetricId, setSelectedMetricId] = useState<string>('IMPT_score_pca_avg');
+    const [selectedMetricId, setSelectedMetricId] = useState<string>('IMPT_entropy_pca');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
     const [showAbout, setShowAbout] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
@@ -396,7 +441,7 @@ const Dashboard = () => {
                     {/* Selection Detail */}
                     <section>
                         <h3 className="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                            <MapPin className="w-3.5 h-3.5 text-indigo-500" /> Regional Intelligence
+                            <MapPin className="w-3.5 h-3.5 text-indigo-500" /> Area details
                         </h3>
                         {selectedFeature ? (
                             <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-7 border shadow-sm`}>
@@ -406,8 +451,18 @@ const Dashboard = () => {
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <DetailCard label="Poverty Index" value={(selectedFeature.IMPT_score_pca_avg || 0).toFixed(1)} color="text-red-400" isDark={isDarkMode} />
-                                    <DetailCard label="Residents" value={(selectedFeature.census_residents || 0).toLocaleString()} isDark={isDarkMode} />
+                                    {FLAT_METRICS.filter(m =>
+                                        m.showDetails &&
+                                        (!m.showDetailsOnlyWhenSelected || m.id === selectedMetricId)
+                                    ).map(m => (
+                                        <DetailCard
+                                            key={m.id}
+                                            label={m.label}
+                                            value={m.format(selectedFeature[m.id])}
+                                            color={m.id === 'IMPT_score_pca_avg' ? 'text-red-400' : undefined}
+                                            isDark={isDarkMode}
+                                        />
+                                    ))}
                                 </div>
                                 {/* Modal Share Breakdown - Currently disabled as data format changed to be agnostic */}
                                 {selectedFeature.share_car !== undefined && (
