@@ -231,6 +231,17 @@ const Dashboard = () => {
         return [Math.min(...values), Math.max(...values)] as [number, number];
     }, [activeGeoData, selectedMetric]);
 
+    // Precompute domains for all metrics shown in details to support dynamic coloring
+    const allDomains = useMemo(() => {
+        const result: Record<string, [number, number]> = {};
+        if (!activeGeoData?.features?.length) return result;
+        FLAT_METRICS.filter(m => m.showDetails).forEach(m => {
+            const values = activeGeoData.features.map((f: any) => f.properties?.[m.id]).filter((v: any) => v !== undefined && !isNaN(v));
+            result[m.id] = values.length > 0 ? [Math.min(...values), Math.max(...values)] : [0, 1];
+        });
+        return result;
+    }, [activeGeoData]);
+
     const getColor = (val: number, domain: [number, number], metric: MetricDef) => {
         if (val === null || val === undefined) return '#333';
         const [min, max] = domain;
@@ -490,7 +501,7 @@ const Dashboard = () => {
                                             key={m.id}
                                             label={m.label}
                                             value={m.format(selectedFeature[m.id])}
-                                            color={m.id === 'IMPT_score_pca_avg' ? 'text-red-400' : undefined}
+                                            hexColor={getColor(selectedFeature[m.id], allDomains[m.id] || [0, 1], m)}
                                             isDark={isDarkMode}
                                         />
                                     ))}
@@ -738,10 +749,19 @@ const DownloadCard = ({ title, id, isDark, data, filename }: { title: string, id
     );
 };
 
-const DetailCard = ({ label, value, color = "", isDark = true }: { label: string, value: string, color?: string, isDark?: boolean }) => (
-    <div className={`${isDark ? 'bg-neutral-800/60 border-neutral-700/30' : 'bg-neutral-50 border-neutral-100 shadow-sm'} p-4 rounded-2xl border transition-all hover:border-indigo-500/30`}>
-        <span className="block text-[9px] font-black opacity-30 uppercase mb-1.5 tracking-widest">{label}</span>
-        <span className={`text-sm font-black tracking-tighter ${color || (isDark ? 'text-white' : 'text-neutral-900')}`}>{value || '—'}</span>
+const DetailCard = ({ label, value, color = "", isDark = true, hexColor }: { label: string, value: string, color?: string, isDark?: boolean, hexColor?: string }) => (
+    <div 
+        className={`${isDark ? 'bg-neutral-800/60 border-neutral-700/30' : 'bg-neutral-50 border-neutral-100 shadow-sm'} rounded-2xl border transition-all hover:border-indigo-500/30 flex flex-col overflow-hidden`}
+    >
+        <div className="p-4 flex-1 flex flex-col justify-between">
+            <span className="block text-[9px] font-black opacity-30 uppercase mb-1.5 tracking-widest">{label}</span>
+            <span className={`text-sm font-black tracking-tighter ${color || (isDark ? 'text-white' : 'text-neutral-900')}`}>
+                {value || '—'}
+            </span>
+        </div>
+        {hexColor && (
+            <div style={{ height: '4px', backgroundColor: hexColor }} />
+        )}
     </div>
 );
 
