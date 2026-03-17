@@ -7,32 +7,44 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveCont
 import { Info, MapPin, ChevronRight, X, Github, Activity, Loader2, MousePointer2, ChevronDown, Sun, Moon, ExternalLink, ListFilter, TrendingUp, AlertTriangle, Download } from 'lucide-react';
 
 // --- Types & Constants ---
+type ViewLevel = 'hex' | 'freguesia' | 'municipality';
 
 type MetricDef = {
     id: string;
     label: string;
-    category: 'Mobility' | 'Accessibility' | 'Land Use' | 'Sociodemographic' | 'Standalone';
+    category: string;
     icon: string;
     description?: string;
     format: (v: number) => string;
     isDivergent?: boolean;
-    domain?: [number, number];
-    invertColor?: boolean;
+    higherTheBetter?: boolean;
     unit?: string;
     viewLevel?: 'municipality' | 'all'; // Restrict visibility
     isFake?: boolean; // Label as placeholder data
 };
 
-const METRICS: MetricDef[] = [
-    { id: 'mobility_poverty_index', label: 'Mobility Poverty Index', category: 'Standalone', icon: '📈', description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.', format: (v) => (v || 0).toFixed(1), domain: [0, 80], unit: '' },
+const METRICS: Record<string, MetricDef[]> = {
+    'Mobility Poverty Index': [
+        { id: 'IMPT_score_pca_avg', label: 'PCA + Average', category: 'Mobility Poverty Index', icon: '📈', description: 'Composite index (0-100) based on accessibility, car share, and vehicle ownership.', format: (v) => (v || 0).toFixed(1), higherTheBetter: true },
+        { id: 'IMPT_Equal_Weights_avg', label: 'Equal Weights', category: 'Mobility Poverty Index', icon: '⚖️', description: 'Simple average of all base indicators normalized to 0-100 scale.', format: (v) => (v || 0).toFixed(1), higherTheBetter: true },
+    ],
+    'Accessibility': [
+        { id: 'access_health_walk_60min_residents', label: 'Health (60m Walk)', category: 'Accessibility', icon: '🏥', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
+        { id: 'access_groceries_walk_15min_residents', label: 'Groceries (15m Walk)', category: 'Accessibility', icon: '🛒', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
+        { id: 'access_greenspaces_walk_15min_residents', label: 'Parks (15m Walk)', category: 'Accessibility', icon: '🌳', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'opp' },
+    ],
+    'Mobility': [
+        { id: 'mobility_cost_health_walk_n1_residents', label: 'Travel Time Health (Walk)', category: 'Mobility', icon: '⏱️', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: false, unit: 'min' },
+        { id: 'mobility_cost_jobs_car_n1_active', label: 'Travel Time Work (Car)', category: 'Mobility', icon: '🚗', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: false, unit: 'min' },
+        { id: 'mobility_transit_total_frequency_peak', label: 'Transit Frequency (Peak)', category: 'Mobility', icon: '🚌', format: (v) => `${(v || 0).toFixed(0)}`, higherTheBetter: true, unit: 'trips/h' },
+    ],
+    'Sociodemographic': [
+        { id: 'census_residents', label: 'Total Residents', category: 'Sociodemographic', icon: '👥', format: (v) => (v || 0).toLocaleString(), higherTheBetter: true },
+        { id: 'census_families', label: 'Total Families', category: 'Sociodemographic', icon: '🏠', format: (v) => (v || 0).toLocaleString(), higherTheBetter: true },
+    ]
+};
 
-    // Accessibility
-    { id: 'accessibility_gap', label: 'Access Gap (PT vs Car)', category: 'Accessibility', icon: '⚖️', description: 'Difference in minutes between PT and Car travel times to healthcare.', format: (v) => `${(v || 0).toFixed(0)}m`, isDivergent: true, domain: [-20, 60], unit: 'min' },
-    { id: 'time_pt_peak', label: 'Time to Healthcare (PT)', category: 'Accessibility', icon: '⏱️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 60], invertColor: true, unit: 'min' },
-    { id: 'time_pt_off', label: 'Time to Healthcare (Off-Peak)', category: 'Accessibility', icon: '🌥️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 60], invertColor: true, unit: 'min', isFake: true },
-    { id: 'time_pt_night', label: 'Time to Healthcare (Night)', category: 'Accessibility', icon: '🌑', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [10, 80], invertColor: true, unit: 'min', isFake: true },
-    { id: 'time_car', label: 'Time to Healthcare (Car)', category: 'Accessibility', icon: '🏎️', format: (v) => `${(v || 0).toFixed(0)}m`, domain: [5, 30], invertColor: true, unit: 'min' },
-];
+const FLAT_METRICS = Object.values(METRICS).flat();
 
 
 const COLORS = {
@@ -46,8 +58,8 @@ const COLORS = {
 
 const REGIONS = {
     'metropolis': { name: "Metropolis", center: [38.74, -9.14], zoom: 11 },
-    '1B': { name: "Grande Lisboa", center: [38.85, -9.15], zoom: 11 },
-    '1A': { name: "Península de Setúbal", center: [38.55, -9.05], zoom: 11 }
+    'PT1B': { name: "Grande Lisboa", center: [38.85, -9.15], zoom: 11 },
+    'PT1A': { name: "Península de Setúbal", center: [38.55, -9.05], zoom: 11 }
 } as const;
 
 type RegionKey = keyof typeof REGIONS;
@@ -65,31 +77,41 @@ const ZoomHandler = ({ extent }: { extent: RegionKey }) => {
 };
 
 const Dashboard = () => {
-    const [viewLevel, setViewLevel] = useState<'hex' | 'freguesia' | 'municipality'>('municipality');
+    const [viewLevel, setViewLevel] = useState<ViewLevel>('freguesia');
     const [nutFilter, setNutFilter] = useState<RegionKey>(DEFAULT_REGION);
-    const [selectedMetricId, setSelectedMetricId] = useState<string>('mobility_poverty_index');
+    const [selectedMetricId, setSelectedMetricId] = useState<string>('IMPT_score_pca_avg');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
     const [showAbout, setShowAbout] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
-    const [isDarkMode, setIsDarkMode] = useState(true);
-    const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>({
-        'Mobility': true, 'Accessibility': true, 'Land Use': true, 'Sociodemographic': true
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
+        const keys = Object.keys(METRICS);
+        return keys.slice(1).reduce((acc, key) => ({ ...acc, [key]: true }), {});
     });
 
     const [dataState, setDataState] = useState<{
-        freguesias: any; municipios: any; hex: any; limits: any; loading: boolean; error: string | null;
-    }>({ freguesias: null, municipios: null, hex: null, limits: null, loading: true, error: null });
+        geo: Record<string, any>; limits: any; loading: boolean; error: string | null;
+    }>({ geo: {}, limits: null, loading: true, error: null });
+
+    const LEVEL_FILES = {
+        'municipality': 'data/municipios_aggregated.geojson',
+        'freguesia': 'data/freguesias_aggregated.geojson',
+        'hex': 'data/grid_aggregated.geojson'
+    };
 
     useEffect(() => {
         const load = async () => {
             try {
-                const [f, m, h, l] = await Promise.all([
-                    fetch('data/freguesias_data.json').then(r => r.json()),
-                    fetch('data/municipios_data.json').then(r => r.json()),
-                    fetch('data/hex_data.json').then(r => r.json()),
+                const levels = Object.keys(LEVEL_FILES);
+                const results = await Promise.all([
+                    ...levels.map(l => fetch(LEVEL_FILES[l as keyof typeof LEVEL_FILES]).then(r => r.json())),
                     fetch('data/municipios_limits.json').then(r => r.json())
                 ]);
-                setDataState({ freguesias: f, municipios: m, hex: h, limits: l, loading: false, error: null });
+
+                const geo: Record<string, any> = {};
+                levels.forEach((l, i) => { geo[l] = results[i]; });
+
+                setDataState({ geo, limits: results[levels.length], loading: false, error: null });
             } catch (err) {
                 console.error(err);
                 setDataState(s => ({ ...s, loading: false, error: "System encountered a data loading error." }));
@@ -98,53 +120,73 @@ const Dashboard = () => {
         load();
     }, []);
 
-    const selectedMetric = useMemo(() => METRICS.find(m => m.id === selectedMetricId) || METRICS[0], [selectedMetricId]);
+    const selectedMetric = useMemo(() => FLAT_METRICS.find(m => m.id === selectedMetricId) || FLAT_METRICS[0], [selectedMetricId]);
+
+    // Helper to check if a metric is available at a certain view level
+    const isMetricAvailable = (metricId: string, level: string) => {
+        if (!dataState.geo[level as ViewLevel]) return false;
+        // Check first feature to see if the property exists
+        const feature = dataState.geo[level as ViewLevel]?.features[0];
+        return feature && feature.properties && feature.properties[metricId] !== undefined;
+    };
+
+    // Auto-switch view level if not available for selected metric
+    useEffect(() => {
+        if (!isMetricAvailable(selectedMetricId, viewLevel)) {
+            const availableLevel = (['hex', 'freguesia', 'municipality'] as const).find(l => isMetricAvailable(selectedMetricId, l));
+            if (availableLevel) {
+                setViewLevel(availableLevel);
+            }
+        }
+    }, [selectedMetricId, dataState.geo]);
 
     const activeGeoData = useMemo(() => {
-        if (!dataState.freguesias) return null;
-        let raw = viewLevel === 'hex' ? dataState.hex : (viewLevel === 'municipality' ? dataState.municipios : dataState.freguesias);
+        let raw = dataState.geo[viewLevel];
         if (!raw || !raw.features) return { type: "FeatureCollection", features: [] };
 
         let features = raw.features;
         if (nutFilter !== REGION_KEYS[0]) {
-            features = features.filter((f: any) => f.properties?.nuts2 === nutFilter);
+            features = features.filter((f: any) => f.properties?.region_id === nutFilter || f.properties?.nuts2 === REGIONS[nutFilter].name);
         }
         return { ...raw, features };
     }, [viewLevel, nutFilter, dataState]);
 
     const currentDomain = useMemo(() => {
-        const defaultDomain: [number, number] = selectedMetric.domain || [0, 1];
+        const defaultDomain: [number, number] = [0, 1];
         if (!activeGeoData?.features?.length) return defaultDomain;
         const values = activeGeoData.features.map((f: any) => f.properties?.[selectedMetric.id]).filter((v: any) => v !== undefined && !isNaN(v));
         if (values.length === 0) return defaultDomain;
         return [Math.min(...values), Math.max(...values)] as [number, number];
     }, [activeGeoData, selectedMetric]);
 
-    const getScaleColor = (value: number, metric: MetricDef, domain: [number, number]) => {
+    const getColor = (val: number, domain: [number, number], metric: MetricDef) => {
+        if (val === null || val === undefined) return '#333';
+        const [min, max] = domain;
+        const range = max - min;
+        if (range === 0) return metric.higherTheBetter ? COLORS.Sequential[4] : COLORS.Danger[4];
+
         if (metric.isDivergent) {
-            if (value === 0) return '#ffffff';
-            if (value < 0) {
-                const normalized = Math.min(1, Math.abs(value) / (Math.abs(domain[0]) || 20));
-                return COLORS.Divergent.negative[Math.floor(normalized * (COLORS.Divergent.negative.length - 1))];
+            const mid = (min + max) / 2;
+            if (val <= mid) {
+                const subNorm = (val - min) / (mid - min || 1);
+                const idx = Math.min(Math.floor(subNorm * 5), 4);
+                return COLORS.Divergent.negative[idx];
             } else {
-                const normalized = Math.min(1, value / (domain[1] || 60));
-                return COLORS.Divergent.positive[Math.floor(normalized * (COLORS.Divergent.positive.length - 1))];
+                const subNorm = (val - mid) / (max - mid || 1);
+                const idx = Math.min(Math.floor(subNorm * 6), 5);
+                return COLORS.Divergent.positive[idx];
             }
         }
-        const [min, max] = domain;
-        const normalized = max === min ? 0.5 : Math.min(1, Math.max(0, (value - min) / (max - min)));
-        const scale = (metric.invertColor || metric.id.includes('poverty') || metric.id.includes('gap')) ? COLORS.Danger : COLORS.Sequential;
-        return scale[Math.floor(normalized * (scale.length - 1))];
+
+        const norm = Math.max(0, Math.min(1, (val - min) / range));
+        const idx = Math.min(Math.floor(norm * 9), 8);
+        return metric.higherTheBetter ? COLORS.Sequential[idx] : COLORS.Danger[idx];
     };
 
     const getStyle = (feature: any) => {
-        const isSelected = selectedFeature && (
-            (viewLevel === 'hex' && feature.properties.hex_id === selectedFeature.hex_id) ||
-            (viewLevel === 'freguesia' && feature.properties.dtmnfr === selectedFeature.dtmnfr) ||
-            (viewLevel === 'municipality' && feature.properties.municipio === selectedFeature.municipio)
-        );
+        const isSelected = selectedFeature && feature.properties.id === selectedFeature.id;
         return {
-            fillColor: getScaleColor(feature.properties[selectedMetric.id] || 0, selectedMetric, currentDomain),
+            fillColor: getColor(feature.properties[selectedMetric.id] || 0, currentDomain, selectedMetric),
             weight: isSelected ? 3 : (viewLevel === 'hex' ? 0.3 : 0.6),
             opacity: 1,
             color: isSelected ? '#a5b4fc' : 'white',
@@ -160,8 +202,8 @@ const Dashboard = () => {
 
         layer.bindTooltip(`
             <div style="font-family: sans-serif; padding: 4px;">
-                <div style="font-size: 10px; font-weight: 900; color: #666; text-transform: uppercase;">${props.municipio || 'LMA'}</div>
-                <div style="font-size: 12px; font-weight: 700; color: #111;">${props.freguesia || props.municipio || 'N/A'}</div>
+                <div style="font-size: 10px; font-weight: 900; color: #666; text-transform: uppercase;">${props.group_id || 'LMA'}</div>
+                <div style="font-size: 12px; font-weight: 700; color: #111;">${props.name || 'N/A'}</div>
                 <div style="font-size: 11px; font-weight: 900; color: #6366f1; margin-top: 4px;">${selectedMetric.label}: ${formattedVal} ${selectedMetric.unit || ''}</div>
             </div>
         `, { sticky: true, opacity: 0.95 });
@@ -174,17 +216,16 @@ const Dashboard = () => {
     };
 
     const toggleSection = (cat: string) => {
-        setCollapsedSections(prev => {
-            const newState = { 'Mobility': true, 'Accessibility': true, 'Land Use': true, 'Sociodemographic': true };
-            if (prev[cat]) newState[cat as keyof typeof newState] = false;
-            return newState as any;
-        });
+        setCollapsedSections(prev => ({
+            ...prev,
+            [cat]: !prev[cat]
+        }));
     };
 
-    const municipalityFreguesias = useMemo(() => {
-        if (viewLevel !== 'municipality' || !selectedFeature || !dataState.freguesias) return [];
-        return dataState.freguesias.features
-            .filter((f: any) => f.properties?.municipio === selectedFeature.municipio)
+    const subLevelData = useMemo(() => {
+        if (viewLevel !== 'municipality' || !selectedFeature || !dataState.geo['freguesia']) return [];
+        return dataState.geo['freguesia'].features
+            .filter((f: any) => String(f.properties?.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
             .sort((a: any, b: any) => (b[selectedMetric.id] || 0) - (a[selectedMetric.id] || 0));
     }, [viewLevel, selectedFeature, selectedMetric, dataState]);
@@ -192,8 +233,8 @@ const Dashboard = () => {
     const chartData = useMemo(() => {
         if (!activeGeoData?.features) return { top10: [], worst10: [] };
         const feats = activeGeoData.features.map((f: any) => ({
-            name: f.properties?.freguesia || f.properties?.municipio || f.properties?.id || 'Unknown',
-            municipio: f.properties?.municipio || '',
+            name: String(f.properties?.name || f.properties?.id || 'Unknown'),
+            group: f.properties?.group_id || '',
             value: (f.properties?.[selectedMetric.id] || 0)
         }));
         const sorted = [...feats].sort((a, b) => b.value - a.value);
@@ -243,17 +284,7 @@ const Dashboard = () => {
                             <ListFilter className="w-3 h-3 text-indigo-500" /> Indicator Space
                         </h3>
                         <div className="space-y-4">
-                            <button
-                                onClick={() => setSelectedMetricId('mobility_poverty_index')}
-                                className={`w-full flex items-center justify-between px-4 py-3.5 rounded-2xl text-[11px] font-black transition-all ${selectedMetricId === 'mobility_poverty_index'
-                                    ? 'bg-indigo-600 text-white shadow-xl scale-[1.02]'
-                                    : (isDarkMode ? 'bg-neutral-800/50 hover:bg-neutral-800 text-neutral-300' : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-600')}`}
-                            >
-                                <span className="flex items-center gap-3">📈 <span>Mobility Poverty Index</span></span>
-                                <ChevronRight className={`w-4 h-4 ${selectedMetricId === 'mobility_poverty_index' ? 'opacity-100' : 'opacity-0'}`} />
-                            </button>
-
-                            {(['Mobility', 'Accessibility', 'Land Use', 'Sociodemographic'] as const).map(cat => (
+                            {Object.keys(METRICS).map(cat => (
                                 <div key={cat} className={`border rounded-2xl overflow-hidden transition-all ${isDarkMode ? 'border-neutral-800 bg-neutral-800/10' : 'border-neutral-100 bg-neutral-50/30'} ${!collapsedSections[cat] ? 'ring-1 ring-indigo-500/20' : ''}`}>
                                     <button onClick={() => toggleSection(cat)}
                                         className={`w-full flex items-center justify-between px-4 py-3.5 text-[10px] font-black uppercase tracking-widest transition-colors ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-600'}`}
@@ -265,7 +296,7 @@ const Dashboard = () => {
                                     </button>
                                     {!collapsedSections[cat] && (
                                         <div className={`p-2 space-y-1.5 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
-                                            {METRICS.filter(m => m.category === cat).map(m => {
+                                            {METRICS[cat].map(m => {
                                                 const isVisible = !m.viewLevel || (m.viewLevel === 'municipality' && viewLevel === 'municipality');
                                                 if (!isVisible) return null;
                                                 return (
@@ -305,11 +336,13 @@ const Dashboard = () => {
                 <div className="absolute top-8 left-8 right-8 z-[1000] flex justify-between items-start pointer-events-none">
                     <div className="flex gap-4 pointer-events-auto items-center">
                         <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
-                            {(['hex', 'freguesia', 'municipality'] as const).map(l => (
-                                <button key={l} onClick={() => setViewLevel(l)}
-                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewLevel === l ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
-                                >{l === 'hex' ? 'Grid' : l}</button>
-                            ))}
+                            {(['hex', 'freguesia', 'municipality'] as const)
+                                .filter(l => isMetricAvailable(selectedMetricId, l))
+                                .map(l => (
+                                    <button key={l} onClick={() => setViewLevel(l)}
+                                        className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewLevel === l ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
+                                    >{l === 'hex' ? 'Grid' : l}</button>
+                                ))}
                         </div>
                         <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
                             {REGION_KEYS.map(n => (
@@ -328,7 +361,7 @@ const Dashboard = () => {
                         </h4>
                         <div className="space-y-5">
                             <div className="flex flex-col gap-3">
-                                <div className={`h-2.5 rounded-full w-full bg-gradient-to-r ${selectedMetric.isDivergent ? 'from-[#006837] via-white to-[#bd0026]' : (selectedMetric.invertColor || selectedMetric.id.includes('poverty') ? 'from-[#fff5f0] to-[#67000d]' : 'from-[#f7fbff] to-[#08306b]')}`} />
+                                <div className={`h-2.5 rounded-full w-full bg-gradient-to-r ${selectedMetric.isDivergent ? 'from-[#006837] via-white to-[#bd0026]' : (selectedMetric.higherTheBetter ? 'from-[#f7fbff] to-[#08306b]' : 'from-[#fff5f0] to-[#67000d]')}`} />
                                 <div className="flex justify-between text-[9px] font-black opacity-40 uppercase tracking-tighter">
                                     <span>{selectedMetric.format(currentDomain[0])}</span>
                                     <span>{selectedMetric.format(currentDomain[1])}</span>
@@ -347,7 +380,7 @@ const Dashboard = () => {
                         <ZoomHandler extent={nutFilter === REGION_KEYS[0] ? DEFAULT_REGION : nutFilter} />
                         <TileLayer url={isDarkMode ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"} attribution='&copy; CARTO' />
                         {activeGeoData?.features && (
-                            <GeoJSON key={`${viewLevel}-${nutFilter}-${selectedMetricId}-${isDarkMode}-${selectedFeature?.dtmnfr || selectedFeature?.municipio}`} data={activeGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
+                            <GeoJSON key={`${viewLevel}-${nutFilter}-${selectedMetricId}-${isDarkMode}-${selectedFeature?.id}`} data={activeGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
                         )}
                         {viewLevel !== 'municipality' && dataState.limits && (
                             <GeoJSON data={dataState.limits as any} style={{ fillOpacity: 0, weight: 4, color: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)' }} interactive={false} />
@@ -368,74 +401,71 @@ const Dashboard = () => {
                         {selectedFeature ? (
                             <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-7 border shadow-sm`}>
                                 <div className="mb-6">
-                                    <span className={`text-[9px] font-black ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'} uppercase tracking-[0.2em]`}>{selectedFeature.municipio}</span>
-                                    <h3 className="font-bold text-xl leading-tight mt-1.5 tracking-tight">{selectedFeature.freguesia || selectedFeature.municipio}</h3>
+                                    <span className={`text-[9px] font-black ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'} uppercase tracking-[0.2em]`}>{selectedFeature.group_id || 'LMA'}</span>
+                                    <h3 className="font-bold text-xl leading-tight mt-1.5 tracking-tight">{selectedFeature.name || selectedFeature.id}</h3>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4 mb-6">
-                                    <DetailCard label="Poverty Index" value={(selectedFeature.mobility_poverty_index || 0).toFixed(1)} color="text-red-400" isDark={isDarkMode} />
-                                    <DetailCard label="Density" value={`${(selectedFeature.pop_density || 0).toFixed(0)}/k²`} isDark={isDarkMode} />
-                                    <DetailCard label="Avg Income" value={selectedFeature.income ? `€${selectedFeature.income.toLocaleString()}` : 'Mun Level'} isDark={isDarkMode} />
-                                    <DetailCard label="Gini" value={selectedFeature.gini ? `${selectedFeature.gini.toFixed(1)}%` : 'Mun Level'} isDark={isDarkMode} />
+                                    <DetailCard label="Poverty Index" value={(selectedFeature.IMPT_score_pca_avg || 0).toFixed(1)} color="text-red-400" isDark={isDarkMode} />
+                                    <DetailCard label="Residents" value={(selectedFeature.census_residents || 0).toLocaleString()} isDark={isDarkMode} />
                                 </div>
-
-                                {/* Modal Share Breakdown */}
-                                <div className="mb-6 pt-6 border-t border-neutral-800/50">
-                                    <h4 className="text-[10px] font-black opacity-30 uppercase mb-4 tracking-widest">Mobility Profile (Modal Share)</h4>
-                                    <div className="h-16 flex items-center">
-                                        <ResponsiveContainer width="100%" height="100%">
-                                            <BarChart data={[{
-                                                name: 'Share',
-                                                car: (selectedFeature.share_car || 0) * 100,
-                                                pt: (selectedFeature.share_pt || 0) * 100,
-                                                walk: (selectedFeature.share_walk || 0) * 100,
-                                                bike: (selectedFeature.share_bike || 0) * 100
-                                            }]} layout="vertical">
-                                                <XAxis type="number" hide domain={[0, 100]} />
-                                                <YAxis dataKey="name" type="category" hide />
-                                                <RechartsTooltip cursor={false} content={({ payload }) => {
-                                                    if (payload && payload.length) {
-                                                        return (
-                                                            <div className={`${isDarkMode ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-100'} p-3 rounded-xl border shadow-xl flex flex-col gap-1`}>
-                                                                {payload.map((p: any) => (
-                                                                    <div key={p.name} className="flex justify-between gap-4 text-[10px] items-center">
-                                                                        <div className="flex items-center gap-1.5">
-                                                                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
-                                                                            <span className="font-bold opacity-60 uppercase">{p.name}</span>
+                                {/* Modal Share Breakdown - Currently disabled as data format changed to be agnostic */}
+                                {selectedFeature.share_car !== undefined && (
+                                    <div className="mb-6 pt-6 border-t border-neutral-800/50">
+                                        <h4 className="text-[10px] font-black opacity-30 uppercase mb-4 tracking-widest">Mobility Profile (Modal Share)</h4>
+                                        <div className="h-16 flex items-center">
+                                            <ResponsiveContainer width="100%" height="100%">
+                                                <BarChart data={[{
+                                                    name: 'Share',
+                                                    car: (selectedFeature.share_car || 0) * 100,
+                                                    pt: (selectedFeature.share_pt || 0) * 100,
+                                                    walk: (selectedFeature.share_walk || 0) * 100,
+                                                    bike: (selectedFeature.share_bike || 0) * 100
+                                                }]} layout="vertical">
+                                                    <XAxis type="number" hide domain={[0, 100]} />
+                                                    <YAxis dataKey="name" type="category" hide />
+                                                    <RechartsTooltip cursor={false} content={({ payload }) => {
+                                                        if (payload && payload.length) {
+                                                            return (
+                                                                <div className={`${isDarkMode ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-100'} p-3 rounded-xl border shadow-xl flex flex-col gap-1`}>
+                                                                    {payload.map((p: any) => (
+                                                                        <div key={p.name} className="flex justify-between gap-4 text-[10px] items-center">
+                                                                            <div className="flex items-center gap-1.5">
+                                                                                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
+                                                                                <span className="font-bold opacity-60 uppercase">{p.name}</span>
+                                                                            </div>
+                                                                            <span className="font-black text-indigo-500">{p.value.toFixed(1)}%</span>
                                                                         </div>
-                                                                        <span className="font-black text-indigo-500">{p.value.toFixed(1)}%</span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        );
-                                                    }
-                                                    return null;
-                                                }} />
-                                                <Bar dataKey="car" stackId="a" fill="#ef4444" radius={[4, 0, 0, 4]}>
-                                                    <LabelList dataKey="car" position="insideLeft" formatter={(v: number) => v > 15 ? `${v.toFixed(0)}%` : ''} style={{ fontSize: '9px', fill: 'white', fontWeight: 'bold' }} />
-                                                </Bar>
-                                                <Bar dataKey="pt" stackId="a" fill="#6366f1" />
-                                                <Bar dataKey="walk" stackId="a" fill="#10b981" />
-                                                <Bar dataKey="bike" stackId="a" fill="#eab308" radius={[0, 4, 4, 0]} />
-                                            </BarChart>
-                                        </ResponsiveContainer>
+                                                                    ))}
+                                                                </div>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    }} />
+                                                    <Bar dataKey="car" stackId="a" fill="#ef4444" radius={[4, 0, 0, 4]}>
+                                                        <LabelList dataKey="car" position="insideLeft" formatter={(v: number) => v > 15 ? `${v.toFixed(0)}%` : ''} style={{ fontSize: '9px', fill: 'white', fontWeight: 'bold' }} />
+                                                    </Bar>
+                                                    <Bar dataKey="pt" stackId="a" fill="#6366f1" />
+                                                    <Bar dataKey="walk" stackId="a" fill="#10b981" />
+                                                    <Bar dataKey="bike" stackId="a" fill="#eab308" radius={[0, 4, 4, 0]} />
+                                                </BarChart>
+                                            </ResponsiveContainer>
+                                        </div>
+                                        <div className="flex justify-between mt-2 px-1">
+                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /><span className="text-[8px] font-black opacity-40 uppercase">Car</span></div>
+                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /><span className="text-[8px] font-black opacity-40 uppercase">PT</span></div>
+                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /><span className="text-[8px] font-black opacity-40 uppercase">Walk</span></div>
+                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500" /><span className="text-[8px] font-black opacity-40 uppercase">Bike</span></div>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between mt-2 px-1">
-                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /><span className="text-[8px] font-black opacity-40 uppercase">Car</span></div>
-                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /><span className="text-[8px] font-black opacity-40 uppercase">PT</span></div>
-                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /><span className="text-[8px] font-black opacity-40 uppercase">Walk</span></div>
-                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500" /><span className="text-[8px] font-black opacity-40 uppercase">Bike</span></div>
-                                    </div>
-                                </div>
-
-
-                                {viewLevel === 'municipality' && municipalityFreguesias.length > 0 && (
+                                )}
+                                {viewLevel === 'municipality' && subLevelData.length > 0 && (
                                     <div className="mt-8 pt-6 border-t border-neutral-800/50">
                                         <h4 className="text-[10px] font-black opacity-30 uppercase mb-4 tracking-widest">Constituent Dynamics</h4>
                                         <div className="space-y-3 max-h-40 overflow-y-auto pr-2 scrollbar-thin">
-                                            {municipalityFreguesias.slice(0, 10).map(f => (
-                                                <div key={f.dtmnfr || f.freguesia} className="flex justify-between items-center text-[10px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-default">
-                                                    <span className="opacity-50 truncate w-36">{f.freguesia}</span>
+                                            {subLevelData.slice(0, 10).map(f => (
+                                                <div key={f.id || f.name} className="flex justify-between items-center text-[10px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-default">
+                                                    <span className="opacity-50 truncate w-36">{f.name}</span>
                                                     <span className="font-bold text-indigo-400">{selectedMetric.format(f[selectedMetric.id] || 0)}</span>
                                                 </div>
                                             ))}
@@ -458,13 +488,13 @@ const Dashboard = () => {
                         </h3>
                         <div className="space-y-8">
                             <div>
-                                <p className="text-[10px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Critical Concentration</p>
+                                <p className="text-[10px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Top performers</p>
                                 <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
                                     <MiniBarChart data={chartData.top10} metric={selectedMetric} isDark={isDarkMode} type="highest" />
                                 </div>
                             </div>
                             <div>
-                                <p className="text-[10px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Positive Concentration</p>
+                                <p className="text-[10px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Low performers</p>
                                 <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
                                     <MiniBarChart data={chartData.worst10} metric={selectedMetric} isDark={isDarkMode} type="lowest" />
                                 </div>
@@ -524,21 +554,21 @@ const Dashboard = () => {
                                     title="Freguesias"
                                     id="freg_2024"
                                     isDark={isDarkMode}
-                                    data={dataState.freguesias}
+                                    data={dataState.geo['freguesia']}
                                     filename="impt_lisbon_freguesias"
                                 />
                                 <DownloadCard
                                     title="Municipality"
                                     id="mun_2024"
                                     isDark={isDarkMode}
-                                    data={dataState.municipios}
+                                    data={dataState.geo['municipality']}
                                     filename="impt_lisbon_municipalities"
                                 />
                                 <DownloadCard
                                     title="Grid (Hex)"
                                     id="grid_h3_r8"
                                     isDark={isDarkMode}
-                                    data={dataState.hex}
+                                    data={dataState.geo['hex']}
                                     filename="impt_lisbon_grid"
                                 />
                             </div>
@@ -611,32 +641,39 @@ const DetailCard = ({ label, value, color = "", isDark = true }: { label: string
     </div>
 );
 
-const MiniBarChart = ({ data, metric, isDark, type }: { data: any[], metric: MetricDef, isDark: boolean, type: 'highest' | 'lowest' }) => (
-    <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} layout="vertical" margin={{ left: -35, right: 35, top: 0, bottom: 0 }}>
-            <XAxis type="number" hide />
-            <YAxis dataKey="name" type="category" hide />
-            <RechartsTooltip cursor={{ fill: 'rgba(99, 102, 241, 0.05)' }} content={({ active, payload }) => {
-                if (active && payload && payload.length) {
-                    const d = payload[0].payload;
-                    return (
-                        <div className={`${isDark ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200 shadow-2xl'} border p-4 rounded-2xl backdrop-blur-2xl`}>
-                            <p className="text-[9px] font-black opacity-40 uppercase mb-1.5 tracking-widest">{d.municipio || 'LISBON AREA'}</p>
-                            <p className={`text-[11px] font-black ${isDark ? 'text-white' : 'text-neutral-900'} leading-tight mb-2 tracking-tight`}>{d.name}</p>
-                            <p className={`text-sm font-black ${type === 'highest' ? 'text-red-400' : 'text-emerald-400'}`}>{metric.format(d.value)}</p>
-                        </div>
-                    );
-                }
-                return null;
-            }} />
-            <Bar dataKey="value" radius={[0, 6, 6, 0]} barSize={10}>
-                {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={type === 'highest' ? '#ef4444' : '#10b981'} opacity={1 - index * 0.06} />
-                ))}
-                <LabelList dataKey="name" position="right" style={{ fontSize: '7px', fill: '#666', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '0.05em' }} formatter={(v: string) => v.length > 18 ? v.substring(0, 16) + '..' : v} offset={10} />
-            </Bar>
-        </BarChart>
-    </ResponsiveContainer>
-);
+const MiniBarChart = ({ data, metric, isDark, type }: { data: any[], metric: MetricDef, isDark: boolean, type: 'highest' | 'lowest' }) => {
+    // Logic: 
+    // If higherTheBetter is true: highest is good (blue), lowest is critical (red)
+    // If higherTheBetter is false: highest is bad (red), lowest is good (blue)
+    const isGood = (type === 'highest' && metric.higherTheBetter) || (type === 'lowest' && !metric.higherTheBetter);
+    const chartColor = isGood ? '#6366f1' : '#ef4444';
+
+    return (
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={data} layout="vertical" margin={{ left: -35, right: 35, top: 0, bottom: 0 }}>
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" hide />
+                <RechartsTooltip cursor={{ fill: 'rgba(99, 102, 241, 0.05)' }} content={({ active, payload }) => {
+                    if (active && payload && payload.length) {
+                        const d = payload[0].payload;
+                        return (
+                            <div className={`${isDark ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-100'} p-3 rounded-xl border shadow-xl flex flex-col gap-1 z-[100]`}>
+                                <div className="text-[10px] font-black opacity-30 uppercase tracking-widest">{d.group || 'District'}</div>
+                                <div className="text-[11px] font-black">{d.name}</div>
+                                <div className="text-[11px] font-black text-indigo-500 mt-1">{metric.format(d.value)} {metric.unit || ''}</div>
+                            </div>
+                        );
+                    }
+                    return null;
+                }} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12}>
+                    {data.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={chartColor} fillOpacity={1 - (index * 0.08)} />
+                    ))}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+};
 
 export default Dashboard;
