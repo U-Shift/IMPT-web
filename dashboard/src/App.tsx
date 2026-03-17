@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, Pane } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LabelList } from 'recharts';
@@ -476,9 +476,11 @@ const Dashboard = () => {
                         {computedGeoData?.features && (
                             <GeoJSON key={`${viewLevel}-${nutFilter}-${selectedMetricId}-${selectedModeId}-${isDarkMode}-${selectedFeature?.id}-${JSON.stringify(weights)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
                         )}
-                        {viewLevel !== 'municipality' && dataState.limits && (
-                            <GeoJSON data={dataState.limits as any} style={{ fillOpacity: 0, weight: 4, color: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)' }} interactive={false} />
-                        )}
+                        <Pane name="limits-pane" style={{ zIndex: 650 }}>
+                            {viewLevel !== 'municipality' && dataState.limits && (
+                                <GeoJSON data={dataState.limits as any} style={{ fillOpacity: 0, weight: 4, color: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)' }} interactive={false} />
+                            )}
+                        </Pane>
                     </MapContainer>
                 </div>
             </div>
