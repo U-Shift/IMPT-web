@@ -150,24 +150,19 @@ const Dashboard = () => {
             const dynamicId = `${dynamicMetricConfig.id}${selectedMode.suffix}`;
 
             features = features.map((f: any) => {
-                let weightedSum = 0;
-                let totalWeight = 0;
-
+                let computedIndex = 0;
+                
                 Object.entries(weights).forEach(([metricId, weight]) => {
                     const effectiveMetricId = `${metricId}${selectedMode.suffix}`;
-                    const val = f.properties[effectiveMetricId] ?? f.properties[metricId] ?? 0;
-                    weightedSum += val * weight;
-                    totalWeight += weight;
+                    const val = f.properties[effectiveMetricId] ?? 0;
+                    computedIndex += val * weight;
                 });
-
-                const computedIndex = totalWeight > 0 ? weightedSum / totalWeight : 0;
-
+                
                 return {
                     ...f,
                     properties: {
                         ...f.properties,
-                        [dynamicId]: computedIndex,
-                        [dynamicMetricConfig.id]: computedIndex // Fallback without suffix
+                        [dynamicId]: computedIndex
                     }
                 };
             });
