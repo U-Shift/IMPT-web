@@ -40,8 +40,8 @@ export const DownloadCard = ({ title, id, isDark, data, filename }: { title: str
                 <p className="text-[9px] font-bold opacity-30 mt-1 uppercase tracking-tighter">ID: {id}</p>
             </div>
             <div className="flex flex-col gap-2 w-full">
-                <button onClick={downloadGeoJSON} className="w-full py-2.5 rounded-xl bg-sky-900 hover:bg-sky-800 text-white text-[10px] font-black uppercase tracking-widest transition-all">GeoJSON</button>
-                <button onClick={downloadCSV} className="w-full py-2.5 rounded-xl border border-emerald-600/30 text-emerald-500 hover:bg-emerald-600 hover:text-white text-[10px] font-black uppercase tracking-widest transition-all">CSV</button>
+                <button onClick={downloadGeoJSON} className="w-full py-2.5 rounded-xl bg-sky-900 hover:bg-sky-800 text-white text-[12px] font-black uppercase tracking-widest transition-all">GeoJSON</button>
+                <button onClick={downloadCSV} className="w-full py-2.5 rounded-xl border border-emerald-600/30 text-emerald-500 hover:bg-emerald-600 hover:text-white text-[12px] font-black uppercase tracking-widest transition-all">CSV</button>
             </div>
         </div>
     );

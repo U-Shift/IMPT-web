@@ -24,8 +24,8 @@ export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: a
                                 onClick={() => d?.id && onSelect?.(d.id)}
                             >
                                 <div className="text-[10px] font-black opacity-30 uppercase tracking-widest">{d.group || 'District'}</div>
-                                <div className="text-[11px] font-black">{d.name}</div>
-                                <div className="text-[11px] font-black text-sky-800 mt-1">{metric.format(d.value)} {metric.unit || ''}</div>
+                                <div className="text-[13px] font-black">{d.name}</div>
+                                <div className="text-[13px] font-black text-sky-800 mt-1">{metric.format(d.value)} {metric.unit || ''}</div>
                             </div>
                         );
                     }

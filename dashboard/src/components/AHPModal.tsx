@@ -155,8 +155,8 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                 <div className={`flex items-center justify-between p-6 border-b ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
                     <div className="flex items-center gap-4">
                         <div>
-                            <h2 className="text-xl font-black uppercase tracking-widest">Dimension Survey</h2>
-                            <p className={`text-xs mt-1 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                            <h2 className="text-2xl font-black uppercase tracking-widest">Dimension Survey</h2>
+                            <p className={`text-base mt-1 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
                                 Analytic Hierarchy Process (AHP)
                             </p>
                         </div>
@@ -168,7 +168,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                             >
                                 <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition-transform ${forceConsistency ? 'translate-x-5' : ''}`} />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 group-hover:text-sky-800 transition-colors">Force Consistency</span>
+                            <span className="text-[12px] font-bold uppercase tracking-wider text-neutral-500 group-hover:text-sky-800 transition-colors">Force Consistency</span>
                         </label>
                     </div>
                     <button onClick={onClose} className={`p-2 rounded-full transition-colors ${isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-100'}`}>
@@ -181,7 +181,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                     {!isComplete ? (
                         <div className="space-y-12">
                             <div className="text-center space-y-2">
-                                <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-sky-700' : 'text-sky-900'}`}>
+                                <p className={`text-[12px] font-black uppercase tracking-widest ${isDarkMode ? 'text-sky-700' : 'text-sky-900'}`}>
                                     Comparison {currentStep + 1} of {pairs.length}
                                 </p>
                                 <h3 className="text-lg font-medium">Which dimension is more important to you?</h3>
@@ -189,12 +189,12 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
 
                             <div className="flex items-center justify-between gap-6">
                                 <div className={`flex-1 text-right p-4 rounded-xl border-2 transition-colors ${selections[currentStep] < 0 ? 'border-sky-800 bg-sky-800/10 text-sky-800' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
-                                    <p className="font-bold text-sm uppercase tracking-wider">{metrics[pairs[currentStep][0]].label}</p>
-                                    <p className="text-[10px] opacity-60 mt-1">{metrics[pairs[currentStep][0]].description}</p>
+                                    <p className="font-bold text-base uppercase tracking-wider">{metrics[pairs[currentStep][0]].label}</p>
+                                    <p className="text-[12px] opacity-60 mt-1">{metrics[pairs[currentStep][0]].description}</p>
                                 </div>
                                 <div className={`flex-1 text-left p-4 rounded-xl border-2 transition-colors ${selections[currentStep] > 0 ? 'border-sky-800 bg-sky-800/10 text-sky-800' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
-                                    <p className="font-bold text-sm uppercase tracking-wider">{metrics[pairs[currentStep][1]].label}</p>
-                                    <p className="text-[10px] opacity-60 mt-1">{metrics[pairs[currentStep][1]].description}</p>
+                                    <p className="font-bold text-base uppercase tracking-wider">{metrics[pairs[currentStep][1]].label}</p>
+                                    <p className="text-[12px] opacity-60 mt-1">{metrics[pairs[currentStep][1]].description}</p>
                                 </div>
                             </div>
 
@@ -207,7 +207,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-sky-800 outline-none ${isDarkMode ? 'bg-neutral-800' : 'bg-neutral-200'}`}
                                 />
                                 <div className="text-center h-6">
-                                    <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${selections[currentStep] !== 0 ? 'bg-sky-800 text-white' : (isDarkMode ? 'bg-neutral-800 text-neutral-400' : 'bg-neutral-100 text-neutral-500')}`}>
+                                    <span className={`inline-block px-3 py-1 rounded-full text-[12px] font-bold uppercase tracking-widest ${selections[currentStep] !== 0 ? 'bg-sky-800 text-white' : (isDarkMode ? 'bg-neutral-800 text-neutral-400' : 'bg-neutral-100 text-neutral-500')}`}>
                                         {getIntensityLabel(selections[currentStep])}
                                     </span>
                                 </div>
@@ -220,7 +220,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     <Check className="w-8 h-8" />
                                 </div>
                                 <h3 className="text-2xl font-black uppercase tracking-widest">Survey Complete</h3>
-                                <p className={`text-sm ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>Here are your calculated dimension weights.</p>
+                                <p className={`text-base ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>Here are your calculated dimension weights.</p>
                             </div>
 
                             <div className="space-y-4">
@@ -229,7 +229,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     const pct = (w * 100).toFixed(1);
                                     return (
                                         <div key={m.id} className="relative">
-                                            <div className="flex justify-between text-[10px] font-bold uppercase tracking-wider mb-1">
+                                            <div className="flex justify-between text-[12px] font-bold uppercase tracking-wider mb-1">
                                                 <span>{m.label}</span>
                                                 <span>{pct}%</span>
                                             </div>
@@ -245,7 +245,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                 <div className={`flex flex-col gap-4 p-4 rounded-xl ${forceConsistency ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 'bg-amber-500/10 text-amber-500'}`}>
                                     <div className="flex items-start gap-3">
                                         <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
-                                        <div className="text-xs">
+                                        <div className="text-base">
                                             <p className="font-bold uppercase tracking-wider mb-1">
                                                 {forceConsistency ? 'Mathematical Inconsistency Detected' : 'Inconsistent Answers'} (CR: {(results.CR).toFixed(2)})
                                             </p>
@@ -258,9 +258,9 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     </div>
 
                                     <div className={`p-3 rounded-lg ${isDarkMode ? 'bg-neutral-800/50' : 'bg-white/50'} space-y-2`}>
-                                        <p className="text-[10px] font-black uppercase tracking-widest opacity-60">Most inconsistent comparisons:</p>
+                                        <p className="text-[12px] font-black uppercase tracking-widest opacity-60">Most inconsistent comparisons:</p>
                                         {results.inconsistentPairs.map((item, idx) => (
-                                            <div key={idx} className="flex items-center justify-between text-[10px] group">
+                                            <div key={idx} className="flex items-center justify-between text-[12px] group">
                                                 <span className="font-bold">
                                                     {metrics[item.pair[0]].label} vs {metrics[item.pair[1]].label}
                                                 </span>
@@ -286,14 +286,14 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                             <button
                                 onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
                                 disabled={currentStep === 0}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${currentStep === 0 ? 'opacity-30 cursor-not-allowed' : (isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200')}`}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-[12px] font-bold uppercase tracking-widest transition-all ${currentStep === 0 ? 'opacity-30 cursor-not-allowed' : (isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200')}`}
                             >
                                 <ChevronLeft className="w-4 h-4" /> Previous
                             </button>
 
                             <button
                                 onClick={() => setCurrentStep(currentStep + 1)}
-                                className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
+                                className="flex items-center gap-2 px-6 py-2 rounded-xl text-[12px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
                             >
                                 {currentStep === pairs.length - 1 ? 'Calculate' : 'Next'} <ChevronRight className="w-4 h-4" />
                             </button>
@@ -302,14 +302,14 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                         <>
                             <button
                                 onClick={() => { setCurrentStep(0); }}
-                                className={`px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest transition-all ${isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'}`}
+                                className={`px-4 py-2 rounded-xl text-[12px] font-bold uppercase tracking-widest transition-all ${isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'}`}
                             >
                                 {results && results.CR > 0.1 && forceConsistency ? 'Review Comparisons' : 'Retake Survey'}
                             </button>
                             {(!forceConsistency || (results && results.CR <= 0.1)) && (
                                 <button
                                     onClick={handleApply}
-                                    className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
+                                    className="flex items-center gap-2 px-6 py-2 rounded-xl text-[12px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
                                 >
                                     Apply Weights
                                 </button>
