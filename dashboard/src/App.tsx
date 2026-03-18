@@ -355,13 +355,13 @@ const Dashboard = () => {
 
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex gap-1">
-                            <button onClick={() => setIsDarkMode(!isDarkMode)} title="Toggle Theme" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                            <button onClick={() => setIsDarkMode(!isDarkMode)} data-tooltip="Toggle Theme" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                 {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                             </button>
-                            <button onClick={() => setShowDownload(true)} title="Download Data" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                            <button onClick={() => setShowDownload(true)} data-tooltip="Download Data" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                 <Download className="w-5 h-5" />
                             </button>
-                            <button onClick={() => setShowAbout(true)} title="About" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                            <button onClick={() => setShowAbout(true)} data-tooltip="About" className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                 <Info className="w-5 h-5" />
                             </button>
                         </div>
