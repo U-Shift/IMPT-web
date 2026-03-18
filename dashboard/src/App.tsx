@@ -338,7 +338,7 @@ const Dashboard = () => {
     if (dataState.loading) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-4`}>
             <Loader2 className="w-12 h-12 text-sky-800 animate-spin" />
-            <p className={`font-black uppercase tracking-[0.2em] text-[12px] ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>Loading IMPT data...</p>
+            <p className={`font-black uppercase tracking-[0.2em] text-[12px] ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>Loading dashboard...</p>
         </div>
     );
 
