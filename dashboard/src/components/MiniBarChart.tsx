@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 import { MetricDef } from '../types';
 
-export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
+export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
 
     // Enhance data with a max value for the "ghost" bar that holds labels
     const maxValue = useMemo(() => Math.max(...data.map(d => d.value), 0), [data]);

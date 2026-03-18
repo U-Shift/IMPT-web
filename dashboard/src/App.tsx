@@ -301,19 +301,23 @@ const Dashboard = () => {
     const chartData = useMemo(() => {
         if (!computedGeoData?.features) return { top10: [], worst10: [] };
         const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+        const parentLevel = LEVEL_CONFIG[viewLevel].parent;
         const feats = computedGeoData.features.map((f: any) => {
             const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
+            const groupName = (parentLevel && f.properties?.group_id)
+                ? (dataState.parentLookup[`${parentLevel}-${f.properties.group_id}`] || f.properties.group_id)
+                : 'LMA';
             return {
                 id: f.properties?.id,
                 name: String(f.properties?.name || f.properties?.id || 'Unknown'),
-                group: f.properties?.group_id || '',
+                group: groupName,
                 value: val,
                 color: getColor(val, currentDomain, selectedMetric)
             };
         });
         const sorted = [...feats].sort((a, b) => b.value - a.value);
         return { top10: sorted.slice(0, 10), worst10: [...sorted].reverse().slice(0, 10).reverse() };
-    }, [computedGeoData, selectedMetric, selectedMode, currentDomain, getColor]);
+    }, [computedGeoData, selectedMetric, selectedMode, currentDomain, getColor, viewLevel, dataState.parentLookup]);
 
     const resetWeights = () => {
         setWeights(defaultWeights);
