@@ -268,7 +268,7 @@ const Dashboard = () => {
             <div style="font-family: sans-serif; padding: 4px;">
                 <div style="font-size: 10px; font-weight: 900; color: #666; text-transform: uppercase;">${parentName}</div>
                 <div style="font-size: 12px; font-weight: 700; color: #111;">${props.name || 'N/A'}</div>
-                <div style="font-size: 11px; font-weight: 900; color: #075985; margin-top: 4px;">${selectedMetric.label}: ${formattedVal} ${selectedMetric.unit || ''}</div>
+                <div style="font-size: 11px; font-weight: 900; color: ${getColor(val || 0, currentDomain, selectedMetric)}; margin-top: 4px;">${selectedMetric.label}: ${formattedVal} ${selectedMetric.unit || ''}</div>
             </div>
         `, { sticky: true, opacity: 0.95 });
 
@@ -301,15 +301,19 @@ const Dashboard = () => {
     const chartData = useMemo(() => {
         if (!computedGeoData?.features) return { top10: [], worst10: [] };
         const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
-        const feats = computedGeoData.features.map((f: any) => ({
-            id: f.properties?.id,
-            name: String(f.properties?.name || f.properties?.id || 'Unknown'),
-            group: f.properties?.group_id || '',
-            value: (f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0)
-        }));
+        const feats = computedGeoData.features.map((f: any) => {
+            const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
+            return {
+                id: f.properties?.id,
+                name: String(f.properties?.name || f.properties?.id || 'Unknown'),
+                group: f.properties?.group_id || '',
+                value: val,
+                color: getColor(val, currentDomain, selectedMetric)
+            };
+        });
         const sorted = [...feats].sort((a, b) => b.value - a.value);
         return { top10: sorted.slice(0, 10), worst10: [...sorted].reverse().slice(0, 10).reverse() };
-    }, [computedGeoData, selectedMetric, selectedMode]);
+    }, [computedGeoData, selectedMetric, selectedMode, currentDomain, getColor]);
 
     const resetWeights = () => {
         setWeights(defaultWeights);

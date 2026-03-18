@@ -3,8 +3,6 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveCont
 import { MetricDef } from '../types';
 
 export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
-    const isGood = (type === 'highest' && metric.higherTheBetter) || (type === 'lowest' && !metric.higherTheBetter);
-    const chartColor = isGood ? '#10b981' : '#ef4444';
 
     // Enhance data with a max value for the "ghost" bar that holds labels
     const maxValue = useMemo(() => Math.max(...data.map(d => d.value), 0), [data]);
@@ -25,7 +23,7 @@ export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: a
                             >
                                 <div className="text-[10px] font-black opacity-30 uppercase tracking-widest">{d.group || 'District'}</div>
                                 <div className="text-[13px] font-black">{d.name}</div>
-                                <div className="text-[13px] font-black text-sky-800 mt-1">{metric.format(d.value)} {metric.unit || ''}</div>
+                                <div className="text-[13px] font-black mt-1" style={{ color: d.color }}>{metric.format(d.value)} {metric.unit || ''}</div>
                             </div>
                         );
                     }
@@ -44,8 +42,8 @@ export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: a
                     />
                 </Bar>
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12} onClick={(d) => d?.id && onSelect?.(d.id)} style={{ cursor: 'pointer' }}>
-                    {data.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={chartColor} fillOpacity={1 - (index * 0.08)} />
+                    {chartData.map((d, index) => (
+                        <Cell key={`cell-${index}`} fill={d.color} />
                     ))}
                 </Bar>
             </BarChart>
