@@ -1,4 +1,4 @@
-export const DownloadCard = ({ title, id, isDark, data, filename }: { title: string, id: string, isDark: boolean, data: any, filename: string }) => {
+export const DownloadCard = ({ title, id, group_id, region_id, isDark, data, filename }: { title: string, id?: string, group_id?: string, region_id?: string, isDark: boolean, data: any, filename: string }) => {
     const downloadCSV = () => {
         if (!data || !data.features) return;
         const properties = data.features.map((f: any) => f.properties);
@@ -37,11 +37,13 @@ export const DownloadCard = ({ title, id, isDark, data, filename }: { title: str
         <div className={`${isDark ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-white border-neutral-200 shadow-sm'} p-6 rounded-[32px] border flex flex-col items-center gap-4`}>
             <div className="text-center">
                 <h3 className="text-sm font-black tracking-tight">{title}</h3>
-                <p className="text-[9px] font-bold opacity-30 mt-1 uppercase tracking-tighter">ID: {id}</p>
+                {id && <p className="text-[9px] font-bold opacity-30 mt-1 tracking-tight">id: {id}</p>}
+                {group_id && <p className="text-[9px] font-bold opacity-30 mt-1 tracking-tight">group_id: {group_id}</p>}
+                {region_id && <p className="text-[9px] font-bold opacity-30 mt-1 tracking-tight">region_id: {region_id}</p>}
             </div>
             <div className="flex flex-col gap-2 w-full">
-                <button onClick={downloadGeoJSON} className="w-full py-2.5 rounded-xl bg-sky-900 hover:bg-sky-800 text-white text-[12px] font-black uppercase tracking-widest transition-all">GeoJSON</button>
-                <button onClick={downloadCSV} className="w-full py-2.5 rounded-xl border border-emerald-600/30 text-emerald-500 hover:bg-emerald-600 hover:text-white text-[12px] font-black uppercase tracking-widest transition-all">CSV</button>
+                <button onClick={downloadGeoJSON} className="w-full py-2.5 rounded-xl bg-sky-900 hover:bg-sky-800 text-white text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer">GeoJSON</button>
+                <button onClick={downloadCSV} className="w-full py-2.5 rounded-xl border border-sky-900/30 text-sky-900 hover:bg-sky-800 hover:text-white text-[12px] font-black uppercase tracking-widest transition-all cursor-pointer">CSV</button>
             </div>
         </div>
     );

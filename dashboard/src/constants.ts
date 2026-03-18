@@ -89,7 +89,7 @@ export const COLORS = {
 };
 
 export const REGIONS = {
-    'metropolis': { name: "Metropolis", center: [38.74, -9.14], zoom: 11 },
+    'metropolis': { name: "Metro Area", center: [38.74, -9.14], zoom: 11 },
     'PT1B': { name: "Grande Lisboa", center: [38.85, -9.15], zoom: 11 },
     'PT1A': { name: "Península de Setúbal", center: [38.55, -9.05], zoom: 11 }
 } as const;

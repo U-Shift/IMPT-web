@@ -310,10 +310,10 @@ const Dashboard = () => {
             <div className={`w-[340px] flex flex-col ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'} border-r shadow-xl z-30 transition-all`}>
                 <div className={`p-7 border-b ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
                     <div className="flex items-center gap-4 mb-6">
-                        <img src="images/logo/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
+                        <img src="images/logo/icon.png" alt="Logo" className="w-12 h-12 object-contain" />
                         <div className="flex flex-col">
-                            <h1 className="text-base font-black tracking-tighter uppercase leading-none">Mobility <span className="text-sky-800">Poverty</span></h1>
-                            <p className="text-[12px] font-bold uppercase tracking-widest opacity-40 mt-1">Lisbon Metropolis</p>
+                            <h1 className="text-base font-black tracking-tighter uppercase leading-none">Mobility <span className="text-sky-800">Poverty</span> Index</h1>
+                            <p className="text-[12px] font-bold uppercase tracking-widest opacity-40 mt-1">Lisbon Metro Area</p>
                         </div>
                     </div>
 
@@ -406,7 +406,7 @@ const Dashboard = () => {
 
                             <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-sky-800/5 border-sky-800/10' : 'bg-sky-50 border-sky-100'}`}>
                                 <p className={`text-[12px] leading-relaxed mb-4 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                                    <strong className="text-sky-800 uppercase tracking-wider">AHP Methodology</strong><br/>
+                                    <strong className="text-sky-800 uppercase tracking-wider">AHP Methodology</strong><br />
                                     Defining weights manually can be subjective and inconsistent. The <strong>Analytic Hierarchy Process</strong> uses pairwise comparisons to mathematically derive optimal weights while measuring your decision consistency.
                                 </p>
                                 <button
@@ -677,15 +677,20 @@ const Dashboard = () => {
                     <div className={`${isDarkMode ? 'bg-neutral-900 border-neutral-800 shadow-[0_0_50px_rgba(0,0,0,1)]' : 'bg-white border-neutral-200 shadow-2xl'} border rounded-[48px] max-w-2xl w-full p-14 relative transition-all animate-in zoom-in-95 duration-300`} onClick={e => e.stopPropagation()}>
                         <button onClick={() => setShowAbout(false)} className="absolute top-10 right-10 p-3 hover:bg-neutral-200 rounded-full transition-colors flex items-center justify-center"><X className="w-6 h-6 opacity-40 text-neutral-500" /></button>
                         <div className="flex items-center gap-6 mb-12">
-                            <div className="w-16 h-16 bg-sky-900 rounded-[20px] flex items-center justify-center shadow-2xl shadow-sky-800/20"><Activity className="text-white w-9 h-9" /></div>
+                            <img src="images/logo/icon.png" alt="IMPT Logo" className="w-16 h-16" />
                             <div>
-                                <h2 className="text-3xl font-black leading-none tracking-tighter">Pannapp</h2>
-                                <p className="text-sky-800 font-black text-[12px] uppercase tracking-[0.4em] mt-3">Governance Strategic Intelligence</p>
+                                <h2 className="text-3xl font-black leading-none tracking-tighter">IMPT</h2>
+                                <p className="text-neutral-500 font-black text-[12px] uppercase tracking-[0.4em] mt-3">Index for Monitoring <span className="text-sky-800">Transport Poverty</span></p>
                             </div>
                         </div>
-                        <div className="space-y-8 text-base font-bold uppercase tracking-widest leading-relaxed opacity-60">
-                            <p className={`p-6 rounded-2xl ${isDarkMode ? 'bg-white/5' : 'bg-neutral-50'} italic border-l-4 border-sky-900 font-medium`}>"Decentralized Spatial Intelligence for Sustainable & Equitable Urban Governance Transitions."</p>
-                            <div className="grid grid-cols-2 gap-4 pt-4">
+                        <div className="space-y-8 text-base font-bold tracking-widest leading-relaxed opacity-60">
+                            <p className={`p-6 rounded-2xl ${isDarkMode ? 'bg-white/5' : 'bg-neutral-50'} border-l-4 border-sky-900 font-medium`}>
+                                Transport poverty refers to an individual or household inability to access essential services, opportunities, and social participation due to limited, inadequate, unaffordable, unreliable or non-existent means of transport (Mejía Dorantes and Murauskaite-Bull, 2022). However, due to the lack of a universal definition and its multidimensional nature the identification and measurement of transport poverty can be challenging.
+                                <br />
+                                <br />
+                                This project aims to tackle this challenge by developing a multidimensional index that enables its measurement and monitoring over time at both national and regional levels, with the aim of identifying priority areas for intervention and supporting a just mobility transition.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4 pt-4 uppercase">
                                 <a href="https://github.com/U-Shift/IMPT-data" target="_blank" className="flex items-center gap-4 p-5 rounded-2xl border border-neutral-800 hover:bg-sky-900 hover:text-white transition-all hover:border-sky-900 hover:scale-[1.02] active:scale-95">
                                     <Github className="w-5 h-5" /> <span>Source Code</span>
                                 </a>
@@ -693,61 +698,69 @@ const Dashboard = () => {
                                     <ExternalLink className="w-5 h-5" /> <span>U-Shift Lab</span>
                                 </a>
                             </div>
-                            <div className="pt-6 flex justify-between items-center opacity-40">
-                                <p className="text-[12px]">Project Framework: <strong>IMPT Project</strong></p>
-                                <p className="text-[12px]">IST - University of Lisbon</p>
+                            <div className="pt-6 flex flex-col justify-between items-center opacity-40 text-center">
+                                <p className="text-[12px]">Funded by: <strong>PLANAPP</strong></p>
+                                <p className="text-[12px]">&copy; U-Shift, CERIS, Instituto Superior Técnico, University of Lisbon</p>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+            )
+            }
 
             {/* Download Overlay */}
-            {showDownload && (
-                <div className="fixed inset-0 z-[5000] flex items-center justify-center bg-black/85 backdrop-blur-xl p-8" onClick={() => setShowDownload(false)}>
-                    <div className={`${isDarkMode ? 'bg-neutral-900 border-neutral-800 shadow-[0_0_50px_rgba(0,0,0,1)]' : 'bg-white border-neutral-200 shadow-2xl'} border rounded-[48px] max-w-2xl w-full p-14 relative transition-all animate-in zoom-in-95 duration-300`} onClick={e => e.stopPropagation()}>
-                        <button onClick={() => setShowDownload(false)} className="absolute top-10 right-10 p-3 hover:bg-neutral-200 rounded-full transition-colors flex items-center justify-center"><X className="w-6 h-6 opacity-40 text-neutral-500" /></button>
-                        <div className="flex items-center gap-6 mb-12">
-                            <div className="w-16 h-16 bg-emerald-600 rounded-[20px] flex items-center justify-center shadow-2xl shadow-emerald-500/20"><Download className="text-white w-9 h-9" /></div>
-                            <div>
-                                <h2 className="text-3xl font-black leading-none tracking-tighter">Data Center</h2>
-                                <p className="text-emerald-500 font-black text-[12px] uppercase tracking-[0.4em] mt-3">Metropolitan Insights Repository</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <DownloadCard
-                                    title="Freguesias"
-                                    id="freg_2024"
-                                    isDark={isDarkMode}
-                                    data={dataState.geo['freguesia']}
-                                    filename="impt_lisbon_freguesias"
-                                />
-                                <DownloadCard
-                                    title="Municipality"
-                                    id="mun_2024"
-                                    isDark={isDarkMode}
-                                    data={dataState.geo['municipality']}
-                                    filename="impt_lisbon_municipalities"
-                                />
-                                <DownloadCard
-                                    title="Grid (Hex)"
-                                    id="grid_h3_r8"
-                                    isDark={isDarkMode}
-                                    data={dataState.geo['hex']}
-                                    filename="impt_lisbon_grid"
-                                />
+            {
+                showDownload && (
+                    <div className="fixed inset-0 z-[5000] flex items-center justify-center bg-black/85 backdrop-blur-xl p-8" onClick={() => setShowDownload(false)}>
+                        <div className={`${isDarkMode ? 'bg-neutral-900 border-neutral-800 shadow-[0_0_50px_rgba(0,0,0,1)]' : 'bg-white border-neutral-200 shadow-2xl'} border rounded-[48px] max-w-2xl w-full p-14 relative transition-all animate-in zoom-in-95 duration-300`} onClick={e => e.stopPropagation()}>
+                            <button onClick={() => setShowDownload(false)} className="absolute top-10 right-10 p-3 hover:bg-neutral-200 rounded-full transition-colors flex items-center justify-center"><X className="w-6 h-6 opacity-40 text-neutral-500" /></button>
+                            <div className="flex items-center gap-6 mb-12">
+                                <div className="w-16 h-16 bg-sky-900 rounded-[20px] flex items-center justify-center shadow-2xl shadow-emerald-500/20"><Download className="text-white w-9 h-9" /></div>
+                                <div>
+                                    <h2 className="text-3xl font-black leading-none tracking-tighter">Download Data</h2>
+                                    <p className="text-neutral-500 font-black text-[12px] uppercase tracking-[0.4em] mt-3">Get the raw data for further analysis</p>
+                                </div>
                             </div>
 
-                            <div className={`p-6 rounded-3xl ${isDarkMode ? 'bg-white/5 border-neutral-800' : 'bg-neutral-50 border-neutral-100'} border mt-6`}>
-                                <h4 className="text-[12px] font-black opacity-40 uppercase tracking-widest mb-3">About the data</h4>
-                                <p className="text-[13px] leading-relaxed opacity-60 font-medium">All datasets are provided in <span className="font-bold text-sky-800">GeoJSON</span> for spatial analysis and <span className="font-bold text-emerald-500">CSV</span> for tabular processing. Coordinates use <span className="font-bold">WGS84 (EPSG:4326)</span>. The unique identifier (Dicom/HexID) should be used to relate the files.</p>
+                            <div className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-auto">
+                                    <DownloadCard
+                                        title="Freguesias"
+                                        id="DRMNFR (2024)"
+                                        group_id="DRMN (2024)"
+                                        region_id="NUTS 2"
+                                        isDark={isDarkMode}
+                                        data={dataState.geo['freguesia']}
+                                        filename="impt_lisbon_freguesias"
+                                    />
+                                    <DownloadCard
+                                        title="Municipality"
+                                        id="DRMN (2024)"
+                                        region_id="NUTS 2"
+                                        isDark={isDarkMode}
+                                        data={dataState.geo['municipality']}
+                                        filename="impt_lisbon_municipalities"
+                                    />
+                                    <DownloadCard
+                                        title="Grid (Hex)"
+                                        id="Sequential ID"
+                                        group_id="DRMNFR (2024)"
+                                        region_id="NUTS 2"
+                                        isDark={isDarkMode}
+                                        data={dataState.geo['hex']}
+                                        filename="impt_lisbon_grid"
+                                    />
+                                </div>
+
+                                <div className={`p-6 rounded-3xl ${isDarkMode ? 'bg-white/5 border-neutral-800' : 'bg-neutral-50 border-neutral-100'} border mt-6`}>
+                                    <h4 className="text-[12px] font-black opacity-40 uppercase tracking-widest mb-3">About the data</h4>
+                                    <p className="text-[13px] leading-relaxed opacity-60 font-medium">All datasets are provided in <span className="font-bold text-sky-800">GeoJSON</span> for spatial analysis and <span className="font-bold text-sky-900">CSV</span> for tabular processing. Coordinates use <span className="font-bold">WGS84 (EPSG:4326)</span>. <span className="font-bold">group_id</span> attribute should be used to relate the files.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
             <AHPModal
                 isOpen={isAHPModalOpen}
                 onClose={() => setIsAHPModalOpen(false)}
@@ -758,7 +771,7 @@ const Dashboard = () => {
                 }}
                 isDarkMode={isDarkMode}
             />
-        </div>
+        </div >
     );
 };
 
