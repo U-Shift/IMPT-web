@@ -1,17 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { X, ChevronRight, ChevronLeft, Check, AlertTriangle } from 'lucide-react';
-
-type MetricDef = {
-    id: string;
-    label: string;
-    description: string;
-};
+import { MetricDef } from '../types';
 
 interface AHPModalProps {
     metrics: MetricDef[];
     isOpen: boolean;
     onClose: () => void;
-    onApply: (weights: Record<string, number>) => void;
+    onApplyWeights: (weights: Record<string, number>) => void;
     isDarkMode: boolean;
 }
 
@@ -25,7 +20,7 @@ const getSaatyValue = (sliderValue: number): number => {
     return 1 / (sliderValue + 1);
 };
 
-export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, onApply, isDarkMode }) => {
+export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, onApplyWeights, isDarkMode }) => {
     // Generate Pairwise Combinations
     const pairs = useMemo(() => {
         const result = [];
@@ -125,7 +120,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
             metrics.forEach((m, idx) => {
                 weightsRecord[m.id] = results.weights[idx];
             });
-            onApply(weightsRecord);
+            onApplyWeights(weightsRecord);
         }
     };
 

@@ -1,0 +1,206 @@
+import React from 'react';
+import { MapPin, TrendingUp, MousePointer2 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LabelList } from 'recharts';
+import { MetricDef } from '../types';
+import { DetailCard } from './DetailCard';
+import { MiniBarChart } from './MiniBarChart';
+import { LEVEL_CONFIG } from '../constants';
+
+interface SidebarRightProps {
+    isDarkMode: boolean;
+    selectedFeature: any;
+    viewLevel: string;
+    selectedMetric: MetricDef;
+    selectedMetricId: string;
+    selectedMode: any;
+    dataState: any;
+    allDomains: Record<string, [number, number]>;
+    getColor: (val: number, domain: [number, number], metric: MetricDef) => string;
+    subLevelData: any[];
+    chartData: { top10: any[], worst10: any[] };
+    setSelectedFeature: (feat: any) => void;
+    computedGeoData: any;
+    setZoomRequest: (req: any) => void;
+}
+
+export const SidebarRight: React.FC<SidebarRightProps> = ({
+    isDarkMode, selectedFeature, viewLevel, selectedMetric, selectedMetricId,
+    selectedMode, dataState, allDomains, getColor, subLevelData, chartData,
+    setSelectedFeature, computedGeoData, setZoomRequest
+}) => {
+    return (
+        <div className={`w-[420px] flex flex-col ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'} border-l shadow-2xl z-30 overflow-hidden`}>
+            <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
+
+                {/* Selection Detail */}
+                <section>
+                    <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 text-sky-800" /> Area details
+                    </h3>
+                    {selectedFeature ? (
+                        <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-7 border shadow-sm`}>
+                            <div className="mb-6">
+                                <span className={`text-[13px] font-black ${isDarkMode ? 'text-sky-700' : 'text-sky-900'} uppercase tracking-[0.2em]`}>
+                                    {(() => {
+                                        const parentLevel = (LEVEL_CONFIG as any)[viewLevel].parent;
+                                        return (parentLevel && selectedFeature.group_id)
+                                            ? (dataState.parentLookup[`${parentLevel}-${selectedFeature.group_id}`] || selectedFeature.group_id)
+                                            : 'LMA';
+                                    })()}
+                                </span>
+                                <h3 className="font-bold text-xl leading-tight mt-1.5 tracking-tight">{selectedFeature.name || selectedFeature.id}</h3>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 mb-6">
+                                {FLAT_METRICS_FILTERED(selectedMetricId, selectedMode, selectedFeature, allDomains, getColor, isDarkMode)}
+                            </div>
+                            
+                            {/* Modal Share Breakdown */}
+                            {selectedFeature.share_car !== undefined && (
+                                <div className="mb-6 pt-6 border-t border-neutral-800/50">
+                                    <h4 className="text-[12px] font-black opacity-30 uppercase mb-4 tracking-widest">Mobility Profile (Modal Share)</h4>
+                                    <div className="h-16 flex items-center">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <BarChart data={[{
+                                                name: 'Share',
+                                                car: (selectedFeature.share_car || 0) * 100,
+                                                pt: (selectedFeature.share_pt || 0) * 100,
+                                                walk: (selectedFeature.share_walk || 0) * 100,
+                                                bike: (selectedFeature.share_bike || 0) * 100
+                                            }]} layout="vertical">
+                                                <XAxis type="number" hide domain={[0, 100]} />
+                                                <YAxis dataKey="name" type="category" hide />
+                                                <RechartsTooltip cursor={false} content={({ payload }) => {
+                                                    if (payload && payload.length) {
+                                                        return (
+                                                            <div className={`${isDarkMode ? 'bg-neutral-800 border-neutral-700' : 'bg-white border-neutral-100'} p-3 rounded-xl border shadow-xl flex flex-col gap-1`}>
+                                                                {payload.map((p: any) => (
+                                                                    <div key={p.name} className="flex justify-between gap-4 text-[12px] items-center">
+                                                                        <div className="flex items-center gap-1.5">
+                                                                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
+                                                                            <span className="font-bold opacity-60 uppercase">{p.name}</span>
+                                                                        </div>
+                                                                        <span className="font-black text-sky-800">{p.value.toFixed(1)}%</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        );
+                                                    }
+                                                    return null;
+                                                }} />
+                                                <Bar dataKey="car" stackId="a" fill="#ef4444" radius={[4, 0, 0, 4]}>
+                                                    <LabelList dataKey="car" position="insideLeft" formatter={(v: any) => (typeof v === 'number' && v > 15) ? `${v.toFixed(0)}%` : ''} style={{ fontSize: '9px', fill: 'white', fontWeight: 'bold' }} />
+                                                </Bar>
+                                                <Bar dataKey="pt" stackId="a" fill="#075985" />
+                                                <Bar dataKey="walk" stackId="a" fill="#10b981" />
+                                                <Bar dataKey="bike" stackId="a" fill="#eab308" radius={[0, 4, 4, 0]} />
+                                            </BarChart>
+                                        </ResponsiveContainer>
+                                    </div>
+                                    <div className="flex justify-between mt-2 px-1">
+                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /><span className="text-[12px] font-black opacity-40 uppercase">Car</span></div>
+                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-sky-800" /><span className="text-[12px] font-black opacity-40 uppercase">PT</span></div>
+                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /><span className="text-[12px] font-black opacity-40 uppercase">Walk</span></div>
+                                        <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500" /><span className="text-[12px] font-black opacity-40 uppercase">Bike</span></div>
+                                    </div>
+                                </div>
+                            )}
+                            {viewLevel === 'municipality' && subLevelData.length > 0 && (
+                                <div className="mt-8 pt-6 border-t border-neutral-800/50">
+                                    <h4 className="text-[12px] font-black opacity-30 uppercase mb-4 tracking-widest">Constituent Dynamics</h4>
+                                    <div className="space-y-3 max-h-40 overflow-y-auto pr-2 scrollbar-hide">
+                                        {subLevelData.slice(0, 10).map((f: any) => {
+                                            const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+                                            const val = f[effectiveId] ?? f[selectedMetric.id] ?? 0;
+                                            return (
+                                                <div key={f.id || f.name} className="flex justify-between items-center text-[12px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-default">
+                                                    <span className="opacity-50 truncate w-36">{f.name}</span>
+                                                    <span className="font-bold text-sky-800">{selectedMetric.format(val)}</span>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    ) : (
+                        <div className={`p-14 border border-dashed rounded-[32px] flex flex-col items-center justify-center text-center ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
+                            <MousePointer2 className="w-10 h-10 opacity-5 mb-4" />
+                            <p className="text-[12px] font-bold uppercase opacity-20 leading-loose tracking-widest">Target a regional unit<br />for deep analytics</p>
+                        </div>
+                    )}
+                </section>
+
+                {/* Comparative Analytics */}
+                <section>
+                    <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
+                        <TrendingUp className="w-3.5 h-3.5 text-sky-800" /> Regional Contrast
+                    </h3>
+                    <div className="space-y-8">
+                        <div>
+                            <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Top performers</p>
+                            <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
+                                <MiniBarChart
+                                    data={chartData.top10}
+                                    metric={selectedMetric}
+                                    isDark={isDarkMode}
+                                    type="highest"
+                                    onSelect={(id) => {
+                                        const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
+                                        if (f) {
+                                            setSelectedFeature(f.properties);
+                                            setZoomRequest({ id, timestamp: Date.now() });
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Low performers</p>
+                            <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
+                                <MiniBarChart
+                                    data={chartData.worst10}
+                                    metric={selectedMetric}
+                                    isDark={isDarkMode}
+                                    type="lowest"
+                                    onSelect={(id) => {
+                                        const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
+                                        if (f) {
+                                            setSelectedFeature(f.properties);
+                                            setZoomRequest({ id, timestamp: Date.now() });
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    );
+};
+
+// Helper for cleaning up App.tsx imports in the component
+import { FLAT_METRICS } from '../constants';
+
+const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, selectedFeature: any, allDomains: any, getColor: any, isDarkMode: boolean) => {
+    return FLAT_METRICS.filter(m =>
+        m.showDetails &&
+        (!m.showDetailsOnlyWhenSelected || m.id === selectedMetricId)
+    ).map(m => {
+        const effectiveId = `${m.id}${selectedMode.suffix}`;
+        if (!selectedFeature[effectiveId] && selectedFeature[effectiveId] !== 0) {
+            return null;
+        }
+        const val = selectedFeature[effectiveId] ?? selectedFeature[m.id];
+        return (
+            <DetailCard
+                key={m.id}
+                label={m.label}
+                value={m.format(val)}
+                hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
+                isDark={isDarkMode}
+            />
+        );
+    });
+};
