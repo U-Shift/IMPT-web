@@ -11,6 +11,7 @@ import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './com
 import { MiniBarChart } from './components/MiniBarChart';
 import { DetailCard } from './components/DetailCard';
 import { DownloadCard } from './components/DownloadCard';
+import { AHPModal } from './components/AHPModal';
 
 const Dashboard = () => {
     const [viewLevel, setViewLevel] = useState<ViewLevel>('freguesia');
@@ -19,16 +20,19 @@ const Dashboard = () => {
     const [selectedModeId, setSelectedModeId] = useState<ModeId>('all');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
     const [zoomRequest, setZoomRequest] = useState<{ id: string | number, timestamp: number } | null>(null);
-    const [weights, setWeights] = useState<Record<string, number>>(() => {
+    const contributoryMetrics = useMemo(() => FLAT_METRICS.filter(m => m.isContributory), []);
+    const defaultWeights: Record<string, number> = useMemo(() => {
         const initial: Record<string, number> = {};
-        FLAT_METRICS.filter(m => m.isContributory).forEach(m => {
+        contributoryMetrics.forEach(m => {
             initial[m.id] = m.defaultWeight || 1;
         });
         return initial;
-    });
+    }, [contributoryMetrics]);
+    const [weights, setWeights] = useState<Record<string, number>>(defaultWeights);
     const [showAbout, setShowAbout] = useState(false);
     const [showDownload, setShowDownload] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
+    const [isAHPModalOpen, setIsAHPModalOpen] = useState(false);
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
         const keys = Object.keys(METRICS);
         return keys.slice(1).reduce((acc, key) => ({ ...acc, [key]: true }), {});
@@ -288,6 +292,10 @@ const Dashboard = () => {
         return { top10: sorted.slice(0, 10), worst10: [...sorted].reverse().slice(0, 10).reverse() };
     }, [computedGeoData, selectedMetric, selectedMode]);
 
+    const resetWeights = () => {
+        setWeights(defaultWeights);
+    };
+
     if (dataState.loading) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-4`}>
             <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
@@ -371,19 +379,15 @@ const Dashboard = () => {
                     {/* Dynamic Weights Sliders Section */}
                     {selectedMetric.isCalculated && (
                         <section className={`pt-6 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
-                            <div className="flex items-center justify-between mb-5">
-                                <h3 className="text-[9px] font-black opacity-40 uppercase tracking-[0.2em] flex items-center gap-2">
-                                    <Activity className="w-3.5 h-3.5 text-emerald-500" /> Dimension Weighting
-                                </h3>
-                                <button onClick={() => {
-                                    const initial: Record<string, number> = {};
-                                    FLAT_METRICS.filter(m => m.isContributory).forEach(m => {
-                                        initial[m.id] = m.defaultWeight || 1;
-                                    });
-                                    setWeights(initial);
-                                }} className="text-[9px] font-black uppercase text-indigo-500 hover:text-indigo-600 tracking-wider">Reset</button>
+                            <div className="flex items-center justify-between mb-4">
+                                <h4 className={`text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                                    <Activity className="w-3 h-3 text-indigo-500" /> Dimension Weighting
+                                </h4>
+                                <button onClick={resetWeights} className="text-[9px] font-bold text-indigo-500 hover:text-indigo-400 uppercase tracking-widest transition-colors">
+                                    Reset
+                                </button>
                             </div>
-                            <div className="space-y-4">
+                            <div className="space-y-4 mb-6">
                                 {FLAT_METRICS.filter(m => m.isContributory).map(m => (
                                     <div key={m.id} className="space-y-2">
                                         <div className="flex justify-between items-center text-[10px] font-bold">
@@ -398,6 +402,19 @@ const Dashboard = () => {
                                         />
                                     </div>
                                 ))}
+                            </div>
+
+                            <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-indigo-500/5 border-indigo-500/10' : 'bg-indigo-50 border-indigo-100'}`}>
+                                <p className={`text-[10px] leading-relaxed mb-4 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                                    <strong className="text-indigo-500 uppercase tracking-wider">AHP Methodology</strong><br/>
+                                    Defining weights manually can be subjective and inconsistent. The <strong>Analytic Hierarchy Process</strong> uses pairwise comparisons to mathematically derive optimal weights while measuring your decision consistency.
+                                </p>
+                                <button 
+                                    onClick={() => setIsAHPModalOpen(true)} 
+                                    className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
+                                >
+                                    Start AHP Survey
+                                </button>
                             </div>
                         </section>
                     )}
@@ -731,6 +748,16 @@ const Dashboard = () => {
                     </div>
                 </div>
             )}
+            <AHPModal
+                isOpen={isAHPModalOpen}
+                onClose={() => setIsAHPModalOpen(false)}
+                metrics={contributoryMetrics as any}
+                onApply={(newWeights) => {
+                    setWeights(newWeights);
+                    setIsAHPModalOpen(false);
+                }}
+                isDarkMode={isDarkMode}
+            />
         </div>
     );
 };
