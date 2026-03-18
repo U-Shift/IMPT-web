@@ -164,11 +164,11 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                         <label className="flex items-center gap-2 cursor-pointer group">
                             <div
                                 onClick={() => setForceConsistency(!forceConsistency)}
-                                className={`w-10 h-5 rounded-full relative transition-colors ${forceConsistency ? 'bg-indigo-600' : (isDarkMode ? 'bg-neutral-800' : 'bg-neutral-200')}`}
+                                className={`w-10 h-5 rounded-full relative transition-colors ${forceConsistency ? 'bg-sky-900' : (isDarkMode ? 'bg-neutral-800' : 'bg-neutral-200')}`}
                             >
                                 <div className={`absolute top-1 left-1 w-3 h-3 bg-white rounded-full transition-transform ${forceConsistency ? 'translate-x-5' : ''}`} />
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 group-hover:text-indigo-500 transition-colors">Force Consistency</span>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-500 group-hover:text-sky-800 transition-colors">Force Consistency</span>
                         </label>
                     </div>
                     <button onClick={onClose} className={`p-2 rounded-full transition-colors ${isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-100'}`}>
@@ -181,18 +181,18 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                     {!isComplete ? (
                         <div className="space-y-12">
                             <div className="text-center space-y-2">
-                                <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>
+                                <p className={`text-[10px] font-black uppercase tracking-widest ${isDarkMode ? 'text-sky-700' : 'text-sky-900'}`}>
                                     Comparison {currentStep + 1} of {pairs.length}
                                 </p>
                                 <h3 className="text-lg font-medium">Which dimension is more important to you?</h3>
                             </div>
 
                             <div className="flex items-center justify-between gap-6">
-                                <div className={`flex-1 text-right p-4 rounded-xl border-2 transition-colors ${selections[currentStep] < 0 ? 'border-indigo-500 bg-indigo-500/10 text-indigo-500' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
+                                <div className={`flex-1 text-right p-4 rounded-xl border-2 transition-colors ${selections[currentStep] < 0 ? 'border-sky-800 bg-sky-800/10 text-sky-800' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
                                     <p className="font-bold text-sm uppercase tracking-wider">{metrics[pairs[currentStep][0]].label}</p>
                                     <p className="text-[10px] opacity-60 mt-1">{metrics[pairs[currentStep][0]].description}</p>
                                 </div>
-                                <div className={`flex-1 text-left p-4 rounded-xl border-2 transition-colors ${selections[currentStep] > 0 ? 'border-indigo-500 bg-indigo-500/10 text-indigo-500' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
+                                <div className={`flex-1 text-left p-4 rounded-xl border-2 transition-colors ${selections[currentStep] > 0 ? 'border-sky-800 bg-sky-800/10 text-sky-800' : (isDarkMode ? 'border-neutral-800' : 'border-neutral-100')}`}>
                                     <p className="font-bold text-sm uppercase tracking-wider">{metrics[pairs[currentStep][1]].label}</p>
                                     <p className="text-[10px] opacity-60 mt-1">{metrics[pairs[currentStep][1]].description}</p>
                                 </div>
@@ -204,10 +204,10 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     min="-8" max="8" step="1"
                                     value={selections[currentStep]}
                                     onChange={handleSliderChange}
-                                    className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-indigo-500 outline-none ${isDarkMode ? 'bg-neutral-800' : 'bg-neutral-200'}`}
+                                    className={`w-full h-2 rounded-lg appearance-none cursor-pointer accent-sky-800 outline-none ${isDarkMode ? 'bg-neutral-800' : 'bg-neutral-200'}`}
                                 />
                                 <div className="text-center h-6">
-                                    <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${selections[currentStep] !== 0 ? 'bg-indigo-500 text-white' : (isDarkMode ? 'bg-neutral-800 text-neutral-400' : 'bg-neutral-100 text-neutral-500')}`}>
+                                    <span className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${selections[currentStep] !== 0 ? 'bg-sky-800 text-white' : (isDarkMode ? 'bg-neutral-800 text-neutral-400' : 'bg-neutral-100 text-neutral-500')}`}>
                                         {getIntensityLabel(selections[currentStep])}
                                     </span>
                                 </div>
@@ -234,7 +234,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                                 <span>{pct}%</span>
                                             </div>
                                             <div className={`h-2 rounded-full overflow-hidden ${isDarkMode ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
-                                                <div className="h-full bg-indigo-500 transition-all duration-1000 ease-out" style={{ width: `${pct}%` }} />
+                                                <div className="h-full bg-sky-800 transition-all duration-1000 ease-out" style={{ width: `${pct}%` }} />
                                             </div>
                                         </div>
                                     );
@@ -266,7 +266,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                                 </span>
                                                 <button
                                                     onClick={() => setCurrentStep(item.index)}
-                                                    className="px-2 py-0.5 rounded bg-indigo-500 text-white font-black uppercase tracking-tighter hover:bg-indigo-400 transition-colors"
+                                                    className="px-2 py-0.5 rounded bg-sky-800 text-white font-black uppercase tracking-tighter hover:bg-sky-700 transition-colors"
                                                 >
                                                     Fix
                                                 </button>
@@ -293,7 +293,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
 
                             <button
                                 onClick={() => setCurrentStep(currentStep + 1)}
-                                className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 transition-all"
+                                className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
                             >
                                 {currentStep === pairs.length - 1 ? 'Calculate' : 'Next'} <ChevronRight className="w-4 h-4" />
                             </button>
@@ -309,7 +309,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                             {(!forceConsistency || (results && results.CR <= 0.1)) && (
                                 <button
                                     onClick={handleApply}
-                                    className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 transition-all"
+                                    className="flex items-center gap-2 px-6 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30 transition-all"
                                 >
                                     Apply Weights
                                 </button>

@@ -249,7 +249,7 @@ const Dashboard = () => {
             <div style="font-family: sans-serif; padding: 4px;">
                 <div style="font-size: 10px; font-weight: 900; color: #666; text-transform: uppercase;">${parentName}</div>
                 <div style="font-size: 12px; font-weight: 700; color: #111;">${props.name || 'N/A'}</div>
-                <div style="font-size: 11px; font-weight: 900; color: #6366f1; margin-top: 4px;">${selectedMetric.label}: ${formattedVal} ${selectedMetric.unit || ''}</div>
+                <div style="font-size: 11px; font-weight: 900; color: #075985; margin-top: 4px;">${selectedMetric.label}: ${formattedVal} ${selectedMetric.unit || ''}</div>
             </div>
         `, { sticky: true, opacity: 0.95 });
 
@@ -298,7 +298,7 @@ const Dashboard = () => {
 
     if (dataState.loading) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-4`}>
-            <Loader2 className="w-12 h-12 text-indigo-500 animate-spin" />
+            <Loader2 className="w-12 h-12 text-sky-800 animate-spin" />
             <p className={`font-black uppercase tracking-[0.2em] text-[10px] ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>Assembling Spatial Intelligence...</p>
         </div>
     );
@@ -312,7 +312,7 @@ const Dashboard = () => {
                     <div className="flex items-center gap-4 mb-6">
                         <img src="images/logo/logo.png" alt="Logo" className="w-12 h-12 object-contain" />
                         <div className="flex flex-col">
-                            <h1 className="text-sm font-black tracking-tighter uppercase leading-none">Mobility <span className="text-indigo-500">Poverty</span></h1>
+                            <h1 className="text-sm font-black tracking-tighter uppercase leading-none">Mobility <span className="text-sky-800">Poverty</span></h1>
                             <p className="text-[10px] font-bold uppercase tracking-widest opacity-40 mt-1">Lisbon Metropolis</p>
                         </div>
                     </div>
@@ -336,16 +336,16 @@ const Dashboard = () => {
                 <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
                     <section>
                         <h3 className="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
-                            <ListFilter className="w-3 h-3 text-indigo-500" /> Indicators
+                            <ListFilter className="w-3 h-3 text-sky-800" /> Indicators
                         </h3>
                         <div className="space-y-4">
                             {Object.keys(METRICS).map(cat => (
-                                <div key={cat} className={`border rounded-2xl transition-all ${isDarkMode ? 'border-neutral-800 bg-neutral-800/10' : 'border-neutral-100 bg-neutral-50/30'} ${!collapsedSections[cat] ? 'ring-1 ring-indigo-500/20' : ''}`}>
+                                <div key={cat} className={`border rounded-2xl transition-all ${isDarkMode ? 'border-neutral-800 bg-neutral-800/10' : 'border-neutral-100 bg-neutral-50/30'} ${!collapsedSections[cat] ? 'ring-1 ring-sky-800/20' : ''}`}>
                                     <button onClick={() => toggleSection(cat)}
                                         className={`w-full flex items-center justify-between px-4 py-3.5 text-[10px] font-black uppercase tracking-widest transition-colors ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-600'}`}
                                     >
                                         <span className="flex items-center gap-2">
-                                            <div className={`w-1.5 h-1.5 rounded-full ${selectedMetric.category === cat ? 'bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.5)]' : 'bg-neutral-700'}`} />{cat}
+                                            <div className={`w-1.5 h-1.5 rounded-full ${selectedMetric.category === cat ? 'bg-sky-800 shadow-[0_0_8px_rgba(99,102,241,0.5)]' : 'bg-neutral-700'}`} />{cat}
                                         </span>
                                         <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${collapsedSections[cat] ? '' : 'rotate-180'}`} />
                                     </button>
@@ -358,7 +358,7 @@ const Dashboard = () => {
                                                     <button key={m.id} onClick={() => setSelectedMetricId(m.id)}
                                                         data-tooltip={m.description}
                                                         className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[10px] font-bold transition-all ${selectedMetricId === m.id
-                                                            ? 'bg-indigo-600 text-white shadow-lg'
+                                                            ? 'bg-sky-900 text-white shadow-lg'
                                                             : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
                                                     >
                                                         <span className="flex items-center gap-3">
@@ -381,9 +381,9 @@ const Dashboard = () => {
                         <section className={`pt-6 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
                             <div className="flex items-center justify-between mb-4">
                                 <h4 className={`text-[9px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                                    <Activity className="w-3 h-3 text-indigo-500" /> Dimension Weighting
+                                    <Activity className="w-3 h-3 text-sky-800" /> Dimension Weighting
                                 </h4>
-                                <button onClick={resetWeights} className="text-[9px] font-bold text-indigo-500 hover:text-indigo-400 uppercase tracking-widest transition-colors">
+                                <button onClick={resetWeights} className="text-[9px] font-bold text-sky-800 hover:text-sky-700 uppercase tracking-widest transition-colors">
                                     Reset
                                 </button>
                             </div>
@@ -392,26 +392,26 @@ const Dashboard = () => {
                                     <div key={m.id} className="space-y-2">
                                         <div className="flex justify-between items-center text-[10px] font-bold">
                                             <span className={isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}>{m.icon} {m.label}</span>
-                                            <span className="text-indigo-500 font-black">{weights[m.id]?.toFixed(2)}</span>
+                                            <span className="text-sky-800 font-black">{weights[m.id]?.toFixed(2)}</span>
                                         </div>
                                         <input
                                             type="range" min="0" max="1" step="0.05"
                                             value={weights[m.id] || 0}
                                             onChange={(e) => setWeights(prev => ({ ...prev, [m.id]: parseFloat(e.target.value) }))}
-                                            className="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                                            className="w-full h-1.5 bg-neutral-200 dark:bg-neutral-800 rounded-lg appearance-none cursor-pointer accent-sky-800"
                                         />
                                     </div>
                                 ))}
                             </div>
 
-                            <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-indigo-500/5 border-indigo-500/10' : 'bg-indigo-50 border-indigo-100'}`}>
+                            <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-sky-800/5 border-sky-800/10' : 'bg-sky-50 border-sky-100'}`}>
                                 <p className={`text-[10px] leading-relaxed mb-4 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
-                                    <strong className="text-indigo-500 uppercase tracking-wider">AHP Methodology</strong><br/>
+                                    <strong className="text-sky-800 uppercase tracking-wider">AHP Methodology</strong><br/>
                                     Defining weights manually can be subjective and inconsistent. The <strong>Analytic Hierarchy Process</strong> uses pairwise comparisons to mathematically derive optimal weights while measuring your decision consistency.
                                 </p>
-                                <button 
-                                    onClick={() => setIsAHPModalOpen(true)} 
-                                    className="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2"
+                                <button
+                                    onClick={() => setIsAHPModalOpen(true)}
+                                    className="w-full py-2.5 rounded-xl bg-sky-900 hover:bg-sky-800 text-white text-[10px] font-bold uppercase tracking-widest shadow-lg shadow-sky-800/20 transition-all flex items-center justify-center gap-2"
                                 >
                                     Start AHP Survey
                                 </button>
@@ -440,21 +440,21 @@ const Dashboard = () => {
                                 .filter(l => isMetricAvailable(selectedMetricId, l))
                                 .map(l => (
                                     <button key={l} onClick={() => setViewLevel(l)}
-                                        className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewLevel === l ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
+                                        className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${viewLevel === l ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
                                     >{l === 'hex' ? 'Grid' : l}</button>
                                 ))}
                         </div>
                         <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
                             {REGION_KEYS.map(n => (
                                 <button key={n} onClick={() => setNutFilter(n)}
-                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${nutFilter === n ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
+                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${nutFilter === n ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
                                 >{REGIONS[n].name}</button>
                             ))}
                         </div>
                         <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
                             {MODES.filter(m => isModeAvailable(m.id, selectedMetricId, viewLevel)).map(m => (
                                 <button key={m.id} onClick={() => setSelectedModeId(m.id)}
-                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${selectedModeId === m.id ? 'bg-indigo-600 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
+                                    className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${selectedModeId === m.id ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
                                 >
                                     <span className="text-xs">{m.icon}</span>
                                     {m.label}
@@ -466,7 +466,7 @@ const Dashboard = () => {
 
                 <div className="absolute bottom-8 left-8 z-[1000] pointer-events-none w-[280px]">
                     <div className={`p-6 rounded-[32px] border pointer-events-auto shadow-2xl backdrop-blur-xl ${isDarkMode ? 'bg-neutral-900/90 border-neutral-800' : 'bg-white/90 border-neutral-100'}`}>
-                        <h4 className="flex items-center gap-2.5 text-[10px] font-black text-indigo-500 mb-5 uppercase tracking-[0.1em]">
+                        <h4 className="flex items-center gap-2.5 text-[10px] font-black text-sky-800 mb-5 uppercase tracking-[0.1em]">
                             <Activity className="w-3.5 h-3.5" /> {nutFilter !== REGION_KEYS[0] ? 'Local Rescaling' : 'Global Metric Scale'}
                         </h4>
                         <div className="space-y-5">
@@ -510,12 +510,12 @@ const Dashboard = () => {
                     {/* Selection Detail */}
                     <section>
                         <h3 className="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                            <MapPin className="w-3.5 h-3.5 text-indigo-500" /> Area details
+                            <MapPin className="w-3.5 h-3.5 text-sky-800" /> Area details
                         </h3>
                         {selectedFeature ? (
                             <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-7 border shadow-sm`}>
                                 <div className="mb-6">
-                                    <span className={`text-[9px] font-black ${isDarkMode ? 'text-indigo-400' : 'text-indigo-600'} uppercase tracking-[0.2em]`}>
+                                    <span className={`text-[9px] font-black ${isDarkMode ? 'text-sky-700' : 'text-sky-900'} uppercase tracking-[0.2em]`}>
                                         {(() => {
                                             const parentLevel = LEVEL_CONFIG[viewLevel].parent;
                                             return (parentLevel && selectedFeature.group_id)
@@ -573,7 +573,7 @@ const Dashboard = () => {
                                                                                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: p.color }} />
                                                                                 <span className="font-bold opacity-60 uppercase">{p.name}</span>
                                                                             </div>
-                                                                            <span className="font-black text-indigo-500">{p.value.toFixed(1)}%</span>
+                                                                            <span className="font-black text-sky-800">{p.value.toFixed(1)}%</span>
                                                                         </div>
                                                                     ))}
                                                                 </div>
@@ -584,7 +584,7 @@ const Dashboard = () => {
                                                     <Bar dataKey="car" stackId="a" fill="#ef4444" radius={[4, 0, 0, 4]}>
                                                         <LabelList dataKey="car" position="insideLeft" formatter={(v: any) => (typeof v === 'number' && v > 15) ? `${v.toFixed(0)}%` : ''} style={{ fontSize: '9px', fill: 'white', fontWeight: 'bold' }} />
                                                     </Bar>
-                                                    <Bar dataKey="pt" stackId="a" fill="#6366f1" />
+                                                    <Bar dataKey="pt" stackId="a" fill="#075985" />
                                                     <Bar dataKey="walk" stackId="a" fill="#10b981" />
                                                     <Bar dataKey="bike" stackId="a" fill="#eab308" radius={[0, 4, 4, 0]} />
                                                 </BarChart>
@@ -592,7 +592,7 @@ const Dashboard = () => {
                                         </div>
                                         <div className="flex justify-between mt-2 px-1">
                                             <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500" /><span className="text-[8px] font-black opacity-40 uppercase">Car</span></div>
-                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-indigo-500" /><span className="text-[8px] font-black opacity-40 uppercase">PT</span></div>
+                                            <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-sky-800" /><span className="text-[8px] font-black opacity-40 uppercase">PT</span></div>
                                             <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500" /><span className="text-[8px] font-black opacity-40 uppercase">Walk</span></div>
                                             <div className="flex flex-col items-center gap-1"><div className="w-1.5 h-1.5 rounded-full bg-yellow-500" /><span className="text-[8px] font-black opacity-40 uppercase">Bike</span></div>
                                         </div>
@@ -627,7 +627,7 @@ const Dashboard = () => {
                     {/* Comparative Analytics */}
                     <section>
                         <h3 className="text-[10px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                            <TrendingUp className="w-3.5 h-3.5 text-indigo-500" /> Regional Contrast
+                            <TrendingUp className="w-3.5 h-3.5 text-sky-800" /> Regional Contrast
                         </h3>
                         <div className="space-y-8">
                             <div>
@@ -677,19 +677,19 @@ const Dashboard = () => {
                     <div className={`${isDarkMode ? 'bg-neutral-900 border-neutral-800 shadow-[0_0_50px_rgba(0,0,0,1)]' : 'bg-white border-neutral-200 shadow-2xl'} border rounded-[48px] max-w-2xl w-full p-14 relative transition-all animate-in zoom-in-95 duration-300`} onClick={e => e.stopPropagation()}>
                         <button onClick={() => setShowAbout(false)} className="absolute top-10 right-10 p-3 hover:bg-neutral-200 rounded-full transition-colors flex items-center justify-center"><X className="w-6 h-6 opacity-40 text-neutral-500" /></button>
                         <div className="flex items-center gap-6 mb-12">
-                            <div className="w-16 h-16 bg-indigo-600 rounded-[20px] flex items-center justify-center shadow-2xl shadow-indigo-500/20"><Activity className="text-white w-9 h-9" /></div>
+                            <div className="w-16 h-16 bg-sky-900 rounded-[20px] flex items-center justify-center shadow-2xl shadow-sky-800/20"><Activity className="text-white w-9 h-9" /></div>
                             <div>
                                 <h2 className="text-3xl font-black leading-none tracking-tighter">Pannapp</h2>
-                                <p className="text-indigo-500 font-black text-[10px] uppercase tracking-[0.4em] mt-3">Governance Strategic Intelligence</p>
+                                <p className="text-sky-800 font-black text-[10px] uppercase tracking-[0.4em] mt-3">Governance Strategic Intelligence</p>
                             </div>
                         </div>
                         <div className="space-y-8 text-sm font-bold uppercase tracking-widest leading-relaxed opacity-60">
-                            <p className={`p-6 rounded-2xl ${isDarkMode ? 'bg-white/5' : 'bg-neutral-50'} italic border-l-4 border-indigo-600 font-medium`}>"Decentralized Spatial Intelligence for Sustainable & Equitable Urban Governance Transitions."</p>
+                            <p className={`p-6 rounded-2xl ${isDarkMode ? 'bg-white/5' : 'bg-neutral-50'} italic border-l-4 border-sky-900 font-medium`}>"Decentralized Spatial Intelligence for Sustainable & Equitable Urban Governance Transitions."</p>
                             <div className="grid grid-cols-2 gap-4 pt-4">
-                                <a href="https://github.com/U-Shift/IMPT-data" target="_blank" className="flex items-center gap-4 p-5 rounded-2xl border border-neutral-800 hover:bg-indigo-600 hover:text-white transition-all hover:border-indigo-600 hover:scale-[1.02] active:scale-95">
+                                <a href="https://github.com/U-Shift/IMPT-data" target="_blank" className="flex items-center gap-4 p-5 rounded-2xl border border-neutral-800 hover:bg-sky-900 hover:text-white transition-all hover:border-sky-900 hover:scale-[1.02] active:scale-95">
                                     <Github className="w-5 h-5" /> <span>Source Code</span>
                                 </a>
-                                <a href="https://ushift.tecnico.ulisboa.pt/" target="_blank" className="flex items-center gap-4 p-5 rounded-2xl border border-neutral-800 hover:bg-indigo-600 hover:text-white transition-all hover:border-indigo-600 hover:scale-[1.02] active:scale-95">
+                                <a href="https://ushift.tecnico.ulisboa.pt/" target="_blank" className="flex items-center gap-4 p-5 rounded-2xl border border-neutral-800 hover:bg-sky-900 hover:text-white transition-all hover:border-sky-900 hover:scale-[1.02] active:scale-95">
                                     <ExternalLink className="w-5 h-5" /> <span>U-Shift Lab</span>
                                 </a>
                             </div>
@@ -742,7 +742,7 @@ const Dashboard = () => {
 
                             <div className={`p-6 rounded-3xl ${isDarkMode ? 'bg-white/5 border-neutral-800' : 'bg-neutral-50 border-neutral-100'} border mt-6`}>
                                 <h4 className="text-[10px] font-black opacity-40 uppercase tracking-widest mb-3">About the data</h4>
-                                <p className="text-[11px] leading-relaxed opacity-60 font-medium">All datasets are provided in <span className="font-bold text-indigo-500">GeoJSON</span> for spatial analysis and <span className="font-bold text-emerald-500">CSV</span> for tabular processing. Coordinates use <span className="font-bold">WGS84 (EPSG:4326)</span>. The unique identifier (Dicom/HexID) should be used to relate the files.</p>
+                                <p className="text-[11px] leading-relaxed opacity-60 font-medium">All datasets are provided in <span className="font-bold text-sky-800">GeoJSON</span> for spatial analysis and <span className="font-bold text-emerald-500">CSV</span> for tabular processing. Coordinates use <span className="font-bold">WGS84 (EPSG:4326)</span>. The unique identifier (Dicom/HexID) should be used to relate the files.</p>
                             </div>
                         </div>
                     </div>
