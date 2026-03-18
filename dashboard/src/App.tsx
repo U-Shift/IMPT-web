@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, Pane } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Loader2, AlertTriangle, Activity } from 'lucide-react';
+import { Loader2, AlertTriangle, Activity, Layers, Globe, Zap, RocketIcon } from 'lucide-react';
 
 import { ViewLevel, MetricDef } from './types';
 import { METRICS, FLAT_METRICS, COLORS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG } from './constants';
@@ -12,6 +12,7 @@ import { SidebarLeft } from './components/SidebarLeft';
 import { SidebarRight } from './components/SidebarRight';
 import { AboutModal } from './components/AboutModal';
 import { DownloadModal } from './components/DownloadModal';
+import { MapFilterDropdown } from './components/MapFilterDropdown';
 
 const Dashboard = () => {
     const [viewLevel, setViewLevel] = useState<ViewLevel>('freguesia');
@@ -366,32 +367,35 @@ const Dashboard = () => {
 
                 <div className="absolute top-8 left-8 right-8 z-[1000] flex justify-between items-start pointer-events-none">
                     <div className="flex gap-4 pointer-events-auto items-center">
-                        <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
-                            {(['hex', 'freguesia', 'municipality'] as const)
+                        <MapFilterDropdown
+                            label="View Level"
+                            value={viewLevel}
+                            isDark={isDarkMode}
+                            icon={<Layers className="w-3.5 h-3.5" />}
+                            options={(['hex', 'freguesia', 'municipality'] as const)
                                 .filter(l => isMetricAvailable(selectedMetricId, l))
-                                .map(l => (
-                                    <button key={l} onClick={() => setViewLevel(l)}
-                                        className={`px-5 py-2 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all ${viewLevel === l ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
-                                    >{l === 'hex' ? 'Grid' : l}</button>
-                                ))}
-                        </div>
-                        <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
-                            {REGION_KEYS.map(n => (
-                                <button key={n} onClick={() => setNutFilter(n)}
-                                    className={`px-5 py-2 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all ${nutFilter === n ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
-                                >{REGIONS[n].name}</button>
-                            ))}
-                        </div>
-                        <div className={`${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 shadow-2xl' : 'bg-white/90 border-neutral-200 shadow-xl'} backdrop-blur-md px-1.5 py-1.5 rounded-2xl border flex items-center`}>
-                            {MODES.filter(m => isModeAvailable(m.id, selectedMetricId, viewLevel)).map(m => (
-                                <button key={m.id} onClick={() => setSelectedModeId(m.id)}
-                                    className={`px-5 py-2 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all flex items-center gap-2 ${selectedModeId === m.id ? 'bg-sky-900 text-white shadow-xl' : `${isDarkMode ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-800'}`}`}
-                                >
-                                    <span className="text-base">{m.icon}</span>
-                                    {m.label}
-                                </button>
-                            ))}
-                        </div>
+                                .map(l => ({ id: l, label: l === 'hex' ? 'Grid' : l }))}
+                            onChange={(id) => setViewLevel(id as ViewLevel)}
+                        />
+
+                        <MapFilterDropdown
+                            label="Region"
+                            value={nutFilter}
+                            isDark={isDarkMode}
+                            icon={<Globe className="w-3.5 h-3.5" />}
+                            options={REGION_KEYS.map(n => ({ id: n, label: REGIONS[n].name }))}
+                            onChange={(id) => setNutFilter(id as RegionKey)}
+                        />
+
+                        <MapFilterDropdown
+                            label="Mode"
+                            value={selectedModeId}
+                            isDark={isDarkMode}
+                            icon={<RocketIcon className="w-3.5 h-3.5" />}
+                            options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, viewLevel))
+                                .map(m => ({ id: m.id, label: m.label, icon: m.icon }))}
+                            onChange={(id) => setSelectedModeId(id as ModeId)}
+                        />
                     </div>
                 </div>
 
