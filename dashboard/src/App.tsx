@@ -200,24 +200,43 @@ const Dashboard = () => {
         if (val === null || val === undefined) return '#333';
         const [min, max] = domain;
         const range = max - min;
-        if (range === 0) return metric.higherTheBetter ? COLORS.Sequential[4] : COLORS.Danger[4];
+        
+        const seq = COLORS.Sequential;
+        const dng = COLORS.Danger;
+        const divNeg = COLORS.Divergent.negative;
+        const divPos = COLORS.Divergent.positive;
+
+        if (range === 0) return metric.higherTheBetter ? seq[Math.floor(seq.length / 2)] : dng[Math.floor(dng.length / 2)];
 
         if (metric.isDivergent) {
             const mid = (min + max) / 2;
             if (val <= mid) {
                 const subNorm = (val - min) / (mid - min || 1);
-                const idx = Math.min(Math.floor(subNorm * 5), 4);
-                return COLORS.Divergent.negative[idx];
+                const idx = Math.min(Math.floor(subNorm * divNeg.length), divNeg.length - 1);
+                return divNeg[idx];
             } else {
                 const subNorm = (val - mid) / (max - mid || 1);
-                const idx = Math.min(Math.floor(subNorm * 6), 5);
-                return COLORS.Divergent.positive[idx];
+                const idx = Math.min(Math.floor(subNorm * divPos.length), divPos.length - 1);
+                return divPos[idx];
             }
         }
 
         const norm = Math.max(0, Math.min(1, (val - min) / range));
-        const idx = Math.min(Math.floor(norm * 9), 8);
-        return metric.higherTheBetter ? COLORS.Sequential[idx] : COLORS.Danger[idx];
+        const activeArray = metric.higherTheBetter ? seq : dng;
+        const idx = Math.min(Math.floor(norm * activeArray.length), activeArray.length - 1);
+        return activeArray[idx];
+    };
+
+    const getLegendGradient = () => {
+        if (selectedMetric.isDivergent) {
+            return `linear-gradient(to right, ${COLORS.Divergent.negative[0]}, #fff, ${COLORS.Divergent.positive[COLORS.Divergent.positive.length - 1]})`;
+        }
+        
+        const activeArray = selectedMetric.higherTheBetter ? COLORS.Sequential : COLORS.Danger;
+        // For sequential colormaps like Viridis, we pick 5 equidistant stops to ensure a faithful gradient representation in CSS
+        const stops = [0, Math.floor(activeArray.length * 0.25), Math.floor(activeArray.length * 0.5), Math.floor(activeArray.length * 0.75), activeArray.length - 1];
+        const colors = stops.map(i => activeArray[Math.min(i, activeArray.length - 1)]);
+        return `linear-gradient(to right, ${colors.join(', ')})`;
     };
 
     const getStyle = (feature: any) => {
@@ -471,7 +490,10 @@ const Dashboard = () => {
                         </h4>
                         <div className="space-y-5">
                             <div className="flex flex-col gap-3">
-                                <div className={`h-2.5 rounded-full w-full bg-gradient-to-r ${selectedMetric.isDivergent ? 'from-[#006837] via-white to-[#bd0026]' : (selectedMetric.higherTheBetter ? 'from-[#f7fbff] to-[#08306b]' : 'from-[#fff5f0] to-[#67000d]')}`} />
+                                <div 
+                                    className="h-2.5 rounded-full w-full shadow-inner" 
+                                    style={{ background: getLegendGradient() }} 
+                                />
                                 <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
                                     <span>{selectedMetric.format(currentDomain[0])}</span>
                                     <span>{selectedMetric.format(currentDomain[1])}</span>
