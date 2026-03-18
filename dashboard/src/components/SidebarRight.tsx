@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, TrendingUp, MousePointer2 } from 'lucide-react';
+import { MapPin, TrendingUp } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, LabelList } from 'recharts';
 import { MetricDef } from '../types';
 import { DetailCard } from './DetailCard';
@@ -29,16 +29,24 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
     setSelectedFeature, computedGeoData, setZoomRequest
 }) => {
     return (
-        <div className={`w-[420px] flex flex-col ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'} border-l shadow-2xl z-30 overflow-hidden`}>
-            <div className="flex-1 overflow-y-auto p-8 space-y-10 scrollbar-hide">
+        <div className={`absolute top-4 right-4 w-[400px] max-h-[calc(100vh-2rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
+            <div className="flex-1 overflow-y-auto p-7 space-y-8 scrollbar-hide">
 
-                {/* Selection Detail */}
-                <section>
-                    <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                        <MapPin className="w-3.5 h-3.5 text-sky-800" /> Area details
-                    </h3>
-                    {selectedFeature ? (
-                        <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-7 border shadow-sm`}>
+                {/* Selection Detail - Visible only when an area is selected */}
+                {selectedFeature && (
+                    <section className="animate-in fade-in slide-in-from-right-4 duration-300">
+                        <div className="flex items-center justify-between mb-5">
+                            <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] flex items-center gap-2">
+                                <MapPin className="w-3.5 h-3.5 text-sky-800" /> Area details
+                            </h3>
+                            <button 
+                                onClick={() => setSelectedFeature(null)}
+                                className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ${isDarkMode ? 'hover:bg-white/5 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-400'}`}
+                            >
+                                Close
+                            </button>
+                        </div>
+                        <div className={`${isDarkMode ? 'bg-neutral-800/40 border-neutral-700/50' : 'bg-neutral-50 border-neutral-100'} rounded-[32px] p-6 border shadow-sm`}>
                             <div className="mb-6">
                                 <span className={`text-[13px] font-black ${isDarkMode ? 'text-sky-700' : 'text-sky-900'} uppercase tracking-[0.2em]`}>
                                     {(() => {
@@ -123,58 +131,55 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                 </div>
                             )}
                         </div>
-                    ) : (
-                        <div className={`p-14 border border-dashed rounded-[32px] flex flex-col items-center justify-center text-center ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
-                            <MousePointer2 className="w-10 h-10 opacity-5 mb-4" />
-                            <p className="text-[12px] font-bold uppercase opacity-20 leading-loose tracking-widest">Target a regional unit<br />for deep analytics</p>
-                        </div>
-                    )}
-                </section>
+                    </section>
+                )}
 
-                {/* Comparative Analytics */}
-                <section>
-                    <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
-                        <TrendingUp className="w-3.5 h-3.5 text-sky-800" /> Regional Contrast
-                    </h3>
-                    <div className="space-y-8">
-                        <div>
-                            <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Top performers</p>
-                            <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
-                                <MiniBarChart
-                                    data={chartData.top10}
-                                    metric={selectedMetric}
-                                    isDark={isDarkMode}
-                                    type="highest"
-                                    onSelect={(id) => {
-                                        const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
-                                        if (f) {
-                                            setSelectedFeature(f.properties);
-                                            setZoomRequest({ id, timestamp: Date.now() });
-                                        }
-                                    }}
-                                />
+                {/* Comparative Analytics - Visible only when NO area is selected */}
+                {!selectedFeature && (
+                    <section className="animate-in fade-in slide-in-from-right-4 duration-300">
+                        <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] mb-5 flex items-center gap-2">
+                            <TrendingUp className="w-3.5 h-3.5 text-sky-800" /> Regional Contrast
+                        </h3>
+                        <div className="space-y-8">
+                            <div>
+                                <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Top performers</p>
+                                <div className={`h-44 rounded-[28px] p-5 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
+                                    <MiniBarChart
+                                        data={chartData.top10}
+                                        metric={selectedMetric}
+                                        isDark={isDarkMode}
+                                        type="highest"
+                                        onSelect={(id) => {
+                                            const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
+                                            if (f) {
+                                                setSelectedFeature(f.properties);
+                                                setZoomRequest({ id, timestamp: Date.now() });
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Low performers</p>
+                                <div className={`h-44 rounded-[28px] p-5 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
+                                    <MiniBarChart
+                                        data={chartData.worst10}
+                                        metric={selectedMetric}
+                                        isDark={isDarkMode}
+                                        type="lowest"
+                                        onSelect={(id) => {
+                                            const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
+                                            if (f) {
+                                                setSelectedFeature(f.properties);
+                                                setZoomRequest({ id, timestamp: Date.now() });
+                                            }
+                                        }}
+                                    />
+                                </div>
                             </div>
                         </div>
-                        <div>
-                            <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">Low performers</p>
-                            <div className={`h-44 rounded-2xl p-4 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
-                                <MiniBarChart
-                                    data={chartData.worst10}
-                                    metric={selectedMetric}
-                                    isDark={isDarkMode}
-                                    type="lowest"
-                                    onSelect={(id) => {
-                                        const f = computedGeoData.features.find((feat: any) => String(feat.properties.id) === String(id));
-                                        if (f) {
-                                            setSelectedFeature(f.properties);
-                                            setZoomRequest({ id, timestamp: Date.now() });
-                                        }
-                                    }}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
+                )}
             </div>
         </div>
     );

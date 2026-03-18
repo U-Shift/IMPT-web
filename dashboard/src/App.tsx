@@ -335,7 +335,7 @@ const Dashboard = () => {
     );
 
     return (
-        <div className={`flex h-screen ${isDarkMode ? 'bg-neutral-950 text-neutral-100' : 'bg-neutral-50 text-neutral-900'} font-sans overflow-hidden transition-colors duration-300`}>
+        <div className={`relative h-screen w-screen ${isDarkMode ? 'bg-neutral-950 text-neutral-100' : 'bg-neutral-50 text-neutral-900'} font-sans overflow-hidden transition-colors duration-300`}>
 
             <SidebarLeft
                 isDarkMode={isDarkMode}
@@ -355,17 +355,17 @@ const Dashboard = () => {
             />
 
             {/* Map Canvas: Main View */}
-            <div className="flex-1 relative bg-neutral-950 flex flex-col">
+            <div className="absolute inset-0 bg-neutral-950 z-0">
                 <style>{`.leaflet-container { outline: none !important; } .leaflet-path { cursor: pointer; outline: none !important; }`}</style>
 
                 {selectedMetric.isFake && (
-                    <div className="absolute top-[88px] left-8 z-[1000] flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600/90 text-white shadow-xl backdrop-blur-md animate-pulse">
+                    <div className="absolute top-[88px] left-[416px] z-[1000] flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600/90 text-white shadow-xl backdrop-blur-md animate-pulse">
                         <AlertTriangle className="w-3.5 h-3.5" />
                         <span className="text-[13px] font-black uppercase tracking-widest">Synthetic / Placeholder Data</span>
                     </div>
                 )}
 
-                <div className="absolute top-8 left-8 right-8 z-[1000] flex justify-between items-start pointer-events-none">
+                <div className="absolute top-8 left-[416px] z-[1002] flex items-start pointer-events-none">
                     <div className="flex gap-4 pointer-events-auto items-center">
                         <MapFilterDropdown
                             label="View Level"
@@ -399,7 +399,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="absolute bottom-8 left-8 z-[1000] pointer-events-none w-[280px]">
+                <div className="absolute bottom-8 right-8 z-[1000] pointer-events-none w-[280px]">
                     <div className={`p-6 rounded-[32px] border pointer-events-auto shadow-2xl backdrop-blur-xl ${isDarkMode ? 'bg-neutral-900/90 border-neutral-800' : 'bg-white/90 border-neutral-100'}`}>
                         <h4 className="flex items-center gap-2.5 text-[12px] font-black text-sky-800 mb-5 uppercase tracking-[0.1em]">
                             <Activity className="w-3.5 h-3.5" /> {nutFilter !== REGION_KEYS[0] ? 'Local Rescaling' : 'Global Metric Scale'}
@@ -423,7 +423,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="flex-1">
+                <div className="absolute inset-0">
                     <MapContainer center={[38.74, -9.14]} zoom={11} className="h-full w-full" zoomControl={false} style={{ background: isDarkMode ? '#0a0a0a' : '#f0f0f0' }}>
                         <ZoomHandler extent={nutFilter === REGION_KEYS[0] ? DEFAULT_REGION : nutFilter} />
                         <SelectedFeatureCentering zoomRequest={zoomRequest} activeGeoData={computedGeoData} />
