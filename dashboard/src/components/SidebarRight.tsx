@@ -18,7 +18,7 @@ interface SidebarRightProps {
     allDomains: Record<string, [number, number]>;
     getColor: (val: number, domain: [number, number], metric: MetricDef) => string;
     subLevelData: any[];
-    chartData: { top10: any[], worst10: any[] };
+    chartData: { bestPerformers: any[], worstPerformers: any[] };
     setSelectedFeature: (feat: any) => void;
     computedGeoData: any;
     setZoomRequest: (req: any) => void;
@@ -41,7 +41,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                             <h3 className="text-[12px] font-black opacity-30 uppercase tracking-[0.3em] flex items-center gap-2">
                                 <MapPin className="w-3.5 h-3.5 text-sky-800" /> {t('sidebar.area_details')}
                             </h3>
-                            <button 
+                            <button
                                 onClick={() => setSelectedFeature(null)}
                                 className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ${isDarkMode ? 'hover:bg-white/5 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-400'}`}
                             >
@@ -64,7 +64,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                             <div className="grid grid-cols-2 gap-4 mb-6">
                                 {FLAT_METRICS_FILTERED(selectedMetricId, selectedMode, selectedFeature, allDomains, getColor, isDarkMode, t)}
                             </div>
-                            
+
                             {/* Modal Share Breakdown */}
                             {selectedFeature.share_car !== undefined && (
                                 <div className="mb-6 pt-6 border-t border-neutral-800/50">
@@ -147,7 +147,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                 <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">{t('sidebar.top_performers')}</p>
                                 <div className={`h-44 rounded-[28px] p-5 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
                                     <MiniBarChart
-                                        data={chartData.top10}
+                                        data={chartData.bestPerformers}
                                         metric={selectedMetric}
                                         isDark={isDarkMode}
                                         type="highest"
@@ -165,7 +165,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                 <p className="text-[12px] font-bold opacity-50 mb-3 px-1 uppercase tracking-tighter">{t('sidebar.low_performers')}</p>
                                 <div className={`h-44 rounded-[28px] p-5 border shadow-inner ${isDarkMode ? 'bg-neutral-800/20 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
                                     <MiniBarChart
-                                        data={chartData.worst10}
+                                        data={chartData.worstPerformers}
                                         metric={selectedMetric}
                                         isDark={isDarkMode}
                                         type="lowest"

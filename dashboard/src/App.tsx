@@ -316,7 +316,7 @@ const Dashboard = () => {
     }, [viewLevel, selectedFeature, selectedMetric, selectedMode, dataState]);
 
     const chartData = useMemo(() => {
-        if (!computedGeoData?.features) return { top10: [], worst10: [] };
+        if (!computedGeoData?.features) return { bestPerformers: [], worstPerformers: [] };
         const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
         const parentLevel = LEVEL_CONFIG[viewLevel].parent;
         const feats = computedGeoData.features.map((f: any) => {
@@ -333,7 +333,7 @@ const Dashboard = () => {
             };
         });
         const sorted = [...feats].sort((a, b) => b.value - a.value);
-        return { top10: sorted.slice(0, 10), worst10: [...sorted].reverse().slice(0, 10).reverse() };
+        return { bestPerformers: sorted.slice(0, 5), worstPerformers: [...sorted].reverse().slice(0, 5).reverse() };
     }, [computedGeoData, selectedMetric, selectedMode, currentDomain, getColor, viewLevel, dataState.parentLookup]);
 
     const resetWeights = () => {

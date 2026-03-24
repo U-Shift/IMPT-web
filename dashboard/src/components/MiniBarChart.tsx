@@ -30,18 +30,53 @@ export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], 
                     return null;
                 }} />
                 {/* Labels anchored to the full width of the grid */}
-                <Bar dataKey="fullSpace" fill="transparent" isAnimationActive={false} onClick={(d) => d?.id && onSelect?.(d.id)} style={{ cursor: 'pointer' }}>
+                <Bar
+                    dataKey="fullSpace"
+                    fill="rgba(0,0,0,0)"
+                    isAnimationActive={false}
+                    onClick={(d) => d?.id && onSelect?.(d.id)}
+                    style={{ cursor: 'pointer' }}
+                >
                     <LabelList
                         dataKey="name"
-                        position="insideLeft"
-                        offset={0}
-                        formatter={(val: any) => (typeof val === 'string' && val.length > 50) ? `${val.substring(0, 47)}...` : val}
-                        style={{
-                            fontSize: '9px', fontWeight: 'bold', fill: isDark ? 'white' : 'black', opacity: 0.8
+                        content={(props: any) => {
+                            const { x, y, value } = props;
+                            return (
+                                <foreignObject x={x} y={y - 14} width="90%" height="28" style={{ pointerEvents: 'none' }}>
+                                    <div style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        paddingLeft: '4px',
+                                        fontSize: '12px',
+                                        fontWeight: 'bold',
+                                        color: isDark ? 'white' : 'black',
+                                        opacity: 0.8,
+                                        marginTop: '0.2rem'
+                                    }}>
+                                        <span style={{
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                            width: '100%',
+                                            display: 'block'
+                                        }}>
+                                            {value}
+                                        </span>
+                                    </div>
+                                </foreignObject>
+                            );
                         }}
                     />
                 </Bar>
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={12} onClick={(d) => d?.id && onSelect?.(d.id)} style={{ cursor: 'pointer' }}>
+                <Bar
+                    dataKey="value"
+                    radius={[0, 4, 4, 0]}
+                    barSize={28}
+                    onClick={(d) => d?.id && onSelect?.(d.id)}
+                    style={{ cursor: 'pointer' }}
+                >
                     {chartData.map((d, index) => (
                         <Cell key={`cell-${index}`} fill={d.color} />
                     ))}
