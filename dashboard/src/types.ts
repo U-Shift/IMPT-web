@@ -7,8 +7,7 @@ export type MetricDef = {
     icon?: string;
     description?: string;
     format: (v: number) => string;
-    isDivergent?: boolean;
-    higherTheBetter?: boolean;
+    pallete: string[];
     unit?: string;
     viewLevel?: 'municipality' | 'all'; // Restrict visibility
     isFake?: boolean; // Label as placeholder data
