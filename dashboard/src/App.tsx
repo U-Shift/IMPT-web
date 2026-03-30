@@ -95,8 +95,6 @@ const Dashboard = () => {
 
     // Helper to check if a specific mode is available for a metric at a certain view level
     const isModeAvailable = (modeId: string, metricId: string, level: string) => {
-        if (modeId === 'all') return true;
-
         const metric = FLAT_METRICS.find(m => m.id === metricId);
         let checkMetricId = metricId;
 
@@ -109,8 +107,9 @@ const Dashboard = () => {
         const mode = MODES.find(m => m.id === modeId);
         if (!mode || !dataState.geo[level as ViewLevel]) return false;
         const feature = dataState.geo[level as ViewLevel]?.features[0];
+        if (!feature) return false;
         const effectiveId = `${checkMetricId}${mode.suffix}`;
-        return !!(feature?.properties && feature.properties[effectiveId] !== undefined);
+        return !!(feature.properties && feature.properties[effectiveId] !== undefined);
     };
 
     // Helper to check if a metric is available at a certain view level with the current mode
@@ -126,16 +125,31 @@ const Dashboard = () => {
 
         if (!dataState.geo[level as ViewLevel]) return false;
         const feature = dataState.geo[level as ViewLevel]?.features[0];
+        if (!feature) return false;
         const effectiveId = `${checkMetricId}${modeSuffix}`;
-        return feature && feature.properties && (feature.properties[effectiveId] !== undefined || feature.properties[checkMetricId] !== undefined);
+        return feature.properties && (feature.properties[effectiveId] !== undefined || feature.properties[checkMetricId] !== undefined);
     };
+
+    // Derive effective level and mode to ensure consistent rendering even before useEffect synchronizes state
+    const effectiveLevel = useMemo(() => {
+        if (isMetricAvailable(selectedMetricId, viewLevel)) return viewLevel;
+        return (['hex', 'freguesia', 'municipality'] as const).find(l => isMetricAvailable(selectedMetricId, l)) || viewLevel;
+    }, [selectedMetricId, viewLevel, dataState.geo]);
+
+    const effectiveMode = useMemo(() => {
+        if (isModeAvailable(selectedModeId, selectedMetricId, effectiveLevel)) return selectedMode;
+        // Fallback to first available mode for this metric
+        const firstAvailable = MODES.find(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel));
+        return firstAvailable || MODES[0];
+    }, [selectedModeId, selectedMetricId, effectiveLevel, dataState.geo, selectedMode]);
 
     // Auto-switch view level OR reset mode if not available for selected metric
     useEffect(() => {
-        // Reset mode if current mode is not available for selected metric at this level
-        if (selectedModeId !== 'all' && !isModeAvailable(selectedModeId, selectedMetricId, viewLevel)) {
-            setSelectedModeId('all');
-            return;
+        if (!isModeAvailable(selectedModeId, selectedMetricId, viewLevel)) {
+            const firstAvailable = MODES.find(m => isModeAvailable(m.id, selectedMetricId, viewLevel));
+            if (firstAvailable) {
+                setSelectedModeId(firstAvailable.id as ModeId);
+            }
         }
 
         if (!isMetricAvailable(selectedMetricId, viewLevel)) {
@@ -147,7 +161,7 @@ const Dashboard = () => {
     }, [selectedMetricId, selectedModeId, viewLevel, dataState.geo]);
 
     const computedGeoData = useMemo(() => {
-        let raw = dataState.geo[viewLevel];
+        let raw = dataState.geo[effectiveLevel];
         if (!raw || !raw.features) return { type: "FeatureCollection", features: [] };
 
         let features = raw.features;
@@ -180,7 +194,7 @@ const Dashboard = () => {
         }
 
         return { ...raw, features };
-    }, [viewLevel, nutFilter, dataState, weights, selectedMode.suffix]);
+    }, [effectiveLevel, nutFilter, dataState, weights, effectiveMode.suffix]);
     const filteredLimits = useMemo(() => {
         if (!dataState.limits) return null;
         if (nutFilter === REGION_KEYS[0]) return dataState.limits;
@@ -194,30 +208,30 @@ const Dashboard = () => {
     const currentDomain = useMemo(() => {
         const defaultDomain: [number, number] = [0, 1];
         if (!computedGeoData?.features?.length) return defaultDomain;
-        const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+        const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const values = computedGeoData.features.map((f: any) => f.properties?.[effectiveId]).filter((v: any) => v !== undefined && !isNaN(v));
         if (values.length === 0) return defaultDomain;
         return [Math.min(...values), Math.max(...values)] as [number, number];
-    }, [computedGeoData, selectedMetric, selectedMode]);
+    }, [computedGeoData, selectedMetric, effectiveMode]);
 
     // Precompute domains for all metrics shown in details to support dynamic coloring
     const allDomains = useMemo(() => {
         const result: Record<string, [number, number]> = {};
         if (!computedGeoData?.features?.length) return result;
         FLAT_METRICS.filter(m => m.showDetails).forEach(m => {
-            const effectiveId = `${m.id}${selectedMode.suffix}`;
+            const effectiveId = `${m.id}${effectiveMode.suffix}`;
             const values = computedGeoData.features.map((f: any) => f.properties?.[effectiveId]).filter((v: any) => v !== undefined && !isNaN(v));
             result[m.id] = values.length > 0 ? [Math.min(...values), Math.max(...values)] : [0, 1];
         });
         return result;
-    }, [computedGeoData, selectedMode]);
+    }, [computedGeoData, effectiveMode]);
 
     const getColor = (val: number, domain: [number, number], metric: MetricDef) => {
         if (val === null || val === undefined) return '#333';
         const [min, max] = domain;
         const range = max - min;
 
-        if (range === 0) metric.pallete[Math.floor(metric.pallete.length / 2)];
+        if (range === 0) return metric.pallete[Math.floor(metric.pallete.length / 2)];
 
         const norm = Math.max(0, Math.min(1, (val - min) / range));
         const activeArray = metric.pallete;
@@ -234,26 +248,26 @@ const Dashboard = () => {
     };
 
     const getStyle = (feature: any) => {
-        const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+        const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const val = feature.properties[effectiveId];
         const isSelected = selectedFeature && feature.properties.id === selectedFeature.id;
         return {
             fillColor: getColor(val || 0, currentDomain, selectedMetric),
-            weight: isSelected ? 3 : (viewLevel === 'hex' ? 0.3 : 0.6),
+            weight: isSelected ? 3 : (effectiveLevel === 'hex' ? 0.3 : 0.6),
             opacity: 1,
             color: isSelected ? '#a5b4fc' : 'white',
             fillOpacity: isSelected ? 0.9 : 0.75,
-            dashArray: (viewLevel === 'freguesia' && !isSelected) ? '3' : ''
+            dashArray: (effectiveLevel === 'freguesia' && !isSelected) ? '3' : ''
         };
     };
 
     const onEachFeature = (feature: any, layer: any) => {
         const props = feature.properties;
-        const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+        const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const val = props[effectiveId] ?? props[selectedMetric.id];
         const formattedVal = selectedMetric.format(val || 0);
 
-        const parentLevel = LEVEL_CONFIG[viewLevel].parent;
+        const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const parentName = (parentLevel && props.group_id)
             ? (dataState.parentLookup[`${parentLevel}-${props.group_id}`] || props.group_id)
             : 'LMA';
@@ -282,20 +296,20 @@ const Dashboard = () => {
     };
 
     const subLevelData = useMemo(() => {
-        if (!selectedFeature || viewLevel === 'hex') return [];
-        const level = viewLevel === 'municipality' ? 'freguesia' : 'hex';
+        if (!selectedFeature || effectiveLevel === 'hex') return [];
+        const level = effectiveLevel === 'municipality' ? 'freguesia' : 'hex';
         if (!dataState.geo[level]) return [];
-        const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
+        const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         return dataState.geo[level].features
             .filter((f: any) => String(f.properties.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
             .sort((a: any, b: any) => ((b[effectiveId] ?? b[selectedMetric.id]) || 0) - ((a[effectiveId] ?? a[selectedMetric.id]) || 0));
-    }, [viewLevel, selectedFeature, selectedMetric, selectedMode, dataState]);
+    }, [effectiveLevel, selectedFeature, selectedMetric, effectiveMode, dataState]);
 
     const chartData = useMemo(() => {
         if (!computedGeoData?.features) return { bestPerformers: [], worstPerformers: [] };
-        const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
-        const parentLevel = LEVEL_CONFIG[viewLevel].parent;
+        const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
+        const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const feats = computedGeoData.features.map((f: any) => {
             const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
             const groupName = (parentLevel && f.properties?.group_id)
@@ -311,7 +325,7 @@ const Dashboard = () => {
         });
         const sorted = [...feats].sort((a, b) => b.value - a.value);
         return { bestPerformers: sorted.slice(0, 5), worstPerformers: [...sorted].reverse().slice(0, 5).reverse() };
-    }, [computedGeoData, selectedMetric, selectedMode, currentDomain, getColor, viewLevel, dataState.parentLookup]);
+    }, [computedGeoData, selectedMetric, effectiveMode, currentDomain, getColor, effectiveLevel, dataState.parentLookup]);
 
     const resetWeights = () => {
         setWeights(defaultWeights);
@@ -336,7 +350,7 @@ const Dashboard = () => {
                     selectedMetric={selectedMetric}
                     selectedMetricId={selectedMetricId}
                     setSelectedMetricId={setSelectedMetricId}
-                    viewLevel={viewLevel}
+                    viewLevel={effectiveLevel}
                     collapsedSections={collapsedSections}
                     toggleSection={toggleSection}
                     weights={weights}
@@ -366,7 +380,7 @@ const Dashboard = () => {
                                 isDark={isDarkMode}
                                 icon={<Layers className="w-3.5 h-3.5" />}
                                 options={(['hex', 'freguesia', 'municipality'] as const)
-                                    .filter(l => isMetricAvailable(selectedMetricId, l))
+                                    .filter(l => isMetricAvailable(selectedMetricId, l, effectiveMode.suffix))
                                     .map(l => ({ id: l, label: l === 'hex' ? t('map.grid') : t(`map.${l}`) }))}
                                 onChange={(id) => {
                                     setViewLevel(id as ViewLevel);
@@ -390,10 +404,10 @@ const Dashboard = () => {
 
                             <MapFilterDropdown
                                 label={t('map.mode')}
-                                value={selectedModeId}
+                                value={effectiveMode.id}
                                 isDark={isDarkMode}
                                 icon={<RocketIcon className="w-3.5 h-3.5" />}
-                                options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, viewLevel))
+                                options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel))
                                     .map(m => ({ id: m.id, label: t(m.label), icon: m.icon }))}
                                 onChange={(id) => setSelectedModeId(id as ModeId)}
                             />
@@ -420,7 +434,7 @@ const Dashboard = () => {
                                 </div>
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
                                     <p className="text-[13px] font-black leading-tight mb-2 uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit})` : ''}</p>
-                                    <p className="text-[13px] opacity-40 leading-relaxed font-bold tracking-tight">{selectedMetric.description ? t(selectedMetric.description) : `Spatial distribution and variance of ${t(selectedMetric.label).toLowerCase()} across the ${t(`map.${viewLevel}`)} network.`}</p>
+                                    <p className="text-[13px] opacity-40 leading-relaxed font-bold tracking-tight">{selectedMetric.description ? t(selectedMetric.description) : `Spatial distribution and variance of ${t(selectedMetric.label).toLowerCase()} across the ${t(`map.${effectiveLevel}`)} network.`}</p>
                                 </div>
                             </div>
                         </div>
@@ -439,10 +453,10 @@ const Dashboard = () => {
                         })()}
                         <MapTools isDarkMode={isDarkMode} mapStyle={mapStyle} setMapStyle={setMapStyle} />
                         {computedGeoData?.features && (
-                            <GeoJSON key={`${viewLevel}-${nutFilter}-${selectedMetricId}-${selectedModeId}-${isDarkMode}-${selectedFeature?.id}-${i18n.language}-${JSON.stringify(weights)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
+                            <GeoJSON key={`${effectiveLevel}-${nutFilter}-${selectedMetricId}-${effectiveMode.id}-${isDarkMode}-${selectedFeature?.id}-${i18n.language}-${JSON.stringify(weights)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
                         )}
                         <Pane name="limits-pane" style={{ zIndex: 450 }}>
-                            {viewLevel !== 'municipality' && filteredLimits && (
+                            {effectiveLevel !== 'municipality' && filteredLimits && (
                                 <GeoJSON key={`limits-${nutFilter}-${isDarkMode}`} data={filteredLimits as any} style={{ fillOpacity: 0, weight: 4, color: isDarkMode ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.3)' }} interactive={false} />
                             )}
                         </Pane>
@@ -454,10 +468,10 @@ const Dashboard = () => {
                 <SidebarRight
                     isDarkMode={isDarkMode}
                     selectedFeature={selectedFeature}
-                    viewLevel={viewLevel}
+                    viewLevel={effectiveLevel}
                     selectedMetric={selectedMetric}
                     selectedMetricId={selectedMetricId}
-                    selectedMode={selectedMode}
+                    selectedMode={effectiveMode}
                     dataState={dataState}
                     allDomains={allDomains}
                     getColor={getColor}

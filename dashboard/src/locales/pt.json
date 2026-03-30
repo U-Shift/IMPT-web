@@ -94,9 +94,13 @@
   },
   "modes": {
     "all": "Todos",
+    "all_nav": "Todos (com Navegante)",
+    "all_no_nav": "Todos (sem Navegante)",
     "bike": "Bicicleta",
     "car": "Carro",
     "pt": "TP",
+    "pt_nav": "TP (com Navegante)",
+    "pt_no_nav": "TP (sem Navegante)",
     "walk": "Caminhada"
   },
   "about": {

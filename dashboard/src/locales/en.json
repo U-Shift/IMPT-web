@@ -94,9 +94,13 @@
   },
   "modes": {
     "all": "All",
+    "all_nav": "All (with Navegante)",
+    "all_no_nav": "All (without Navegante)",
     "bike": "Bike",
     "car": "Car",
     "pt": "PT",
+    "pt_nav": "PT (with Navegante)",
+    "pt_no_nav": "PT (without Navegante)",
     "walk": "Walk"
   },
   "about": {

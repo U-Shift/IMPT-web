@@ -25,7 +25,7 @@ export const MapFilterDropdown: React.FC<MapFilterDropdownProps> = ({
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
 
-    const selectedOption = options.find(opt => opt.id === value) || options[0];
+    const selectedOption = options.find(opt => opt.id === value) || options[0] || { id: '', label: 'Select...' };
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {

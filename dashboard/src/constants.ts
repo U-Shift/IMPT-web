@@ -112,9 +112,13 @@ export const REGIONS = {
 
 export const MODES = [
     { id: 'all', label: 'modes.all', suffix: '', icon: '🌐' },
+    { id: 'all_nav', label: 'modes.all_nav', suffix: '_nav', icon: '🌐' },
+    { id: 'all_no_nav', label: 'modes.all_no_nav', suffix: '_no_nav', icon: '🌐' },
     { id: 'bike', label: 'modes.bike', suffix: '_bike', icon: '🚲' },
     { id: 'car', label: 'modes.car', suffix: '_car', icon: '🚗' },
     { id: 'pt', label: 'modes.pt', suffix: '_pt', icon: '🚍' },
+    { id: 'pt_nav', label: 'modes.pt_nav', suffix: '_pt_nav', icon: '🚍' },
+    { id: 'pt_no_nav', label: 'modes.pt_no_nav', suffix: '_pt_no_nav', icon: '🚍' },
     { id: 'walk', label: 'modes.walk', suffix: '_walk', icon: '🚶' }
 ] as const;
 
