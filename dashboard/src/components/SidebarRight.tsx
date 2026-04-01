@@ -115,13 +115,13 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                     </div>
                                 </div>
                             )}
-                            {viewLevel === 'municipality' && subLevelData.length > 0 && (
+                            {Object.values(LEVEL_CONFIG).some(config => config.parent === viewLevel) && subLevelData.length > 0 && (
                                 <div className="mt-8 pt-6 border-t border-neutral-800/50">
                                     <h4 className="text-[12px] font-black opacity-30 uppercase mb-4 tracking-widest">{t('sidebar.constituent_dynamics')}</h4>
                                     <div className="space-y-3 max-h-40 overflow-y-auto pr-2 scrollbar-hide">
                                         {subLevelData.slice(0, 10).map((f: any) => {
                                             const effectiveId = `${selectedMetric.id}${selectedMode.suffix}`;
-                                            const val = f[effectiveId] ?? f[selectedMetric.id] ?? 0;
+                                            const val = f[effectiveId] ?? f[selectedMetric.id];
                                             return (
                                                 <div key={f.id || f.name} className="flex justify-between items-center text-[12px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-default">
                                                     <span className="opacity-50 truncate w-36">{f.name}</span>

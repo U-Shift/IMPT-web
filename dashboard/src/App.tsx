@@ -296,14 +296,15 @@ const Dashboard = () => {
     };
 
     const subLevelData = useMemo(() => {
-        if (!selectedFeature || effectiveLevel === 'hex') return [];
-        const level = effectiveLevel === 'municipality' ? 'freguesia' : 'hex';
-        if (!dataState.geo[level]) return [];
+        if (!selectedFeature) return [];
+        const childLevel = (Object.keys(LEVEL_CONFIG) as ViewLevel[]).find(l => LEVEL_CONFIG[l].parent === effectiveLevel);
+        if (!childLevel || !dataState.geo[childLevel]) return [];
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
-        return dataState.geo[level].features
+        return dataState.geo[childLevel].features
             .filter((f: any) => String(f.properties.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
-            .sort((a: any, b: any) => ((b[effectiveId] ?? b[selectedMetric.id]) || 0) - ((a[effectiveId] ?? a[selectedMetric.id]) || 0));
+            .filter((p: any) => p[effectiveId] !== undefined || p[selectedMetric.id] !== undefined)
+            .sort((a: any, b: any) => (b[effectiveId] ?? b[selectedMetric.id]) - (a[effectiveId] ?? a[selectedMetric.id]));
     }, [effectiveLevel, selectedFeature, selectedMetric, effectiveMode, dataState]);
 
     const chartData = useMemo(() => {
