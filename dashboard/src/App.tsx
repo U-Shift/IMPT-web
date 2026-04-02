@@ -184,6 +184,9 @@ const Dashboard = () => {
                     computedIndex += val * weight;
                 });
 
+                // Invert index, a lowed ranking in aggregated dimensions, means more poverty, and therefore a higher IMPT
+                computedIndex = 100 - computedIndex;
+
                 return {
                     ...f,
                     properties: {
