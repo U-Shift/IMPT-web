@@ -26,11 +26,11 @@ export const COLORS = {
     }
 };
 
-export const METRICS: Record<string, MetricDef[]> = {
+const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     'metrics.categories.mobility_poverty_index': [
         {
             id: 'IMPT_entropy_pca',
-            label: 'metrics.impt_entropy.label', category: 'metrics.categories.mobility_poverty_index',
+            label: 'metrics.impt_entropy.label',
             description: 'metrics.impt_entropy.description',
             pallete: COLORS.GreenToRed,
             format: (v) => (v || 0).toFixed(1),
@@ -38,7 +38,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'IMPT_score_pca_geom',
-            label: 'metrics.impt_geom.label', category: 'metrics.categories.mobility_poverty_index',
+            label: 'metrics.impt_geom.label',
             description: 'metrics.impt_geom.description',
             format: (v) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed,
@@ -46,7 +46,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'IMPT_score_pca_avg',
-            label: 'metrics.impt_equal.label', category: 'metrics.categories.mobility_poverty_index',
+            label: 'metrics.impt_equal.label',
             description: 'metrics.impt_equal.description',
             format: (v) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed,
@@ -54,7 +54,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'IMPT_dynamic',
-            label: 'metrics.impt_dynamic.label', category: 'metrics.categories.mobility_poverty_index',
+            label: 'metrics.impt_dynamic.label',
             description: 'metrics.impt_dynamic.description',
             format: (v) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed,
@@ -65,7 +65,7 @@ export const METRICS: Record<string, MetricDef[]> = {
     'metrics.categories.dimensions': [
         {
             id: 'Accessibility_Index',
-            label: 'metrics.accessibility.label', category: 'metrics.categories.dimensions', icon: '🏘️',
+            label: 'metrics.accessibility.label', icon: '🏘️',
             description: 'metrics.accessibility.description',
             format: (v) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
@@ -74,7 +74,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'Mobility_Index',
-            label: 'metrics.mobility.label', category: 'metrics.categories.dimensions', icon: '🚲',
+            label: 'metrics.mobility.label', icon: '🚲',
             description: 'metrics.mobility.description',
             format: (v) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
@@ -83,7 +83,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'Safety_Index',
-            label: 'metrics.safety.label', category: 'metrics.categories.dimensions', icon: '🛡️',
+            label: 'metrics.safety.label', icon: '🛡️',
             description: 'metrics.safety.description',
             format: (v) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
@@ -92,7 +92,7 @@ export const METRICS: Record<string, MetricDef[]> = {
         },
         {
             id: 'Affordability_Index',
-            label: 'metrics.affordability.label', category: 'metrics.categories.dimensions', icon: '💰',
+            label: 'metrics.affordability.label', icon: '💰',
             description: 'metrics.affordability.description',
             format: (v) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
@@ -101,6 +101,16 @@ export const METRICS: Record<string, MetricDef[]> = {
         }
     ]
 };
+
+export const METRICS = Object.freeze(
+    Object.fromEntries(
+        Object.entries(METRIC_DATA).map(([category, metrics]) => [
+            category,
+            metrics.map(m => ({ ...m, category } as MetricDef))
+        ])
+    )
+) as Record<string, MetricDef[]>;
+
 
 export const FLAT_METRICS = Object.values(METRICS).flat();
 
