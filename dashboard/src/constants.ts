@@ -126,13 +126,13 @@ export const MODES = [
     // suffixFallback is used only on IMPT dynamic computation 
     // > It tells that for that mode, if no metric with suffix, suffixFallback metric should be used instead 
     { id: 'all', label: 'modes.all', suffix: '', icon: '🌐' },
-    { id: 'all_nav', label: 'modes.all_nav', suffix: '_nav', suffixFallback: '', icon: '🌐' },
-    { id: 'all_no_nav', label: 'modes.all_no_nav', suffix: '_no_nav', suffixFallback: '', icon: '🌐' },
+    { id: 'all_pass', label: 'modes.all_pass', suffix: '_pass', suffixFallback: '', icon: '🌐' },
+    { id: 'all_no_pass', label: 'modes.all_no_pass', suffix: '_no_pass', suffixFallback: '', icon: '🌐' },
     { id: 'bike', label: 'modes.bike', suffix: '_bike', icon: '🚲' },
     { id: 'car', label: 'modes.car', suffix: '_car', icon: '🚗' },
     { id: 'pt', label: 'modes.pt', suffix: '_pt', icon: '🚍' },
-    { id: 'pt_nav', label: 'modes.pt_nav', suffix: '_pt_nav', suffixFallback: '_pt', icon: '🚍' },
-    { id: 'pt_no_nav', label: 'modes.pt_no_nav', suffix: '_pt_no_nav', suffixFallback: '_pt', icon: '🚍' },
+    { id: 'pt_pass', label: 'modes.pt_pass', suffix: '_pt_pass', suffixFallback: '_pt', icon: '🚍' },
+    { id: 'pt_no_pass', label: 'modes.pt_no_pass', suffix: '_pt_no_pass', suffixFallback: '_pt', icon: '🚍' },
     { id: 'walk', label: 'modes.walk', suffix: '_walk', icon: '🚶' }
 ] as const;
 
