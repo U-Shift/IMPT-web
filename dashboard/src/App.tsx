@@ -255,9 +255,9 @@ const Dashboard = () => {
             fillColor: getColor(val || 0, currentDomain, selectedMetric),
             weight: isSelected ? 3 : (effectiveLevel === 'hex' ? 0.3 : 0.6),
             opacity: 1,
-            color: isSelected ? '#a5b4fc' : 'white',
-            fillOpacity: isSelected ? 0.9 : 0.75,
-            dashArray: (effectiveLevel === 'freguesia' && !isSelected) ? '3' : ''
+            color: isSelected ? '#a6a6a6' : 'white',
+            fillOpacity: isSelected ? 3 : 0.75,
+            dashArray: (effectiveLevel === 'freguesia' && !isSelected) ? '3' : '',
         };
     };
 
