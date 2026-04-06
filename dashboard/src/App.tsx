@@ -6,7 +6,7 @@ import { Loader2, AlertTriangle, Activity, Layers, Globe, Zap, RocketIcon } from
 import { useTranslation } from 'react-i18next';
 
 import { ViewLevel } from './types';
-import { METRICS, FLAT_METRICS, COLORS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS, getMetricDomain, getColor, getLegendGradient } from './constants';
+import { METRICS, FLAT_METRICS, COLORS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS, getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored } from './constants';
 import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './components/MapHandlers';
 import { AHPModal } from './components/AHPModal';
 import { SidebarLeft } from './components/SidebarLeft';
@@ -177,8 +177,9 @@ const Dashboard = () => {
             // All && (Pass || NoPass) => Fallback on accessibility, mobility and safety
             // PT && (Pass || NoPass) => Fallback on accessibility, mobility AND no safety
 
+            const modeAny = effectiveMode as any;
             const dynamicId = `${dynamicMetricConfig.id}${effectiveMode.suffix}`;
-            const fallbackId = effectiveMode.suffixFallback ? `${dynamicMetricConfig.id}${effectiveMode.suffixFallback}` : undefined;
+            const fallbackId = modeAny.suffixFallback !== undefined ? `${dynamicMetricConfig.id}${modeAny.suffixFallback}` : undefined;
             console.log("Computing dynamic IMPT for", dynamicId, "(" + fallbackId + ")", dynamicMetricConfig, effectiveMode, weights);
 
             features = features.map((f: any, i: number) => {
@@ -186,19 +187,17 @@ const Dashboard = () => {
 
                 Object.entries(weights).forEach(([metricId, weight]) => {
                     const effectiveMetricId = `${metricId}${effectiveMode.suffix}`;
-                    const fallbackMetricId = effectiveMode.suffixFallback !== undefined ? `${metricId}${effectiveMode.suffixFallback}` : undefined;
+                    const fallbackMetricId = modeAny.suffixFallback !== undefined ? `${metricId}${modeAny.suffixFallback}` : undefined;
                     // Use a fallback to the base metric ID if the mode-specific suffix version is missing
-                    const val = f.properties[effectiveMetricId] ?? f.properties[fallbackMetricId] ?? undefined;
+                    const val = (f.properties[effectiveMetricId] ?? (fallbackMetricId ? f.properties[fallbackMetricId] : undefined)) ?? f.properties[metricId];
                     if (val !== undefined) {
                         computedIndex += val * weight;
                     }
                     if (val !== undefined && i == 0) {
-                        if (f.properties[effectiveMetricId]) {
+                        if (f.properties[effectiveMetricId] !== undefined) {
                             console.log("> Considering metric", effectiveMetricId, "with weight", weight);
-                        } else if (f.properties[fallbackMetricId]) {
-                            console.warn("> Considering metric", fallbackMetricId, "with weight", weight, "(using fallback)");
                         } else {
-                            console.error("Debug error")
+                            console.warn("> Considering metric fallback for", metricId, "with weight", weight);
                         }
                     } else if (i == 0) {
                         console.log("> No value for metric", metricId, val);
@@ -235,7 +234,7 @@ const Dashboard = () => {
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const values = computedGeoData.features
             .map((f: any) => f.properties?.[effectiveId])
-            .filter((v: any) => v !== undefined && !isNaN(v));
+            .filter((v: any) => !isMetricValueIgnored(v, selectedMetric));
 
         return getMetricDomain(values, selectedMetric);
     }, [computedGeoData, selectedMetric, effectiveMode]);
@@ -248,7 +247,7 @@ const Dashboard = () => {
             const effectiveId = `${m.id}${effectiveMode.suffix}`;
             const values = computedGeoData.features
                 .map((f: any) => f.properties?.[effectiveId])
-                .filter((v: any) => v !== undefined && !isNaN(v));
+                .filter((v: any) => !isMetricValueIgnored(v, m));
 
             result[m.id] = getMetricDomain(values, m);
         });
@@ -272,8 +271,10 @@ const Dashboard = () => {
 
     const onEachFeature = (feature: any, layer: any) => {
         const props = feature.properties;
+        const modeAny = effectiveMode as any;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
-        const val = props[effectiveId] ?? props[selectedMetric.id];
+        const fallbackMetricId = modeAny.suffixFallback !== undefined ? `${selectedMetric.id}${modeAny.suffixFallback}` : undefined;
+        const val = (props[effectiveId] ?? (fallbackMetricId ? props[fallbackMetricId] : undefined)) ?? props[selectedMetric.id];
         const formattedVal = selectedMetric.format(val, currentDomain[0], currentDomain[currentDomain.length - 1]);
 
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
@@ -291,7 +292,7 @@ const Dashboard = () => {
         };
         const contrastColor = getContrastColor(metricColor);
 
-        const isIgnored = selectedMetric.ignoreValues?.includes(val);
+        const isIgnored = isMetricValueIgnored(val, selectedMetric);
 
         layer.bindTooltip(`
             <div style="font-family: sans-serif; padding: 6px; min-width: 140px;">
@@ -327,28 +328,36 @@ const Dashboard = () => {
         if (!selectedFeature) return [];
         const childLevel = (Object.keys(LEVEL_CONFIG) as ViewLevel[]).find(l => LEVEL_CONFIG[l].parent === effectiveLevel);
         if (!childLevel || !dataState.geo[childLevel]) return [];
+        const modeAny = effectiveMode as any;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
+        const fallbackId = modeAny.suffixFallback !== undefined ? `${selectedMetric.id}${modeAny.suffixFallback}` : undefined;
         return dataState.geo[childLevel].features
             .filter((f: any) => String(f.properties.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
             .filter((p: any) => {
-                const v = p[effectiveId] ?? p[selectedMetric.id];
-                return v !== undefined && !(selectedMetric.ignoreValues?.includes(v));
+                const val = (p[effectiveId] ?? (fallbackId ? p[fallbackId] : undefined)) ?? p[selectedMetric.id];
+                return !isMetricValueIgnored(val, selectedMetric);
             })
-            .sort((a: any, b: any) => (b[effectiveId] ?? b[selectedMetric.id]) - (a[effectiveId] ?? a[selectedMetric.id]));
+            .sort((a: any, b: any) => {
+                const valA = (a[effectiveId] ?? (fallbackId ? a[fallbackId] : undefined)) ?? a[selectedMetric.id];
+                const valB = (b[effectiveId] ?? (fallbackId ? b[fallbackId] : undefined)) ?? b[selectedMetric.id];
+                return (valB || 0) - (valA || 0);
+            });
     }, [effectiveLevel, selectedFeature, selectedMetric, effectiveMode, dataState]);
 
     const chartData = useMemo(() => {
         if (!computedGeoData?.features) return { bestPerformers: [], worstPerformers: [] };
+        const modeAny = effectiveMode as any;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
+        const fallbackId = modeAny.suffixFallback !== undefined ? `${selectedMetric.id}${modeAny.suffixFallback}` : undefined;
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const feats = computedGeoData.features
             .filter((f: any) => {
-                const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id];
-                return val !== undefined && !(selectedMetric.ignoreValues?.includes(val));
+                const val = (f.properties?.[effectiveId] ?? (fallbackId ? f.properties?.[fallbackId] : undefined)) ?? f.properties?.[selectedMetric.id];
+                return !isMetricValueIgnored(val, selectedMetric);
             })
             .map((f: any) => {
-                const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
+                const val = (f.properties?.[effectiveId] ?? (fallbackId ? f.properties?.[fallbackId] : undefined)) ?? (f.properties?.[selectedMetric.id] ?? 0);
                 const groupName = (parentLevel && f.properties?.group_id)
                     ? (dataState.parentLookup[`${parentLevel}-${f.properties.group_id}`] || f.properties.group_id)
                     : 'LMA';

@@ -101,7 +101,17 @@
     "mobility_infrastructure_pedpath_to_road_ratio": { "label": "Rácio rede pedonal", "description": "Rácio dos caminhos pedonais face à rede rodoviária" },
     "census_landuse_buildings": { "label": "Edifícios", "description": "Número de edifícios" },
     "census_landuse_buildings_pre1945_percentage": { "label": "Edifícios pré-1945 (%)", "description": "Percentagem de edifícios construídos antes de 1945 (_sem garagem automóvel?_)" },
-    "census_landuse_volume_density": { "label": "Densidade de volume edificado", "description": "Densidade de volume edificado (m3/m2)" }
+    "census_landuse_volume_density": { "label": "Densidade de volume edificado", "description": "Densidade de volume edificado (m3/m2)" },
+    "safety_inner_total_acidentes": "Total de acidentes",
+    "safety_inner_indice_gravidade": "Índice de gravidade",
+    "affordability_total_money": {
+      "label": "Custo da mobilidade",
+      "description": "Despesa mensal estimada em transportes"
+    },
+    "modal_census_share": "Quota modal (Residentes)",
+    "census_income_income_hh": "Rendimento das famílias",
+    "census_income_gini_coef": "Coeficiente de Gini",
+    "census_income_housing_costs": "Custos com habitação"
   },
   "regions": {
     "metropolis": "Área Metropolitana",

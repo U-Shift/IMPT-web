@@ -101,7 +101,17 @@
     "mobility_infrastructure_pedpath_to_road_ratio": { "label": "Pedestrian infrastructure ratio", "description": "Ratio of pedestrian paths to road length" },
     "census_landuse_buildings": { "label": "Buildings", "description": "Number of buildings" },
     "census_landuse_buildings_pre1945_percentage": { "label": "Buildings pre-1945 (%)", "description": "Percentage of buildings built before 1945 (_without car garage?_)" },
-    "census_landuse_volume_density": { "label": "Building volume density", "description": "Building volume density (m3/m2)" }
+    "census_landuse_volume_density": { "label": "Building volume density", "description": "Building volume density (m3/m2)" },
+    "safety_inner_total_acidentes": "Total accidents",
+    "safety_inner_indice_gravidade": "Severity index",
+    "affordability_total_money": {
+      "label": "Cost of Mobility",
+      "description": "Estimated monthly expenditure on transportation"
+    },
+    "modal_census_share": "Modal share (Residents)",
+    "census_income_income_hh": "Household income",
+    "census_income_gini_coef": "Gini coefficient",
+    "census_income_housing_costs": "Housing costs"
   },
   "regions": {
     "metropolis": "Metro Area",
