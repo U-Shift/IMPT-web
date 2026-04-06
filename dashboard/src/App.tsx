@@ -290,20 +290,35 @@ const Dashboard = () => {
         const props = feature.properties;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const val = props[effectiveId] ?? props[selectedMetric.id];
-        const formattedVal = selectedMetric.format(val || 0, currentDomain[0], currentDomain[1]);
+        const formattedVal = selectedMetric.format(val || 0, currentDomain[0], currentDomain[currentDomain.length - 1]);
 
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const parentName = (parentLevel && props.group_id)
             ? (dataState.parentLookup[`${parentLevel}-${props.group_id}`] || props.group_id)
             : '';
 
+        const metricColor = getColor(val || 0, currentDomain, selectedMetric);
+        const getContrastColor = (hexcolor: string) => {
+            const r = parseInt(hexcolor.slice(1, 3), 16);
+            const g = parseInt(hexcolor.slice(3, 5), 16);
+            const b = parseInt(hexcolor.slice(5, 7), 16);
+            const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+            return (yiq >= 128) ? '#111' : '#fff';
+        };
+        const contrastColor = getContrastColor(metricColor);
+
         layer.bindTooltip(`
-            <div style="font-family: sans-serif; padding: 4px;">
-                <div style="font-size: 10px; font-weight: 900; color: #666; text-transform: uppercase;">${parentName}</div>
-                <div style="font-size: 12px; font-weight: 700; color: #111;">${props.name || 'N/A'}</div>
-                <div style="font-size: 11px; font-weight: 900; color: ${getColor(val || 0, currentDomain, selectedMetric)}; margin-top: 4px;">${t(selectedMetric.label)}: ${formattedVal} ${selectedMetric.unit || ''}</div>
+            <div style="font-family: sans-serif; padding: 6px; min-width: 140px;">
+                <div style="font-size: 10px; font-weight: 900; color: #888; text-transform: uppercase; margin-bottom: 2px;">${parentName}</div>
+                <div style="font-size: 13px; font-weight: 800; color: #111; line-height: 1.2;">${props.name || 'N/A'}</div>
+                <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                    <span style="font-size: 10px; font-weight: 900; color: #444; text-transform: uppercase;">${t(selectedMetric.label)}</span>
+                    <span style="font-size: 11px; font-weight: 900; background-color: ${metricColor}; color: ${contrastColor}; padding: 3px 10px; border-radius: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); white-space: nowrap;">
+                        ${formattedVal}${selectedMetric.unit ? ' ' + selectedMetric.unit : ''}
+                    </span>
+                </div>
             </div>
-        `, { sticky: true, opacity: 0.95 });
+        `, { sticky: true, opacity: 0.98, direction: 'top', offset: [0, -10] });
 
         layer.on({
             click: (e: L.LeafletMouseEvent) => {
