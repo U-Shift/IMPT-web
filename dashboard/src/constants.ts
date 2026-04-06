@@ -6,7 +6,7 @@ export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel 
     'hex': { file: 'data/grid_aggregated.geojson', parent: 'freguesia' }
 };
 
-export const getQuintileRange = (value: number): string => {
+export const getEqualIntervals = (value: number): string => {
     const quintile = Math.floor(value / 20);
     // Prevent 100-120
     if (quintile === 5) {
@@ -64,7 +64,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Accessibility_Index',
             label: 'metrics.accessibility.label', icon: '🏘️',
             description: 'metrics.accessibility.description',
-            format: (v, min, max) => getQuintileRange(v || 0),
+            format: (v, min, max) => getEqualIntervals(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -73,7 +73,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Mobility_Index',
             label: 'metrics.mobility.label', icon: '🚲',
             description: 'metrics.mobility.description',
-            format: (v, min, max) => getQuintileRange(v || 0),
+            format: (v, min, max) => getEqualIntervals(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -82,7 +82,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Safety_Index',
             label: 'metrics.safety.label', icon: '🛡️',
             description: 'metrics.safety.description',
-            format: (v, min, max) => getQuintileRange(v || 0),
+            format: (v, min, max) => getEqualIntervals(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -91,7 +91,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Affordability_Index',
             label: 'metrics.affordability.label', icon: '💰',
             description: 'metrics.affordability.description',
-            format: (v, min, max) => getQuintileRange(v || 0),
+            format: (v, min, max) => getEqualIntervals(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
