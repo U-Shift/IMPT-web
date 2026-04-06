@@ -390,13 +390,6 @@ const Dashboard = () => {
             <div className="absolute inset-0 bg-neutral-950 z-0">
                 <style>{`.leaflet-container { outline: none !important; } .leaflet-path { cursor: pointer; outline: none !important; }`}</style>
 
-                {selectedMetric.isFake && (
-                    <div className="absolute top-[88px] left-[416px] z-[1000] flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600/90 text-white shadow-xl backdrop-blur-md animate-pulse">
-                        <AlertTriangle className="w-3.5 h-3.5" />
-                        <span className="text-[13px] font-black uppercase tracking-widest">{t('map.synthetic_data')}</span>
-                    </div>
-                )}
-
                 {!isMobile && (
                     <div className="absolute top-8 left-[416px] z-[1002] flex items-start pointer-events-none">
                         <div className="flex gap-4 pointer-events-auto items-center">

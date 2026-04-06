@@ -110,8 +110,6 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                 {!collapsedSections[cat] && (
                                     <div className={`p-2 space-y-1.5 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
                                         {METRICS[cat].map(m => {
-                                            const isVisible = !m.viewLevel || (m.viewLevel === 'municipality' && viewLevel === 'municipality');
-                                            if (!isVisible) return null;
                                             return (
                                                 <button key={m.id} onClick={() => setSelectedMetricId(m.id)}
                                                     data-tooltip={t(m.description as string)}
@@ -122,7 +120,6 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                     <span className="flex items-center gap-3">
                                                         <span>{m.icon}</span>
                                                         <span className="truncate">{t(m.label)}</span>
-                                                        {m.isFake && <AlertTriangle className="w-2.5 h-2.5 text-amber-500 ml-auto opacity-60" />}
                                                     </span>
                                                 </button>
                                             );

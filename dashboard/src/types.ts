@@ -9,8 +9,6 @@ export type MetricDef = {
     format: (v: number, min: number, max: number) => string;
     pallete: string[];
     unit?: string;
-    viewLevel?: 'municipality' | 'all'; // Restrict visibility
-    isFake?: boolean; // Label as placeholder data
     default?: boolean; // Show by default
     // Area details sidebar (opens on the right, when user clicks on a feature)
     showDetails?: boolean; // Show in "Area details" section
