@@ -290,7 +290,7 @@ const Dashboard = () => {
         const props = feature.properties;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const val = props[effectiveId] ?? props[selectedMetric.id];
-        const formattedVal = selectedMetric.format(val || 0);
+        const formattedVal = selectedMetric.format(val || 0, currentDomain[0], currentDomain[1]);
 
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const parentName = (parentLevel && props.group_id)
@@ -454,8 +454,8 @@ const Dashboard = () => {
                                         style={{ background: getLegendGradient() }}
                                     />
                                     <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
-                                        <span>{selectedMetric.format(currentDomain[0])}</span>
-                                        <span>{selectedMetric.format(currentDomain[1])}</span>
+                                        <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[1])}</span>
+                                        <span>{selectedMetric.format(currentDomain[1], currentDomain[0], currentDomain[1])}</span>
                                     </div>
                                 </div>
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>

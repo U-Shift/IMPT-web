@@ -38,14 +38,14 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.impt_entropy.label',
             description: 'metrics.impt_entropy.description',
             pallete: COLORS.GreenToRed,
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             showDetails: true, showDetailsOnlyWhenSelected: true
         },
         {
             id: 'IMPT_score_pca_geom',
             label: 'metrics.impt_geom.label',
             description: 'metrics.impt_geom.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed,
             showDetails: true, showDetailsOnlyWhenSelected: true, default: true
         },
@@ -53,7 +53,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'IMPT_dynamic',
             label: 'metrics.impt_dynamic.label',
             description: 'metrics.impt_dynamic.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed,
             showDetails: true, showDetailsOnlyWhenSelected: true,
             isCalculated: true
@@ -64,7 +64,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Accessibility_Index',
             label: 'metrics.accessibility.label', icon: '🏘️',
             description: 'metrics.accessibility.description',
-            format: (v) => getQuintileRange(v || 0),
+            format: (v, min, max) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -73,7 +73,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Mobility_Index',
             label: 'metrics.mobility.label', icon: '🚲',
             description: 'metrics.mobility.description',
-            format: (v) => getQuintileRange(v || 0),
+            format: (v, min, max) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -82,7 +82,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Safety_Index',
             label: 'metrics.safety.label', icon: '🛡️',
             description: 'metrics.safety.description',
-            format: (v) => getQuintileRange(v || 0),
+            format: (v, min, max) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -91,7 +91,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'Affordability_Index',
             label: 'metrics.affordability.label', icon: '💰',
             description: 'metrics.affordability.description',
-            format: (v) => getQuintileRange(v || 0),
+            format: (v, min, max) => getQuintileRange(v || 0),
             pallete: COLORS.RedToGreen,
             showDetails: true,
             isContributory: true, defaultWeight: 0.25
@@ -103,28 +103,28 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'safety_total_acidentes',
             label: 'metrics.safety_total_acidentes',
             description: 'metrics.safety_total_acidentes.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.WhiteToRed
         },
         {
             id: 'safety_indice_gravidade',
             label: 'metrics.safety_indice_gravidade',
             description: 'metrics.safety_indice_gravidade.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.WhiteToRed
         },
         {
             id: 'safety_inner_total_acidentes',
             label: 'metrics.safety_inner_total_acidentes',
             description: 'metrics.safety_inner_total_acidentes.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.WhiteToRed
         },
         {
             id: 'safety_inner_indice_gravidade',
             label: 'metrics.safety_inner_indice_gravidade',
             description: 'metrics.safety_inner_indice_gravidade.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.WhiteToRed
         }
     ],
@@ -133,7 +133,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'affordability_total_money',
             label: 'metrics.affordability_total_money.label',
             description: 'metrics.affordability_total_money.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.GreenToRed
         }
     ],
@@ -143,63 +143,63 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'modal_census_share',
             label: 'metrics.modal_census_share',
             description: 'metrics.modal_census_share.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_income_income_hh',
             label: 'metrics.census_income_income_hh',
             description: 'metrics.census_income_income_hh.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_income_gini_coef',
             label: 'metrics.census_income_gini_coef',
             description: 'metrics.census_income_gini_coef.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_income_housing_costs',
             label: 'metrics.census_income_housing_costs',
             description: 'metrics.census_income_housing_costs.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_population',
             label: 'metrics.census_landuse_population',
             description: 'metrics.census_landuse_population.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_population_density',
             label: 'metrics.census_landuse_population_density',
             description: 'metrics.census_landuse_population_density.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_youth_ratio',
             label: 'metrics.census_landuse_youth_ratio',
             description: 'metrics.census_landuse_youth_ratio.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_elderly_ratio',
             label: 'metrics.census_landuse_elderly_ratio',
             description: 'metrics.census_landuse_elderly_ratio.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_women_percentage',
             label: 'metrics.census_landuse_women_percentage',
             description: 'metrics.census_landuse_women_percentage.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         }
     ],
@@ -208,28 +208,28 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'census_landuse_buildings',
             label: 'metrics.census_landuse_buildings',
             description: 'metrics.census_landuse_buildings.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_buildings_pre1945_percentage',
             label: 'metrics.census_landuse_buildings_pre1945_percentage',
             description: 'metrics.census_landuse_buildings_pre1945_percentage.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_buildings_volume_m3',
             label: 'metrics.census_landuse_buildings_volume_m3',
             description: 'metrics.census_landuse_buildings_volume_m3.description',
-            format: (v) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(),
             pallete: COLORS.RedToGreen
         },
         {
             id: 'census_landuse_volume_density',
             label: 'metrics.census_landuse_volume_density',
             description: 'metrics.census_landuse_volume_density.description',
-            format: (v) => (v || 0).toFixed(1),
+            format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
         }
     ]

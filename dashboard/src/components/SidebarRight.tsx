@@ -137,7 +137,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                                     className="flex justify-between items-center text-[12px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-pointer"
                                                 >
                                                     <span className="opacity-50 w-36">{f.name}</span>
-                                                    <span className="font-bold text-sky-800">{selectedMetric.format(val)}</span>
+                                                    <span className="font-bold text-sky-800">{selectedMetric.format(val, allDomains[selectedMetric.id]?.[0] || 0, allDomains[selectedMetric.id]?.[1] || 1)}</span>
                                                 </div>
                                             );
                                         })}
@@ -217,7 +217,7 @@ const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, sele
             <DetailCard
                 key={m.id}
                 label={t(m.label)}
-                value={m.format(val)}
+                value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[1] || 1)}
                 hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
                 isDark={isDarkMode}
             />

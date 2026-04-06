@@ -6,7 +6,7 @@ export type MetricDef = {
     category: string;
     icon?: string;
     description?: string;
-    format: (v: number) => string;
+    format: (v: number, min: number, max: number) => string;
     pallete: string[];
     unit?: string;
     viewLevel?: 'municipality' | 'all'; // Restrict visibility

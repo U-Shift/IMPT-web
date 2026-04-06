@@ -5,6 +5,7 @@ import { MetricDef } from '../types';
 export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
 
     // Enhance data with a max value for the "ghost" bar that holds labels
+    const minValue = useMemo(() => Math.min(...data.map(d => d.value), 0), [data]);
     const maxValue = useMemo(() => Math.max(...data.map(d => d.value), 0), [data]);
     const chartData = useMemo(() => data.map(d => ({ ...d, fullSpace: maxValue })), [data, maxValue]);
 
@@ -23,7 +24,7 @@ export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], 
                             >
                                 <div className="text-[10px] font-black opacity-30 uppercase tracking-widest">{d.group || 'District'}</div>
                                 <div className="text-[13px] font-black">{d.name}</div>
-                                <div className="text-[13px] font-black mt-1" style={{ color: d.color }}>{metric.format(d.value)} {metric.unit || ''}</div>
+                                <div className="text-[13px] font-black mt-1" style={{ color: d.color }}>{metric.format(d.value, minValue, maxValue)} {metric.unit || ''}</div>
                             </div>
                         );
                     }
