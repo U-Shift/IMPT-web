@@ -24,6 +24,13 @@ jobs:
           cache: 'npm'
           cache-dependency-path: dashboard/package-lock.json
 
+      - name: Download Data Files 📥
+        run: |
+          mkdir -p dashboard/public/data
+          curl -L https://github.com/U-Shift/IMPT-data/releases/download/1.0/municipios_aggregated.geojson -o dashboard/public/data/municipios_aggregated.geojson
+          curl -L https://github.com/U-Shift/IMPT-data/releases/download/1.0/freguesias_aggregated.geojson -o dashboard/public/data/freguesias_aggregated.geojson
+          curl -L https://github.com/U-Shift/IMPT-data/releases/download/1.0/grid_aggregated.geojson -o dashboard/public/data/grid_aggregated.geojson
+
       - name: Install and Build 🏗️
         run: |
           cd dashboard

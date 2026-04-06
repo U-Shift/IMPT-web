@@ -1,9 +1,9 @@
 import { MetricDef, ViewLevel } from './types';
 
 export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel }> = {
-    'municipality': { file: 'https://github.com/U-Shift/IMPT-data/releases/download/1.0/municipios_aggregated.geojson' },
-    'freguesia': { file: 'https://github.com/U-Shift/IMPT-data/releases/download/1.0/freguesias_aggregated.geojson', parent: 'municipality' },
-    'hex': { file: 'https://github.com/U-Shift/IMPT-data/releases/download/1.0/grid_aggregated.geojson', parent: 'freguesia' }
+    'municipality': { file: 'data/municipios_aggregated.geojson' },
+    'freguesia': { file: 'data/freguesias_aggregated.geojson', parent: 'municipality' },
+    'hex': { file: 'data/grid_aggregated.geojson', parent: 'freguesia' }
 };
 
 export const getQuintileRange = (value: number): string => {
