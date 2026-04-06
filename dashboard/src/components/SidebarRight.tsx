@@ -15,8 +15,8 @@ interface SidebarRightProps {
     selectedMetricId: string;
     selectedMode: any;
     dataState: any;
-    allDomains: Record<string, [number, number]>;
-    getColor: (val: number, domain: [number, number], metric: MetricDef) => string;
+    allDomains: Record<string, number[]>;
+    getColor: (val: number, domain: number[], metric: MetricDef) => string;
     subLevelData: any[];
     chartData: { bestPerformers: any[], worstPerformers: any[] };
     setSelectedFeature: (feat: any) => void;
@@ -137,7 +137,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                                     className="flex justify-between items-center text-[12px] hover:bg-neutral-800/30 p-1.5 rounded-lg transition-colors cursor-pointer"
                                                 >
                                                     <span className="opacity-50 w-36">{f.name}</span>
-                                                    <span className="font-bold text-sky-800">{selectedMetric.format(val, allDomains[selectedMetric.id]?.[0] || 0, allDomains[selectedMetric.id]?.[1] || 1)}</span>
+                                                    <span className="font-bold text-sky-800">{selectedMetric.format(val, allDomains[selectedMetric.id]?.[0] || 0, allDomains[selectedMetric.id]?.[allDomains[selectedMetric.id].length - 1] || 1)}</span>
                                                 </div>
                                             );
                                         })}
@@ -210,14 +210,14 @@ const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, sele
         const effectiveId = `${m.id}${selectedMode.suffix}`;
         const fallbackId = selectedMode.suffixFallback !== undefined ? `${m.id}${selectedMode.suffixFallback}` : undefined;
         const val = selectedFeature[effectiveId] ?? (fallbackId ? selectedFeature[fallbackId] : undefined);
-        if (val == undefined) {
+        if (val === undefined || val === null || m.ignoreValues?.includes(val)) {
             return null;
         }
         return (
             <DetailCard
                 key={m.id}
                 label={t(m.label)}
-                value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[1] || 1)}
+                value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 1)}
                 hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
                 isDark={isDarkMode}
             />

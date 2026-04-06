@@ -231,41 +231,109 @@ const Dashboard = () => {
     }, [dataState.limits, nutFilter]);
 
     const currentDomain = useMemo(() => {
-        const defaultDomain: [number, number] = [0, 1];
+        const defaultDomain = [0, 1];
         if (!computedGeoData?.features?.length) return defaultDomain;
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
-        const values = computedGeoData.features.map((f: any) => f.properties?.[effectiveId]).filter((v: any) => v !== undefined && !isNaN(v));
+        const values = computedGeoData.features
+            .map((f: any) => f.properties?.[effectiveId])
+            .filter((v: any) => v !== undefined && !isNaN(v) && !(selectedMetric.ignoreValues?.includes(v)));
         if (values.length === 0) return defaultDomain;
-        return [Math.min(...values), Math.max(...values)] as [number, number];
+
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+
+        // If slices are defined, compute quantile-based breaks
+        if (selectedMetric.quantiles && selectedMetric.quantiles > 1) {
+            const sorted = [...values].sort((a, b) => a - b);
+            const n = selectedMetric.quantiles;
+            const quants = [];
+            for (let i = 0; i <= n; i++) {
+                const idx = Math.min(Math.floor((i / n) * (sorted.length - 1)), sorted.length - 1);
+                quants.push(sorted[idx]);
+            }
+            console.log("Quants for " + selectedMetric.id, quants);
+            return quants;
+        }
+
+        return [min, max];
     }, [computedGeoData, selectedMetric, effectiveMode]);
 
     // Precompute domains for all metrics shown in details to support dynamic coloring
     const allDomains = useMemo(() => {
-        const result: Record<string, [number, number]> = {};
+        const result: Record<string, number[]> = {};
         if (!computedGeoData?.features?.length) return result;
         FLAT_METRICS.filter(m => m.showDetails).forEach(m => {
             const effectiveId = `${m.id}${effectiveMode.suffix}`;
-            const values = computedGeoData.features.map((f: any) => f.properties?.[effectiveId]).filter((v: any) => v !== undefined && !isNaN(v));
-            result[m.id] = values.length > 0 ? [Math.min(...values), Math.max(...values)] : [0, 1];
+            const values = computedGeoData.features
+                .map((f: any) => f.properties?.[effectiveId])
+                .filter((v: any) => v !== undefined && !isNaN(v) && !(m.ignoreValues?.includes(v)));
+            if (values.length === 0) {
+                result[m.id] = [0, 1];
+                return;
+            }
+
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+
+            if (m.quantiles && m.quantiles > 1) {
+                const sorted = [...values].sort((a, b) => a - b);
+                const n = m.quantiles;
+                const quants = [];
+                for (let i = 0; i <= n; i++) {
+                    const idx = Math.min(Math.floor((i / n) * (sorted.length - 1)), sorted.length - 1);
+                    quants.push(sorted[idx]);
+                }
+                result[m.id] = quants;
+            } else {
+                result[m.id] = [min, max];
+            }
         });
         return result;
     }, [computedGeoData, effectiveMode]);
 
-    const getColor = (val: number, domain: [number, number], metric: MetricDef) => {
-        if (val === null || val === undefined) return '#333';
-        const [min, max] = domain;
-        const range = max - min;
-
-        if (range === 0) return metric.pallete[Math.floor(metric.pallete.length / 2)];
-
-        const norm = Math.max(0, Math.min(1, (val - min) / range));
+    const getColor = (val: number, domain: number[], metric: MetricDef) => {
+        if (val === null || val === undefined || metric.ignoreValues?.includes(val)) return 'rgba(0,0,0,0.05)';
         const activeArray = metric.pallete;
-        const idx = Math.min(Math.floor(norm * activeArray.length), activeArray.length - 1);
-        return activeArray[idx];
+
+        if (domain.length > 2) {
+            // Use discrete scale breaks (quantiles/slices)
+            let sliceIdx = 0;
+            // Find the slice where the value falls
+            for (let i = 0; i < domain.length - 1; i++) {
+                if (val >= domain[i] && val <= domain[i + 1]) {
+                    sliceIdx = i;
+                    break;
+                }
+            }
+            // Ensure sliceIdx stays within bounds of the palette mapping
+            const nSlices = domain.length - 1;
+            const paletteIdx = Math.min(Math.floor((sliceIdx / nSlices) * activeArray.length), activeArray.length - 1);
+            return activeArray[paletteIdx];
+        } else {
+            // Use continuous linear interpolation mapping
+            const [min, max] = domain;
+            const range = max - min;
+            if (range === 0) return activeArray[Math.floor(activeArray.length / 2)];
+            const norm = Math.max(0, Math.min(1, (val - min) / range));
+            const idx = Math.min(Math.floor(norm * activeArray.length), activeArray.length - 1);
+            return activeArray[idx];
+        }
     };
 
     const getLegendGradient = () => {
         const activeArray = selectedMetric.pallete;
+        if (currentDomain.length > 2) {
+            const nSlices = currentDomain.length - 1;
+            const gradientParts = [];
+            for (let i = 0; i < nSlices; i++) {
+                const paletteIdx = Math.min(Math.floor((i / nSlices) * activeArray.length), activeArray.length - 1);
+                const color = activeArray[paletteIdx];
+                const start = (i / nSlices) * 100;
+                const end = ((i + 1) / nSlices) * 100;
+                gradientParts.push(`${color} ${start}% ${end}%`);
+            }
+            return `linear-gradient(to right, ${gradientParts.join(', ')})`;
+        }
         // For sequential colormaps like Viridis, we pick 5 equidistant stops to ensure a faithful gradient representation in CSS
         const stops = [0, Math.floor(activeArray.length * 0.25), Math.floor(activeArray.length * 0.5), Math.floor(activeArray.length * 0.75), activeArray.length - 1];
         let colors = stops.map(i => activeArray[Math.min(i, activeArray.length - 1)]);
@@ -307,16 +375,20 @@ const Dashboard = () => {
         };
         const contrastColor = getContrastColor(metricColor);
 
+        const isIgnored = selectedMetric.ignoreValues?.includes(val);
+
         layer.bindTooltip(`
             <div style="font-family: sans-serif; padding: 6px; min-width: 140px;">
                 <div style="font-size: 10px; font-weight: 900; color: #888; text-transform: uppercase; margin-bottom: 2px;">${parentName}</div>
                 <div style="font-size: 13px; font-weight: 800; color: #111; line-height: 1.2;">${props.name || 'N/A'}</div>
+                ${!isIgnored ? `
                 <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <span style="font-size: 10px; font-weight: 900; color: #444; text-transform: uppercase;">${t(selectedMetric.label)}</span>
                     <span style="font-size: 11px; font-weight: 900; background-color: ${metricColor}; color: ${contrastColor}; padding: 3px 10px; border-radius: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); white-space: nowrap;">
                         ${formattedVal}${selectedMetric.unit ? ' ' + selectedMetric.unit : ''}
                     </span>
                 </div>
+                ` : `<div style="margin-top: 8px; font-size: 9px; font-weight: 900; color: #bbb; text-transform: uppercase;">${t('common.no_data')}</div>`}
             </div>
         `, { sticky: true, opacity: 0.98, direction: 'top', offset: [0, -10] });
 
@@ -343,7 +415,10 @@ const Dashboard = () => {
         return dataState.geo[childLevel].features
             .filter((f: any) => String(f.properties.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
-            .filter((p: any) => p[effectiveId] !== undefined || p[selectedMetric.id] !== undefined)
+            .filter((p: any) => {
+                const v = p[effectiveId] ?? p[selectedMetric.id];
+                return v !== undefined && !(selectedMetric.ignoreValues?.includes(v));
+            })
             .sort((a: any, b: any) => (b[effectiveId] ?? b[selectedMetric.id]) - (a[effectiveId] ?? a[selectedMetric.id]));
     }, [effectiveLevel, selectedFeature, selectedMetric, effectiveMode, dataState]);
 
@@ -351,19 +426,24 @@ const Dashboard = () => {
         if (!computedGeoData?.features) return { bestPerformers: [], worstPerformers: [] };
         const effectiveId = `${selectedMetric.id}${effectiveMode.suffix}`;
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
-        const feats = computedGeoData.features.map((f: any) => {
-            const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
-            const groupName = (parentLevel && f.properties?.group_id)
-                ? (dataState.parentLookup[`${parentLevel}-${f.properties.group_id}`] || f.properties.group_id)
-                : 'LMA';
-            return {
-                id: f.properties?.id,
-                name: String(f.properties?.name || f.properties?.id || 'Unknown'),
-                group: groupName,
-                value: val,
-                color: getColor(val, currentDomain, selectedMetric)
-            };
-        });
+        const feats = computedGeoData.features
+            .filter((f: any) => {
+                const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id];
+                return val !== undefined && !(selectedMetric.ignoreValues?.includes(val));
+            })
+            .map((f: any) => {
+                const val = f.properties?.[effectiveId] ?? f.properties?.[selectedMetric.id] ?? 0;
+                const groupName = (parentLevel && f.properties?.group_id)
+                    ? (dataState.parentLookup[`${parentLevel}-${f.properties.group_id}`] || f.properties.group_id)
+                    : 'LMA';
+                return {
+                    id: f.properties?.id,
+                    name: String(f.properties?.name || f.properties?.id || 'Unknown'),
+                    group: groupName,
+                    value: val,
+                    color: getColor(val, currentDomain, selectedMetric)
+                };
+            });
         const sorted = [...feats].sort((a, b) => b.value - a.value);
         return { bestPerformers: sorted.slice(0, 5), worstPerformers: [...sorted].reverse().slice(0, 5).reverse() };
     }, [computedGeoData, selectedMetric, effectiveMode, currentDomain, getColor, effectiveLevel, dataState.parentLookup]);
@@ -462,8 +542,8 @@ const Dashboard = () => {
                                         style={{ background: getLegendGradient() }}
                                     />
                                     <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
-                                        <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[1])}</span>
-                                        <span>{selectedMetric.format(currentDomain[1], currentDomain[0], currentDomain[1])}</span>
+                                        <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
+                                        <span>{selectedMetric.format(currentDomain[currentDomain.length - 1], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
                                     </div>
                                 </div>
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>

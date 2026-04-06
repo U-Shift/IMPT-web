@@ -103,7 +103,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'safety_total_acidentes',
             label: 'metrics.safety_total_acidentes',
             description: 'metrics.safety_total_acidentes.description',
-            format: (v, min, max) => Math.round(v || 0).toString(),
+            format: (v, min, max) => Math.round(v || 0).toString(), quantiles: 100, ignoreValues: [0, null],
             pallete: COLORS.WhiteToRed
         },
         {

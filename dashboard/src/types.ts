@@ -6,10 +6,13 @@ export type MetricDef = {
     category: string;
     icon?: string;
     description?: string;
-    format: (v: number, min: number, max: number) => string;
     pallete: string[];
     unit?: string;
     default?: boolean; // Show by default
+    // Display
+    quantiles?: number; // Number of scale breaks for the domain (e.g. 5 for quintiles, 10 for deciles)
+    ignoreValues?: any[]; // Values to ignore when computing the scale
+    format: (v: number, min: number, max: number) => string;
     // Area details sidebar (opens on the right, when user clicks on a feature)
     showDetails?: boolean; // Show in "Area details" section
     showDetailsOnlyWhenSelected?: boolean; // Show in details only when active

@@ -12,7 +12,8 @@
     "previous": "Previous",
     "next": "Next",
     "calculate": "Calculate",
-    "fix": "Fix"
+    "fix": "Fix",
+    "no_data": "No data"
   },
   "tooltips": {
     "toggle_theme": "Toggle Theme",

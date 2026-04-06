@@ -12,7 +12,8 @@
     "previous": "Anterior",
     "next": "Seguinte",
     "calculate": "Calcular",
-    "fix": "Corrigir"
+    "fix": "Corrigir",
+    "no_data": "Sem dados"
   },
   "tooltips": {
     "toggle_theme": "Alternar Tema",
