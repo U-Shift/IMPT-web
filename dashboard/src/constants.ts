@@ -27,6 +27,8 @@ export const COLORS = {
     // Blues
     WhiteToBlue: ['#f7fbff', '#f6faff', '#f5fafe', '#f5f9fe', '#f4f9fe', '#f3f8fe', '#f2f8fd', '#f2f7fd', '#f1f7fd', '#f0f6fd', '#eff6fc', '#eef5fc', '#eef5fc', '#edf4fc', '#ecf4fb', '#ebf3fb', '#eaf3fb', '#eaf2fb', '#e9f2fa', '#e8f1fa', '#e7f1fa', '#e7f0fa', '#e6f0f9', '#e5eff9', '#e4eff9', '#e3eef9', '#e3eef8', '#e2edf8', '#e1edf8', '#e0ecf8', '#dfecf7', '#dfebf7', '#deebf7', '#ddeaf7', '#dceaf6', '#dce9f6', '#dbe9f6', '#dae8f6', '#d9e8f5', '#d9e7f5', '#d8e7f5', '#d7e6f5', '#d6e6f4', '#d6e5f4', '#d5e5f4', '#d4e4f4', '#d3e4f3', '#d3e3f3', '#d2e3f3', '#d1e2f3', '#d0e2f2', '#d0e1f2', '#cfe1f2', '#cee0f2', '#cde0f1', '#cddff1', '#ccdff1', '#cbdef1', '#cadef0', '#caddf0', '#c9ddf0', '#c8dcf0', '#c7dcef', '#c7dbef', '#c6dbef', '#c4daee', '#c3daee', '#c2d9ee', '#c1d9ed', '#bfd8ed', '#bed8ec', '#bdd7ec', '#bcd7eb', '#bad6eb', '#b9d6ea', '#b8d5ea', '#b7d4ea', '#b5d4e9', '#b4d3e9', '#b3d3e8', '#b2d2e8', '#b0d2e7', '#afd1e7', '#aed1e7', '#add0e6', '#abd0e6', '#aacfe5', '#a9cfe5', '#a8cee4', '#a6cee4', '#a5cde3', '#a4cce3', '#a3cce3', '#a1cbe2', '#a0cbe2', '#9fcae1', '#9dcae1', '#9cc9e1', '#9ac8e0', '#99c7e0', '#97c6df', '#95c5df', '#94c4df', '#92c4de', '#91c3de', '#8fc2de', '#8dc1dd', '#8cc0dd', '#8abfdd', '#89bedc', '#87bddc', '#85bcdc', '#84bcdb', '#82bbdb', '#81badb', '#7fb9da', '#7db8da', '#7cb7da', '#7ab6d9', '#79b5d9', '#77b5d9', '#75b4d8', '#74b3d8', '#72b2d8', '#71b1d7', '#6fb0d7', '#6dafd7', '#6caed6', '#6aaed6', '#69add5', '#68acd5', '#66abd4', '#65aad4', '#64a9d3', '#63a8d3', '#61a7d2', '#60a7d2', '#5fa6d1', '#5da5d1', '#5ca4d0', '#5ba3d0', '#5aa2cf', '#58a1cf', '#57a0ce', '#56a0ce', '#549fcd', '#539ecd', '#529dcc', '#519ccc', '#4f9bcb', '#4e9acb', '#4d99ca', '#4b98ca', '#4a98c9', '#4997c9', '#4896c8', '#4695c8', '#4594c7', '#4493c7', '#4292c6', '#4191c6', '#4090c5', '#3f8fc5', '#3e8ec4', '#3d8dc4', '#3c8cc3', '#3b8bc2', '#3a8ac2', '#3989c1', '#3888c1', '#3787c0', '#3686c0', '#3585bf', '#3484bf', '#3383be', '#3282be', '#3181bd', '#3080bd', '#2f7fbc', '#2e7ebc', '#2d7dbb', '#2c7cba', '#2b7bba', '#2a7ab9', '#2979b9', '#2777b8', '#2676b8', '#2575b7', '#2474b7', '#2373b6', '#2272b6', '#2171b5', '#2070b4', '#206fb4', '#1f6eb3', '#1e6db2', '#1d6cb1', '#1c6bb0', '#1c6ab0', '#1b69af', '#1a68ae', '#1967ad', '#1966ad', '#1865ac', '#1764ab', '#1663aa', '#1562a9', '#1561a9', '#1460a8', '#135fa7', '#125ea6', '#125da6', '#115ca5', '#105ba4', '#0f5aa3', '#0e59a2', '#0e58a2', '#0d57a1', '#0c56a0', '#0b559f', '#0a549e', '#0a539e', '#09529d', '#08519c', '#08509b', '#084f99', '#084e98', '#084d96', '#084c95', '#084b93', '#084a91', '#084990', '#08488e', '#08478d', '#08468b', '#08458a', '#084488', '#084387', '#084285', '#084184', '#084082', '#083e81', '#083d7f', '#083c7d', '#083b7c', '#083a7a', '#083979', '#083877', '#083776', '#083674', '#083573', '#083471', '#083370', '#08326e', '#08316d', '#08306b'],
     BlueToWhite: ['#f7fbff', '#f6faff', '#f5fafe', '#f5f9fe', '#f4f9fe', '#f3f8fe', '#f2f8fd', '#f2f7fd', '#f1f7fd', '#f0f6fd', '#eff6fc', '#eef5fc', '#eef5fc', '#edf4fc', '#ecf4fb', '#ebf3fb', '#eaf3fb', '#eaf2fb', '#e9f2fa', '#e8f1fa', '#e7f1fa', '#e7f0fa', '#e6f0f9', '#e5eff9', '#e4eff9', '#e3eef9', '#e3eef8', '#e2edf8', '#e1edf8', '#e0ecf8', '#dfecf7', '#dfebf7', '#deebf7', '#ddeaf7', '#dceaf6', '#dce9f6', '#dbe9f6', '#dae8f6', '#d9e8f5', '#d9e7f5', '#d8e7f5', '#d7e6f5', '#d6e6f4', '#d6e5f4', '#d5e5f4', '#d4e4f4', '#d3e4f3', '#d3e3f3', '#d2e3f3', '#d1e2f3', '#d0e2f2', '#d0e1f2', '#cfe1f2', '#cee0f2', '#cde0f1', '#cddff1', '#ccdff1', '#cbdef1', '#cadef0', '#caddf0', '#c9ddf0', '#c8dcf0', '#c7dcef', '#c7dbef', '#c6dbef', '#c4daee', '#c3daee', '#c2d9ee', '#c1d9ed', '#bfd8ed', '#bed8ec', '#bdd7ec', '#bcd7eb', '#bad6eb', '#b9d6ea', '#b8d5ea', '#b7d4ea', '#b5d4e9', '#b4d3e9', '#b3d3e8', '#b2d2e8', '#b0d2e7', '#afd1e7', '#aed1e7', '#add0e6', '#abd0e6', '#aacfe5', '#a9cfe5', '#a8cee4', '#a6cee4', '#a5cde3', '#a4cce3', '#a3cce3', '#a1cbe2', '#a0cbe2', '#9fcae1', '#9dcae1', '#9cc9e1', '#9ac8e0', '#99c7e0', '#97c6df', '#95c5df', '#94c4df', '#92c4de', '#91c3de', '#8fc2de', '#8dc1dd', '#8cc0dd', '#8abfdd', '#89bedc', '#87bddc', '#85bcdc', '#84bcdb', '#82bbdb', '#81badb', '#7fb9da', '#7db8da', '#7cb7da', '#7ab6d9', '#79b5d9', '#77b5d9', '#75b4d8', '#74b3d8', '#72b2d8', '#71b1d7', '#6fb0d7', '#6dafd7', '#6caed6', '#6aaed6', '#69add5', '#68acd5', '#66abd4', '#65aad4', '#64a9d3', '#63a8d3', '#61a7d2', '#60a7d2', '#5fa6d1', '#5da5d1', '#5ca4d0', '#5ba3d0', '#5aa2cf', '#58a1cf', '#57a0ce', '#56a0ce', '#549fcd', '#539ecd', '#529dcc', '#519ccc', '#4f9bcb', '#4e9acb', '#4d99ca', '#4b98ca', '#4a98c9', '#4997c9', '#4896c8', '#4695c8', '#4594c7', '#4493c7', '#4292c6', '#4191c6', '#4090c5', '#3f8fc5', '#3e8ec4', '#3d8dc4', '#3c8cc3', '#3b8bc2', '#3a8ac2', '#3989c1', '#3888c1', '#3787c0', '#3686c0', '#3585bf', '#3484bf', '#3383be', '#3282be', '#3181bd', '#3080bd', '#2f7fbc', '#2e7ebc', '#2d7dbb', '#2c7cba', '#2b7bba', '#2a7ab9', '#2979b9', '#2777b8', '#2676b8', '#2575b7', '#2474b7', '#2373b6', '#2272b6', '#2171b5', '#2070b4', '#206fb4', '#1f6eb3', '#1e6db2', '#1d6cb1', '#1c6bb0', '#1c6ab0', '#1b69af', '#1a68ae', '#1967ad', '#1966ad', '#1865ac', '#1764ab', '#1663aa', '#1562a9', '#1561a9', '#1460a8', '#135fa7', '#125ea6', '#125da6', '#115ca5', '#105ba4', '#0f5aa3', '#0e59a2', '#0e58a2', '#0d57a1', '#0c56a0', '#0b559f', '#0a549e', '#0a539e', '#09529d', '#08519c', '#08509b', '#084f99', '#084e98', '#084d96', '#084c95', '#084b93', '#084a91', '#084990', '#08488e', '#08478d', '#08468b', '#08458a', '#084488', '#084387', '#084285', '#084184', '#084082', '#083e81', '#083d7f', '#083c7d', '#083b7c', '#083a7a', '#083979', '#083877', '#083776', '#083674', '#083573', '#083471', '#083370', '#08326e', '#08316d', '#08306b'].reverse(),
+    // Greens
+    WhiteToGreen: ["#f7fcf5", "#f6fcf4", "#f6fcf4", "#f5fbf3", "#f5fbf2", "#f4fbf2", "#f4fbf1", "#f3faf0", "#f2faf0", "#f2faef", "#f1faee", "#f1faee", "#f0f9ed", "#f0f9ec", "#eff9ec", "#eef9eb", "#eef8ea", "#edf8ea", "#ecf8e9", "#ecf8e8", "#ebf7e7", "#ebf7e7", "#eaf7e6", "#e9f7e5", "#e9f6e4", "#e8f6e4", "#e7f6e3", "#e7f6e2", "#e6f5e1", "#e5f5e1", "#e4f5e0", "#e4f4df", "#e3f4de", "#e2f4dd", "#e1f4dc", "#e1f3dc", "#e0f3db", "#dff3da", "#def2d9", "#ddf2d8", "#ddf2d7", "#dcf1d6", "#dbf1d5", "#daf1d4", "#d9f0d3", "#d8f0d2", "#d7efd1", "#d6efd0", "#d5efcf", "#d4eece", "#d4eece", "#d3eecd", "#d2edcb", "#d1edca", "#d0ecc9", "#cfecc8", "#ceecc7", "#cdebc6", "#ccebc5", "#cbeac4", "#caeac3", "#c9eac2", "#c8e9c1", "#c6e9c0", "#c5e8bf", "#c4e8be", "#c3e7bd", "#c2e7bc", "#c1e6bb", "#c0e6b9", "#bfe6b8", "#bee5b7", "#bde5b6", "#bbe4b5", "#bae4b4", "#b9e3b3", "#b8e3b2", "#b7e2b0", "#b6e2af", "#b5e1ae", "#b3e1ad", "#b2e0ac", "#b1e0ab", "#b0dfaa", "#aedfa8", "#addea7", "#acdea6", "#abdda5", "#aadca4", "#a8dca3", "#a7dba2", "#a6dba0", "#a5da9f", "#a3da9e", "#a2d99d", "#a1d99c", "#9fd89b", "#9ed799", "#9dd798", "#9bd697", "#9ad696", "#99d595", "#97d494", "#96d492", "#95d391", "#93d390", "#92d28f", "#91d18e", "#8fd18d", "#8ed08c", "#8ccf8a", "#8bcf89", "#8ace88", "#88cd87", "#87cd86", "#85cc85", "#84cb84", "#82cb83", "#81ca82", "#80c981", "#7ec980", "#7dc87f", "#7bc77e", "#7ac77c", "#78c67b", "#77c57a", "#75c479", "#74c478", "#72c378", "#71c277", "#6fc276", "#6ec175", "#6cc074", "#6bbf73", "#69bf72", "#68be71", "#66bd70", "#65bc6f", "#63bc6e", "#62bb6e", "#60ba6d", "#5eb96c", "#5db86b", "#5bb86a", "#5ab769", "#58b668", "#57b568", "#56b467", "#54b466", "#53b365", "#51b264", "#50b164", "#4eb063", "#4daf62", "#4caf61", "#4aae61", "#49ad60", "#48ac5f", "#46ab5e", "#45aa5d", "#44a95d", "#42a85c", "#41a75b", "#40a75a", "#3fa65a", "#3ea559", "#3ca458", "#3ba357", "#3aa257", "#39a156", "#38a055", "#379f54", "#369e54", "#359d53", "#349c52", "#339b51", "#329a50", "#319950", "#30984f", "#2f974e", "#2e964d", "#2d954d", "#2b944c", "#2a934b", "#29924a", "#28914a", "#279049", "#268f48", "#258f47", "#248e47", "#238d46", "#228c45", "#218b44", "#208a43", "#1f8943", "#1e8842", "#1d8741", "#1c8640", "#1b8540", "#1a843f", "#19833e", "#18823d", "#17813d", "#16803c", "#157f3b", "#147e3a", "#137d3a", "#127c39", "#117b38", "#107a37", "#107937", "#0f7836", "#0e7735", "#0d7634", "#0c7534", "#0b7433", "#0b7332", "#0a7232", "#097131", "#087030", "#086f2f", "#076e2f", "#066c2e", "#066b2d", "#056a2d", "#05692c", "#04682b", "#04672b", "#04662a", "#03642a", "#036329", "#026228", "#026128", "#026027", "#025e27", "#015d26", "#015c25", "#015b25", "#015a24", "#015824", "#015723", "#005623", "#005522", "#005321", "#005221", "#005120", "#005020", "#004e1f", "#004d1f", "#004c1e", "#004a1e", "#00491d", "#00481d", "#00471c", "#00451c", "#00441b"],
     // Divergent
     Viridis: ["#440154", "#440256", "#450457", "#450559", "#46075a", "#46085c", "#460a5d", "#460b5e", "#470d60", "#470e61", "#471063", "#471164", "#471365", "#481467", "#481668", "#481769", "#48186a", "#481a6c", "#481b6d", "#481c6e", "#481d6f", "#481f70", "#482071", "#482173", "#482374", "#482475", "#482576", "#482677", "#482878", "#482979", "#472a7a", "#472c7a", "#472d7b", "#472e7c", "#472f7d", "#46307e", "#46327e", "#46337f", "#463480", "#453581", "#453781", "#453882", "#443983", "#443a83", "#443b84", "#433d84", "#433e85", "#423f85", "#424086", "#424186", "#414287", "#414487", "#404588", "#404688", "#3f4788", "#3f4889", "#3e4989", "#3e4a89", "#3e4c8a", "#3d4d8a", "#3d4e8a", "#3c4f8a", "#3c508b", "#3b518b", "#3b528b", "#3a538b", "#3a548c", "#39558c", "#39568c", "#38588c", "#38598c", "#375a8c", "#375b8d", "#365c8d", "#365d8d", "#355e8d", "#355f8d", "#34608d", "#34618d", "#33628d", "#33638d", "#32648e", "#32658e", "#31668e", "#31678e", "#31688e", "#30698e", "#306a8e", "#2f6b8e", "#2f6c8e", "#2e6d8e", "#2e6e8e", "#2e6f8e", "#2d708e", "#2d718e", "#2c718e", "#2c728e", "#2c738e", "#2b748e", "#2b758e", "#2a768e", "#2a778e", "#2a788e", "#29798e", "#297a8e", "#297b8e", "#287c8e", "#287d8e", "#277e8e", "#277f8e", "#27808e", "#26818e", "#26828e", "#26828e", "#25838e", "#25848e", "#25858e", "#24868e", "#24878e", "#23888e", "#23898e", "#238a8d", "#228b8d", "#228c8d", "#228d8d", "#218e8d", "#218f8d", "#21908d", "#21918c", "#20928c", "#20928c", "#20938c", "#1f948c", "#1f958b", "#1f968b", "#1f978b", "#1f988b", "#1f998a", "#1f9a8a", "#1e9b8a", "#1e9c89", "#1e9d89", "#1f9e89", "#1f9f88", "#1fa088", "#1fa188", "#1fa187", "#1fa287", "#20a386", "#20a486", "#21a585", "#21a685", "#22a785", "#22a884", "#23a983", "#24aa83", "#25ab82", "#25ac82", "#26ad81", "#27ad81", "#28ae80", "#29af7f", "#2ab07f", "#2cb17e", "#2db27d", "#2eb37c", "#2fb47c", "#31b57b", "#32b67a", "#34b679", "#35b779", "#37b878", "#38b977", "#3aba76", "#3bbb75", "#3dbc74", "#3fbc73", "#40bd72", "#42be71", "#44bf70", "#46c06f", "#48c16e", "#4ac16d", "#4cc26c", "#4ec36b", "#50c46a", "#52c569", "#54c568", "#56c667", "#58c765", "#5ac864", "#5cc863", "#5ec962", "#60ca60", "#63cb5f", "#65cb5e", "#67cc5c", "#69cd5b", "#6ccd5a", "#6ece58", "#70cf57", "#73d056", "#75d054", "#77d153", "#7ad151", "#7cd250", "#7fd34e", "#81d34d", "#84d44b", "#86d549", "#89d548", "#8bd646", "#8ed645", "#90d743", "#93d741", "#95d840", "#98d83e", "#9bd93c", "#9dd93b", "#a0da39", "#a2da37", "#a5db36", "#a8db34", "#aadc32", "#addc30", "#b0dd2f", "#b2dd2d", "#b5de2b", "#b8de29", "#bade28", "#bddf26", "#c0df25", "#c2df23", "#c5e021", "#c8e020", "#cae11f", "#cde11d", "#d0e11c", "#d2e21b", "#d5e21a", "#d8e219", "#dae319", "#dde318", "#dfe318", "#e2e418", "#e5e419", "#e7e419", "#eae51a", "#ece51b", "#efe51c", "#f1e51d", "#f4e61e", "#f6e620", "#f8e621", "#fbe723", "#fde725"],
     Inferno: ["#000004", "#010005", "#010106", "#010108", "#02010a", "#02020c", "#02020e", "#030210", "#040312", "#040314", "#050417", "#060419", "#07051b", "#08051d", "#09061f", "#0a0722", "#0b0724", "#0c0826", "#0d0829", "#0e092b", "#10092d", "#110a30", "#120a32", "#140b34", "#150b37", "#160b39", "#180c3c", "#190c3e", "#1b0c41", "#1c0c43", "#1e0c45", "#1f0c48", "#210c4a", "#230c4c", "#240c4f", "#260c51", "#280b53", "#290b55", "#2b0b57", "#2d0b59", "#2f0a5b", "#310a5c", "#320a5e", "#340a5f", "#360961", "#380962", "#390963", "#3b0964", "#3d0965", "#3e0966", "#400a67", "#420a68", "#440a68", "#450a69", "#470b6a", "#490b6a", "#4a0c6b", "#4c0c6b", "#4d0d6c", "#4f0d6c", "#510e6c", "#520e6d", "#540f6d", "#550f6d", "#57106e", "#59106e", "#5a116e", "#5c126e", "#5d126e", "#5f136e", "#61136e", "#62146e", "#64156e", "#65156e", "#67166e", "#69166e", "#6a176e", "#6c186e", "#6d186e", "#6f196e", "#71196e", "#721a6e", "#741a6e", "#751b6e", "#771c6d", "#781c6d", "#7a1d6d", "#7c1d6d", "#7d1e6d", "#7f1e6c", "#801f6c", "#82206c", "#84206b", "#85216b", "#87216b", "#88226a", "#8a226a", "#8c2369", "#8d2369", "#8f2469", "#902568", "#922568", "#932667", "#952667", "#972766", "#982766", "#9a2865", "#9b2964", "#9d2964", "#9f2a63", "#a02a63", "#a22b62", "#a32c61", "#a52c60", "#a62d60", "#a82e5f", "#a92e5e", "#ab2f5e", "#ad305d", "#ae305c", "#b0315b", "#b1325a", "#b3325a", "#b43359", "#b63458", "#b73557", "#b93556", "#ba3655", "#bc3754", "#bd3853", "#bf3952", "#c03a51", "#c13a50", "#c33b4f", "#c43c4e", "#c63d4d", "#c73e4c", "#c83f4b", "#ca404a", "#cb4149", "#cc4248", "#ce4347", "#cf4446", "#d04545", "#d24644", "#d34743", "#d44842", "#d54a41", "#d74b3f", "#d84c3e", "#d94d3d", "#da4e3c", "#db503b", "#dd513a", "#de5238", "#df5337", "#e05536", "#e15635", "#e25734", "#e35933", "#e45a31", "#e55c30", "#e65d2f", "#e75e2e", "#e8602d", "#e9612b", "#ea632a", "#eb6429", "#eb6628", "#ec6726", "#ed6925", "#ee6a24", "#ef6c23", "#ef6e21", "#f06f20", "#f1711f", "#f1731d", "#f2741c", "#f3761b", "#f37819", "#f47918", "#f57b17", "#f57d15", "#f67e14", "#f68013", "#f78212", "#f78410", "#f8850f", "#f8870e", "#f8890c", "#f98b0b", "#f98c0a", "#f98e09", "#fa9008", "#fa9207", "#fa9407", "#fb9606", "#fb9706", "#fb9906", "#fb9b06", "#fb9d07", "#fc9f07", "#fca108", "#fca309", "#fca50a", "#fca60c", "#fca80d", "#fcaa0f", "#fcac11", "#fcae12", "#fcb014", "#fcb216", "#fcb418", "#fbb61a", "#fbb81d", "#fbba1f", "#fbbc21", "#fbbe23", "#fac026", "#fac228", "#fac42a", "#fac62d", "#f9c72f", "#f9c932", "#f9cb35", "#f8cd37", "#f8cf3a", "#f7d13d", "#f7d340", "#f6d543", "#f6d746", "#f5d949", "#f5db4c", "#f4dd4f", "#f4df53", "#f4e156", "#f3e35a", "#f3e55d", "#f2e661", "#f2e865", "#f2ea69", "#f1ec6d", "#f1ed71", "#f1ef75", "#f1f179", "#f2f27d", "#f2f482", "#f3f586", "#f3f68a", "#f4f88e", "#f5f992", "#f6fa96", "#f8fb9a", "#f9fc9d", "#fafda1", "#fcffa4"],
@@ -116,9 +118,9 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     ],
     'metrics.categories.dimensions': [
         {
-            id: 'Accessibility_Index',
-            label: 'metrics.accessibility.label', icon: '🏘️',
-            description: 'metrics.accessibility.description',
+            id: 'Mobility_Index',
+            label: 'metrics.mobility.label', icon: '🚲',
+            description: 'metrics.mobility.description',
             format: (v, min, max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
@@ -126,9 +128,9 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             isContributory: true, defaultWeight: 0.25
         },
         {
-            id: 'Mobility_Index',
-            label: 'metrics.mobility.label', icon: '🚲',
-            description: 'metrics.mobility.description',
+            id: 'Accessibility_Index',
+            label: 'metrics.accessibility.label', icon: '🏘️',
+            description: 'metrics.accessibility.description',
             format: (v, min, max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
@@ -156,6 +158,98 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             isContributory: true, defaultWeight: 0.25
         }
     ],
+    'metrics.categories.mobility': [
+        {
+            id: 'modal_census_share',
+            label: 'metrics.modal_census_share',
+            description: 'metrics.modal_census_share.description',
+            format: (v, min, max) => Math.round((v || 0) * 100).toString(), unit: '%',
+            scaleMethod: continuousScale,
+            pallete: COLORS.WhiteToGreen
+        },
+        {
+            id: 'modal_imob_share',
+            label: 'metrics.modal_imob_share',
+            description: 'metrics.modal_imob_share.description',
+            format: (v, min, max) => Math.round((v || 0) * 100).toString(), unit: '%',
+            scaleMethod: continuousScale,
+            pallete: COLORS.WhiteToGreen
+        },
+        {
+            id: 'mobility_commuting_avg_tt',
+            label: 'metrics.mobility_commuting_avg_tt',
+            description: 'metrics.mobility_commuting_avg_tt.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_cost_health_n1_residents',
+            label: 'metrics.mobility_cost_health_n1_residents',
+            description: 'metrics.mobility_cost_health_n1_residents.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_cost_schools_primary_n1_kids',
+            label: 'metrics.mobility_cost_schools_primary_n1_kids',
+            description: 'metrics.mobility_cost_schools_primary_n1_kids.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_cost_greenspaces_n1_residents',
+            label: 'metrics.mobility_cost_greenspaces_n1_residents',
+            description: 'metrics.mobility_cost_greenspaces_n1_residents.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_cost_recreation_n3_residents',
+            label: 'metrics.mobility_cost_recreation_n3_residents',
+            description: 'metrics.mobility_cost_recreation_n3_residents.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_cost_groceries_n3_residents',
+            label: 'metrics.mobility_cost_groceries_n3_residents',
+            description: 'metrics.mobility_cost_groceries_n3_residents.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.GreenToRed
+        },
+        {
+            id: 'mobility_shared_mobility_points',
+            label: 'metrics.mobility_shared_mobility_points',
+            description: 'metrics.mobility_shared_mobility_points.description',
+            format: (v, min, max) => (v || 0).toString(),
+            scaleMethod: continuousScale,
+            pallete: COLORS.Inferno.reverse()
+        },
+        {
+            id: 'mobility_stop_coverage_ratio_served_population',
+            label: 'metrics.mobility_stop_coverage_ratio_served_population',
+            description: 'metrics.mobility_stop_coverage_ratio_served_population.description',
+            format: (v, min, max) => Math.round((v || 0) * 100).toString(), unit: '%',
+            scaleMethod: continuousScale,
+            pallete: COLORS.WhiteToGreen
+        }
+    ],
+    'metrics.categories.accessibility': [
+        {
+            id: 'access_gap_money_cost_gap',
+            label: 'metrics.access_gap_money_cost_gap',
+            description: 'metrics.access_gap_money_cost_gap.description',
+            format: (v, min, max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: 'min',
+            scaleMethod: continuousScale, scaleMinEqualsMax: true,
+            pallete: COLORS.RedToGreen
+        }
+    ],
     'metrics.categories.safety': [
         {
             id: 'safety_inner_total_acidentes',
@@ -169,7 +263,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'safety_inner_indice_gravidade',
             label: 'metrics.safety_inner_indice_gravidade',
             description: 'metrics.safety_inner_indice_gravidade.description',
-            format: (v, min, max) => (v || 0).toFixed(2),
+            format: (v, min, max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale, ignoreValues: [null],
             pallete: COLORS.WhiteToRed
         }
@@ -180,43 +274,57 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.affordability_total_money.label',
             description: 'metrics.affordability_total_money.description',
             format: (v, min, max) => (v || 0).toFixed(2), ignoreValues: [0, null],
-            scaleMethod: continuousScale,
+            scaleMethod: continuousScale, unit: '€',
             pallete: COLORS.Viridis.reverse()
-        }
-    ],
-    // census
-    'metrics.categories.census_population': [
+        },
         {
-            id: 'modal_census_share',
-            label: 'metrics.modal_census_share',
-            description: 'metrics.modal_census_share.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            scaleMethod: continuousScale,
+            id: 'access_gap_money_cost_gap',
+            label: 'metrics.access_gap_money_cost_gap.label',
+            description: 'metrics.access_gap_money_cost_gap.description',
+            format: (v, min, max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: '€',
+            scaleMethod: continuousScale, scaleMinEqualsMax: true,
             pallete: COLORS.RedToGreen
         },
+        // census_income_income_hh, census_income_gini_coef, census_income_housing_costs, veh_ownership_total_motor_vehicles_per_hh, veh_ownership_pct_hh_no_vehicle
         {
             id: 'census_income_income_hh',
             label: 'metrics.census_income_income_hh',
             description: 'metrics.census_income_income_hh.description',
             format: (v, min, max) => Math.round(v || 0).toString(),
-            scaleMethod: continuousScale,
-            pallete: COLORS.RedToGreen
+            scaleMethod: continuousScale, ignoreValues: [null], unit: "€",
+            pallete: COLORS.Viridis.reverse()
         },
         {
             id: 'census_income_gini_coef',
             label: 'metrics.census_income_gini_coef',
             description: 'metrics.census_income_gini_coef.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            scaleMethod: continuousScale,
-            pallete: COLORS.RedToGreen
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: "%",
+            scaleMethod: continuousScale, ignoreValues: [null],
+            pallete: COLORS.Viridis.reverse()
         },
         {
             id: 'census_income_housing_costs',
             label: 'metrics.census_income_housing_costs',
             description: 'metrics.census_income_housing_costs.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            scaleMethod: continuousScale,
-            pallete: COLORS.RedToGreen
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: "€",
+            scaleMethod: continuousScale, ignoreValues: [null],
+            pallete: COLORS.Viridis.reverse()
+        },
+        {
+            id: 'veh_ownership_total_motor_vehicles_per_hh',
+            label: 'metrics.veh_ownership_total_motor_vehicles_per_hh',
+            description: 'metrics.veh_ownership_total_motor_vehicles_per_hh.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: 'vh',
+            scaleMethod: continuousScale, ignoreValues: [null],
+            pallete: COLORS.Viridis.reverse()
+        },
+        {
+            id: 'veh_ownership_pct_hh_no_vehicle',
+            label: 'metrics.veh_ownership_pct_hh_no_vehicle',
+            description: 'metrics.veh_ownership_pct_hh_no_vehicle.description',
+            format: (v, min, max) => Math.round(v || 0).toString(), unit: '%',
+            scaleMethod: continuousScale, ignoreValues: [null],
+            pallete: COLORS.Viridis.reverse()
         }
     ],
     'metrics.categories.census_landuse': [
@@ -412,7 +520,20 @@ export const getMetricDomain = (values: number[], metric: MetricDef): number[] =
 
     const method = metric.scaleMethod || continuousScale;
 
-    const scale = method(sorted, metric.steps);
+    let scale = method(sorted, metric.steps);
+
+    if (metric.scaleMinEqualsMax) {
+        const maxAbs = Math.max(Math.abs(scale[0]), Math.abs(scale[scale.length - 1]));
+        if (method === equalIntervalScale) {
+            scale = equalIntervalScale([-maxAbs, maxAbs], metric.steps);
+        } else if (method === continuousScale || scale.length === 2) {
+            scale = [-maxAbs, maxAbs];
+        } else {
+            scale[0] = -maxAbs;
+            scale[scale.length - 1] = maxAbs;
+        }
+    }
+
     console.log("Scale for ", metric.id, scale, values);
     return scale;
 };

@@ -13,6 +13,7 @@ export type MetricDef = {
     default?: boolean; // Show by default
     // Display
     scaleMethod?: ScaleMethod;
+    scaleMinEqualsMax?: boolean; // If true, the scale will be [a,b], such that a = -b and |a| = |b| and the midpoint is 0
     steps?: number; // Number of scale breaks for discrete scales (e.g. 5 for quintiles, 10 for deciles)
     ignoreValues?: any[]; // Values to ignore when computing the scale
     format: (v: number, min: number, max: number) => string;
