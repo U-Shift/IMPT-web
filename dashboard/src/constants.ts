@@ -24,6 +24,9 @@ export const COLORS = {
     // Reds
     WhiteToRed: ["#fff5f0", "#fff4ef", "#fff4ee", "#fff3ed", "#fff2ec", "#fff2eb", "#fff1ea", "#fff0e9", "#fff0e8", "#ffefe7", "#ffeee6", "#ffeee6", "#ffede5", "#ffece4", "#ffece3", "#ffebe2", "#feeae1", "#fee9e0", "#fee9de", "#fee8dd", "#fee7dc", "#fee6db", "#fee6da", "#fee5d9", "#fee4d8", "#fee3d7", "#fee2d6", "#fee2d5", "#fee1d4", "#fee0d2", "#fedfd1", "#feded0", "#feddcf", "#fedccd", "#fedbcc", "#fedacb", "#fed9ca", "#fed8c8", "#fed7c7", "#fdd6c6", "#fdd5c4", "#fdd4c3", "#fdd3c1", "#fdd2c0", "#fdd1bf", "#fdd0bd", "#fdcfbc", "#fdceba", "#fdcdb9", "#fdccb7", "#fdcbb6", "#fdc9b4", "#fdc8b3", "#fdc7b2", "#fdc6b0", "#fdc5af", "#fdc4ad", "#fdc2ac", "#fdc1aa", "#fdc0a8", "#fcbfa7", "#fcbea5", "#fcbca4", "#fcbba2", "#fcbaa1", "#fcb99f", "#fcb89e", "#fcb69c", "#fcb59b", "#fcb499", "#fcb398", "#fcb196", "#fcb095", "#fcaf94", "#fcae92", "#fcac91", "#fcab8f", "#fcaa8e", "#fca98c", "#fca78b", "#fca689", "#fca588", "#fca486", "#fca285", "#fca183", "#fca082", "#fc9e81", "#fc9d7f", "#fc9c7e", "#fc9b7c", "#fc997b", "#fc987a", "#fc9778", "#fc9677", "#fc9475", "#fc9374", "#fc9273", "#fc9071", "#fc8f70", "#fc8e6f", "#fc8d6d", "#fc8b6c", "#fc8a6b", "#fc8969", "#fc8868", "#fc8667", "#fc8565", "#fc8464", "#fb8263", "#fb8162", "#fb8060", "#fb7f5f", "#fb7d5e", "#fb7c5d", "#fb7b5b", "#fb795a", "#fb7859", "#fb7758", "#fb7657", "#fb7455", "#fa7354", "#fa7253", "#fa7052", "#fa6f51", "#fa6e50", "#fa6c4e", "#f96b4d", "#f96a4c", "#f9684b", "#f9674a", "#f96549", "#f86448", "#f86347", "#f86146", "#f86045", "#f75e44", "#f75d43", "#f75c42", "#f65a41", "#f65940", "#f6573f", "#f5563e", "#f5553d", "#f4533c", "#f4523b", "#f4503a", "#f34f39", "#f34e38", "#f24c37", "#f24b37", "#f14936", "#f14835", "#f04734", "#ef4533", "#ef4433", "#ee4332", "#ed4131", "#ed4030", "#ec3f2f", "#eb3d2f", "#eb3c2e", "#ea3b2d", "#e93a2d", "#e8382c", "#e7372b", "#e6362b", "#e6352a", "#e5342a", "#e43229", "#e33128", "#e23028", "#e12f27", "#e02e27", "#df2d26", "#de2c26", "#dd2b25", "#dc2a25", "#db2924", "#da2824", "#d92723", "#d72623", "#d62522", "#d52422", "#d42321", "#d32221", "#d22121", "#d12020", "#d01f20", "#ce1f1f", "#cd1e1f", "#cc1d1f", "#cb1d1e", "#ca1c1e", "#c91b1e", "#c71b1d", "#c61a1d", "#c5191d", "#c4191c", "#c3181c", "#c2181c", "#c0171b", "#bf171b", "#be161b", "#bd161a", "#bb151a", "#ba151a", "#b91419", "#b81419", "#b61419", "#b51319", "#b41318", "#b21218", "#b11218", "#b01218", "#ae1117", "#ad1117", "#ac1117", "#aa1017", "#a91016", "#a71016", "#a60f16", "#a40f16", "#a30e15", "#a10e15", "#a00e15", "#9e0d15", "#9c0d14", "#9b0c14", "#990c14", "#970c14", "#960b13", "#940b13", "#920a13", "#900a13", "#8f0a12", "#8d0912", "#8b0912", "#890812", "#870811", "#860711", "#840711", "#820711", "#800610", "#7e0610", "#7c0510", "#7a0510", "#78040f", "#76040f", "#75030f", "#73030f", "#71020e", "#6f020e", "#6d010e", "#6b010e", "#69000d", "#67000d"],
     RedToWhite: ["#fff5f0", "#fff4ef", "#fff4ee", "#fff3ed", "#fff2ec", "#fff2eb", "#fff1ea", "#fff0e9", "#fff0e8", "#ffefe7", "#ffeee6", "#ffeee6", "#ffede5", "#ffece4", "#ffece3", "#ffebe2", "#feeae1", "#fee9e0", "#fee9de", "#fee8dd", "#fee7dc", "#fee6db", "#fee6da", "#fee5d9", "#fee4d8", "#fee3d7", "#fee2d6", "#fee2d5", "#fee1d4", "#fee0d2", "#fedfd1", "#feded0", "#feddcf", "#fedccd", "#fedbcc", "#fedacb", "#fed9ca", "#fed8c8", "#fed7c7", "#fdd6c6", "#fdd5c4", "#fdd4c3", "#fdd3c1", "#fdd2c0", "#fdd1bf", "#fdd0bd", "#fdcfbc", "#fdceba", "#fdcdb9", "#fdccb7", "#fdcbb6", "#fdc9b4", "#fdc8b3", "#fdc7b2", "#fdc6b0", "#fdc5af", "#fdc4ad", "#fdc2ac", "#fdc1aa", "#fdc0a8", "#fcbfa7", "#fcbea5", "#fcbca4", "#fcbba2", "#fcbaa1", "#fcb99f", "#fcb89e", "#fcb69c", "#fcb59b", "#fcb499", "#fcb398", "#fcb196", "#fcb095", "#fcaf94", "#fcae92", "#fcac91", "#fcab8f", "#fcaa8e", "#fca98c", "#fca78b", "#fca689", "#fca588", "#fca486", "#fca285", "#fca183", "#fca082", "#fc9e81", "#fc9d7f", "#fc9c7e", "#fc9b7c", "#fc997b", "#fc987a", "#fc9778", "#fc9677", "#fc9475", "#fc9374", "#fc9273", "#fc9071", "#fc8f70", "#fc8e6f", "#fc8d6d", "#fc8b6c", "#fc8a6b", "#fc8969", "#fc8868", "#fc8667", "#fc8565", "#fc8464", "#fb8263", "#fb8162", "#fb8060", "#fb7f5f", "#fb7d5e", "#fb7c5d", "#fb7b5b", "#fb795a", "#fb7859", "#fb7758", "#fb7657", "#fb7455", "#fa7354", "#fa7253", "#fa7052", "#fa6f51", "#fa6e50", "#fa6c4e", "#f96b4d", "#f96a4c", "#f9684b", "#f9674a", "#f96549", "#f86448", "#f86347", "#f86146", "#f86045", "#f75e44", "#f75d43", "#f75c42", "#f65a41", "#f65940", "#f6573f", "#f5563e", "#f5553d", "#f4533c", "#f4523b", "#f4503a", "#f34f39", "#f34e38", "#f24c37", "#f24b37", "#f14936", "#f14835", "#f04734", "#ef4533", "#ef4433", "#ee4332", "#ed4131", "#ed4030", "#ec3f2f", "#eb3d2f", "#eb3c2e", "#ea3b2d", "#e93a2d", "#e8382c", "#e7372b", "#e6362b", "#e6352a", "#e5342a", "#e43229", "#e33128", "#e23028", "#e12f27", "#e02e27", "#df2d26", "#de2c26", "#dd2b25", "#dc2a25", "#db2924", "#da2824", "#d92723", "#d72623", "#d62522", "#d52422", "#d42321", "#d32221", "#d22121", "#d12020", "#d01f20", "#ce1f1f", "#cd1e1f", "#cc1d1f", "#cb1d1e", "#ca1c1e", "#c91b1e", "#c71b1d", "#c61a1d", "#c5191d", "#c4191c", "#c3181c", "#c2181c", "#c0171b", "#bf171b", "#be161b", "#bd161a", "#bb151a", "#ba151a", "#b91419", "#b81419", "#b61419", "#b51319", "#b41318", "#b21218", "#b11218", "#b01218", "#ae1117", "#ad1117", "#ac1117", "#aa1017", "#a91016", "#a71016", "#a60f16", "#a40f16", "#a30e15", "#a10e15", "#a00e15", "#9e0d15", "#9c0d14", "#9b0c14", "#990c14", "#970c14", "#960b13", "#940b13", "#920a13", "#900a13", "#8f0a12", "#8d0912", "#8b0912", "#890812", "#870811", "#860711", "#840711", "#820711", "#800610", "#7e0610", "#7c0510", "#7a0510", "#78040f", "#76040f", "#75030f", "#73030f", "#71020e", "#6f020e", "#6d010e", "#6b010e", "#69000d", "#67000d"].reverse(),
+    // Blues
+    WhiteToBlue: ['#f7fbff', '#f6faff', '#f5fafe', '#f5f9fe', '#f4f9fe', '#f3f8fe', '#f2f8fd', '#f2f7fd', '#f1f7fd', '#f0f6fd', '#eff6fc', '#eef5fc', '#eef5fc', '#edf4fc', '#ecf4fb', '#ebf3fb', '#eaf3fb', '#eaf2fb', '#e9f2fa', '#e8f1fa', '#e7f1fa', '#e7f0fa', '#e6f0f9', '#e5eff9', '#e4eff9', '#e3eef9', '#e3eef8', '#e2edf8', '#e1edf8', '#e0ecf8', '#dfecf7', '#dfebf7', '#deebf7', '#ddeaf7', '#dceaf6', '#dce9f6', '#dbe9f6', '#dae8f6', '#d9e8f5', '#d9e7f5', '#d8e7f5', '#d7e6f5', '#d6e6f4', '#d6e5f4', '#d5e5f4', '#d4e4f4', '#d3e4f3', '#d3e3f3', '#d2e3f3', '#d1e2f3', '#d0e2f2', '#d0e1f2', '#cfe1f2', '#cee0f2', '#cde0f1', '#cddff1', '#ccdff1', '#cbdef1', '#cadef0', '#caddf0', '#c9ddf0', '#c8dcf0', '#c7dcef', '#c7dbef', '#c6dbef', '#c4daee', '#c3daee', '#c2d9ee', '#c1d9ed', '#bfd8ed', '#bed8ec', '#bdd7ec', '#bcd7eb', '#bad6eb', '#b9d6ea', '#b8d5ea', '#b7d4ea', '#b5d4e9', '#b4d3e9', '#b3d3e8', '#b2d2e8', '#b0d2e7', '#afd1e7', '#aed1e7', '#add0e6', '#abd0e6', '#aacfe5', '#a9cfe5', '#a8cee4', '#a6cee4', '#a5cde3', '#a4cce3', '#a3cce3', '#a1cbe2', '#a0cbe2', '#9fcae1', '#9dcae1', '#9cc9e1', '#9ac8e0', '#99c7e0', '#97c6df', '#95c5df', '#94c4df', '#92c4de', '#91c3de', '#8fc2de', '#8dc1dd', '#8cc0dd', '#8abfdd', '#89bedc', '#87bddc', '#85bcdc', '#84bcdb', '#82bbdb', '#81badb', '#7fb9da', '#7db8da', '#7cb7da', '#7ab6d9', '#79b5d9', '#77b5d9', '#75b4d8', '#74b3d8', '#72b2d8', '#71b1d7', '#6fb0d7', '#6dafd7', '#6caed6', '#6aaed6', '#69add5', '#68acd5', '#66abd4', '#65aad4', '#64a9d3', '#63a8d3', '#61a7d2', '#60a7d2', '#5fa6d1', '#5da5d1', '#5ca4d0', '#5ba3d0', '#5aa2cf', '#58a1cf', '#57a0ce', '#56a0ce', '#549fcd', '#539ecd', '#529dcc', '#519ccc', '#4f9bcb', '#4e9acb', '#4d99ca', '#4b98ca', '#4a98c9', '#4997c9', '#4896c8', '#4695c8', '#4594c7', '#4493c7', '#4292c6', '#4191c6', '#4090c5', '#3f8fc5', '#3e8ec4', '#3d8dc4', '#3c8cc3', '#3b8bc2', '#3a8ac2', '#3989c1', '#3888c1', '#3787c0', '#3686c0', '#3585bf', '#3484bf', '#3383be', '#3282be', '#3181bd', '#3080bd', '#2f7fbc', '#2e7ebc', '#2d7dbb', '#2c7cba', '#2b7bba', '#2a7ab9', '#2979b9', '#2777b8', '#2676b8', '#2575b7', '#2474b7', '#2373b6', '#2272b6', '#2171b5', '#2070b4', '#206fb4', '#1f6eb3', '#1e6db2', '#1d6cb1', '#1c6bb0', '#1c6ab0', '#1b69af', '#1a68ae', '#1967ad', '#1966ad', '#1865ac', '#1764ab', '#1663aa', '#1562a9', '#1561a9', '#1460a8', '#135fa7', '#125ea6', '#125da6', '#115ca5', '#105ba4', '#0f5aa3', '#0e59a2', '#0e58a2', '#0d57a1', '#0c56a0', '#0b559f', '#0a549e', '#0a539e', '#09529d', '#08519c', '#08509b', '#084f99', '#084e98', '#084d96', '#084c95', '#084b93', '#084a91', '#084990', '#08488e', '#08478d', '#08468b', '#08458a', '#084488', '#084387', '#084285', '#084184', '#084082', '#083e81', '#083d7f', '#083c7d', '#083b7c', '#083a7a', '#083979', '#083877', '#083776', '#083674', '#083573', '#083471', '#083370', '#08326e', '#08316d', '#08306b'],
+    BlueToWhite: ['#f7fbff', '#f6faff', '#f5fafe', '#f5f9fe', '#f4f9fe', '#f3f8fe', '#f2f8fd', '#f2f7fd', '#f1f7fd', '#f0f6fd', '#eff6fc', '#eef5fc', '#eef5fc', '#edf4fc', '#ecf4fb', '#ebf3fb', '#eaf3fb', '#eaf2fb', '#e9f2fa', '#e8f1fa', '#e7f1fa', '#e7f0fa', '#e6f0f9', '#e5eff9', '#e4eff9', '#e3eef9', '#e3eef8', '#e2edf8', '#e1edf8', '#e0ecf8', '#dfecf7', '#dfebf7', '#deebf7', '#ddeaf7', '#dceaf6', '#dce9f6', '#dbe9f6', '#dae8f6', '#d9e8f5', '#d9e7f5', '#d8e7f5', '#d7e6f5', '#d6e6f4', '#d6e5f4', '#d5e5f4', '#d4e4f4', '#d3e4f3', '#d3e3f3', '#d2e3f3', '#d1e2f3', '#d0e2f2', '#d0e1f2', '#cfe1f2', '#cee0f2', '#cde0f1', '#cddff1', '#ccdff1', '#cbdef1', '#cadef0', '#caddf0', '#c9ddf0', '#c8dcf0', '#c7dcef', '#c7dbef', '#c6dbef', '#c4daee', '#c3daee', '#c2d9ee', '#c1d9ed', '#bfd8ed', '#bed8ec', '#bdd7ec', '#bcd7eb', '#bad6eb', '#b9d6ea', '#b8d5ea', '#b7d4ea', '#b5d4e9', '#b4d3e9', '#b3d3e8', '#b2d2e8', '#b0d2e7', '#afd1e7', '#aed1e7', '#add0e6', '#abd0e6', '#aacfe5', '#a9cfe5', '#a8cee4', '#a6cee4', '#a5cde3', '#a4cce3', '#a3cce3', '#a1cbe2', '#a0cbe2', '#9fcae1', '#9dcae1', '#9cc9e1', '#9ac8e0', '#99c7e0', '#97c6df', '#95c5df', '#94c4df', '#92c4de', '#91c3de', '#8fc2de', '#8dc1dd', '#8cc0dd', '#8abfdd', '#89bedc', '#87bddc', '#85bcdc', '#84bcdb', '#82bbdb', '#81badb', '#7fb9da', '#7db8da', '#7cb7da', '#7ab6d9', '#79b5d9', '#77b5d9', '#75b4d8', '#74b3d8', '#72b2d8', '#71b1d7', '#6fb0d7', '#6dafd7', '#6caed6', '#6aaed6', '#69add5', '#68acd5', '#66abd4', '#65aad4', '#64a9d3', '#63a8d3', '#61a7d2', '#60a7d2', '#5fa6d1', '#5da5d1', '#5ca4d0', '#5ba3d0', '#5aa2cf', '#58a1cf', '#57a0ce', '#56a0ce', '#549fcd', '#539ecd', '#529dcc', '#519ccc', '#4f9bcb', '#4e9acb', '#4d99ca', '#4b98ca', '#4a98c9', '#4997c9', '#4896c8', '#4695c8', '#4594c7', '#4493c7', '#4292c6', '#4191c6', '#4090c5', '#3f8fc5', '#3e8ec4', '#3d8dc4', '#3c8cc3', '#3b8bc2', '#3a8ac2', '#3989c1', '#3888c1', '#3787c0', '#3686c0', '#3585bf', '#3484bf', '#3383be', '#3282be', '#3181bd', '#3080bd', '#2f7fbc', '#2e7ebc', '#2d7dbb', '#2c7cba', '#2b7bba', '#2a7ab9', '#2979b9', '#2777b8', '#2676b8', '#2575b7', '#2474b7', '#2373b6', '#2272b6', '#2171b5', '#2070b4', '#206fb4', '#1f6eb3', '#1e6db2', '#1d6cb1', '#1c6bb0', '#1c6ab0', '#1b69af', '#1a68ae', '#1967ad', '#1966ad', '#1865ac', '#1764ab', '#1663aa', '#1562a9', '#1561a9', '#1460a8', '#135fa7', '#125ea6', '#125da6', '#115ca5', '#105ba4', '#0f5aa3', '#0e59a2', '#0e58a2', '#0d57a1', '#0c56a0', '#0b559f', '#0a549e', '#0a539e', '#09529d', '#08519c', '#08509b', '#084f99', '#084e98', '#084d96', '#084c95', '#084b93', '#084a91', '#084990', '#08488e', '#08478d', '#08468b', '#08458a', '#084488', '#084387', '#084285', '#084184', '#084082', '#083e81', '#083d7f', '#083c7d', '#083b7c', '#083a7a', '#083979', '#083877', '#083776', '#083674', '#083573', '#083471', '#083370', '#08326e', '#08316d', '#08306b'].reverse(),
 
     Divergent: {
         negative: ['#006837', '#31a354', '#78c679', '#c2e699', '#f7fcb9'],
@@ -166,71 +169,99 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             description: 'metrics.census_income_housing_costs.description',
             format: (v, min, max) => (v || 0).toFixed(1),
             pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_population',
-            label: 'metrics.census_landuse_population',
-            description: 'metrics.census_landuse_population.description',
-            format: (v, min, max) => Math.round(v || 0).toString(),
-            pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_population_density',
-            label: 'metrics.census_landuse_population_density',
-            description: 'metrics.census_landuse_population_density.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_youth_ratio',
-            label: 'metrics.census_landuse_youth_ratio',
-            description: 'metrics.census_landuse_youth_ratio.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_elderly_ratio',
-            label: 'metrics.census_landuse_elderly_ratio',
-            description: 'metrics.census_landuse_elderly_ratio.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_women_percentage',
-            label: 'metrics.census_landuse_women_percentage',
-            description: 'metrics.census_landuse_women_percentage.description',
-            format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
         }
     ],
     'metrics.categories.census_landuse': [
         {
+            id: 'census_landuse_population',
+            label: 'metrics.census_landuse_population.label',
+            description: 'metrics.census_landuse_population.description',
+            format: (v, min, max) => Math.round(v || 0).toString(),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'census_landuse_population_density',
+            label: 'metrics.census_landuse_population_density.label',
+            description: 'metrics.census_landuse_population_density.description',
+            format: (v, min, max) => (v || 0).toFixed(1),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'census_landuse_youth_ratio',
+            label: 'metrics.census_landuse_youth_ratio.label',
+            description: 'metrics.census_landuse_youth_ratio.description',
+            format: (v, min, max) => (v || 0).toFixed(1),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'census_landuse_elderly_ratio',
+            label: 'metrics.census_landuse_elderly_ratio.label',
+            description: 'metrics.census_landuse_elderly_ratio.description',
+            format: (v, min, max) => (v || 0).toFixed(1),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'census_landuse_women_percentage',
+            label: 'metrics.census_landuse_women_percentage.label',
+            description: 'metrics.census_landuse_women_percentage.description',
+            format: (v, min, max) => (v || 0).toFixed(1),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'mobility_infrastructure_road_length',
+            label: 'metrics.mobility_infrastructure_road_length.label',
+            description: 'metrics.mobility_infrastructure_road_length.description',
+            format: (v, min, max) => Math.round(v || 0).toString(),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'mobility_infrastructure_cycleway_length',
+            label: 'metrics.mobility_infrastructure_cycleway_length.label',
+            description: 'metrics.mobility_infrastructure_cycleway_length.description',
+            format: (v, min, max) => Math.round(v || 0).toString(),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'mobility_infrastructure_cycleway_to_road_ratio',
+            label: 'metrics.mobility_infrastructure_cycleway_to_road_ratio.label',
+            description: 'metrics.mobility_infrastructure_cycleway_to_road_ratio.description',
+            format: (v, min, max) => (v || 0).toFixed(2),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'mobility_infrastructure_pedpath_length',
+            label: 'metrics.mobility_infrastructure_pedpath_length.label',
+            description: 'metrics.mobility_infrastructure_pedpath_length.description',
+            format: (v, min, max) => Math.round(v || 0).toString(),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
+            id: 'mobility_infrastructure_pedpath_to_road_ratio',
+            label: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.label',
+            description: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.description',
+            format: (v, min, max) => (v || 0).toFixed(2),
+            pallete: COLORS.WhiteToBlue
+        },
+        {
             id: 'census_landuse_buildings',
-            label: 'metrics.census_landuse_buildings',
+            label: 'metrics.census_landuse_buildings.label',
             description: 'metrics.census_landuse_buildings.description',
             format: (v, min, max) => Math.round(v || 0).toString(),
-            pallete: COLORS.RedToGreen
+            pallete: COLORS.WhiteToBlue
         },
         {
             id: 'census_landuse_buildings_pre1945_percentage',
-            label: 'metrics.census_landuse_buildings_pre1945_percentage',
+            label: 'metrics.census_landuse_buildings_pre1945_percentage.label',
             description: 'metrics.census_landuse_buildings_pre1945_percentage.description',
             format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
-        },
-        {
-            id: 'census_landuse_buildings_volume_m3',
-            label: 'metrics.census_landuse_buildings_volume_m3',
-            description: 'metrics.census_landuse_buildings_volume_m3.description',
-            format: (v, min, max) => Math.round(v || 0).toString(),
-            pallete: COLORS.RedToGreen
+            pallete: COLORS.WhiteToBlue
         },
         {
             id: 'census_landuse_volume_density',
-            label: 'metrics.census_landuse_volume_density',
+            label: 'metrics.census_landuse_volume_density.label',
             description: 'metrics.census_landuse_volume_density.description',
             format: (v, min, max) => (v || 0).toFixed(1),
-            pallete: COLORS.RedToGreen
+            pallete: COLORS.WhiteToBlue
         }
     ]
 };

@@ -53,6 +53,7 @@
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Índice Pobreza nos Transportes",
+      "census_landuse": "Censos & Uso do Solo",
       "dimensions": "Dimensões Agregadas"
     },
     "impt_entropy": {
@@ -86,7 +87,21 @@
     "affordability": {
       "label": "Acessibilidade económica",
       "description": "Métrica de acessibilidade económica agregada, considerando rendimentos e custos de habitação"
-    }
+    },
+    
+    "census_landuse_population": { "label": "População", "description": "Número de residentes" },
+    "census_landuse_population_density": { "label": "Densidade populacional", "description": "Densidade populacional (residentes/km2)" },
+    "census_landuse_youth_ratio": { "label": "Rácio de jovens", "description": "Proporção da população com menos de 15 anos" },
+    "census_landuse_elderly_ratio": { "label": "Rácio de idosos", "description": "Proporção da população com mais de 65 anos" },
+    "census_landuse_women_percentage": { "label": "Percentagem de mulheres", "description": "Percentagem de mulheres" },
+    "mobility_infrastructure_road_length": { "label": "Extensão vias rodoviárias", "description": "Comprimento total da rede rodoviária" },
+    "mobility_infrastructure_cycleway_length": { "label": "Extensão rede ciclável", "description": "Comprimento total da rede ciclável" },
+    "mobility_infrastructure_cycleway_to_road_ratio": { "label": "Rácio rede ciclável", "description": "Rácio da rede ciclável face à rede rodoviária" },
+    "mobility_infrastructure_pedpath_length": { "label": "Extensão rede pedonal", "description": "Comprimento total dos caminhos pedonais" },
+    "mobility_infrastructure_pedpath_to_road_ratio": { "label": "Rácio rede pedonal", "description": "Rácio dos caminhos pedonais face à rede rodoviária" },
+    "census_landuse_buildings": { "label": "Edifícios", "description": "Número de edifícios" },
+    "census_landuse_buildings_pre1945_percentage": { "label": "Edifícios pré-1945 (%)", "description": "Percentagem de edifícios construídos antes de 1945 (_sem garagem automóvel?_)" },
+    "census_landuse_volume_density": { "label": "Densidade de volume edificado", "description": "Densidade de volume edificado (m3/m2)" }
   },
   "regions": {
     "metropolis": "Área Metropolitana",

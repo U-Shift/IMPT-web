@@ -53,7 +53,9 @@
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Transportation Poverty Index",
-      "dimensions": "Aggregated Dimensions"
+      "dimensions": "Aggregated Dimensions",
+      "census_population": "Census Population",
+      "census_landuse": "Census & Land Use"
     },
     "impt_entropy": {
       "label": "IMPT with entropy",
@@ -86,7 +88,20 @@
     "affordability": {
       "label": "Affordability",
       "description": "Aggregated affordability metric, considering income and housing costs"
-    }
+    },
+    "census_landuse_population": { "label": "Population", "description": "Number of residents" },
+    "census_landuse_population_density": { "label": "Population density", "description": "Population density (residents/km2)" },
+    "census_landuse_youth_ratio": { "label": "Youth ratio", "description": "Proportion of population under 15 years old" },
+    "census_landuse_elderly_ratio": { "label": "Elderly ratio", "description": "Proportion of population over 65 years old" },
+    "census_landuse_women_percentage": { "label": "Women percentage", "description": "Percentage of women in the population" },
+    "mobility_infrastructure_road_length": { "label": "Road infrastructure length", "description": "Total length of road network" },
+    "mobility_infrastructure_cycleway_length": { "label": "Cycling infrastructure length", "description": "Total length of cycling network" },
+    "mobility_infrastructure_cycleway_to_road_ratio": { "label": "Cycling infrastructure ratio", "description": "Ratio of cycling infrastructure to road length" },
+    "mobility_infrastructure_pedpath_length": { "label": "Pedestrian infrastructure length", "description": "Total length of pedestrian paths" },
+    "mobility_infrastructure_pedpath_to_road_ratio": { "label": "Pedestrian infrastructure ratio", "description": "Ratio of pedestrian paths to road length" },
+    "census_landuse_buildings": { "label": "Buildings", "description": "Number of buildings" },
+    "census_landuse_buildings_pre1945_percentage": { "label": "Buildings pre-1945 (%)", "description": "Percentage of buildings built before 1945 (_without car garage?_)" },
+    "census_landuse_volume_density": { "label": "Building volume density", "description": "Building volume density (m3/m2)" }
   },
   "regions": {
     "metropolis": "Metro Area",
