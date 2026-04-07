@@ -84,6 +84,8 @@ const Dashboard = () => {
     }>({ geo: {}, limits: null, loading: true, error: null, parentLookup: {} });
 
     useEffect(() => {
+        if (isMobile || Object.keys(dataState.geo).length > 0) return;
+
         const load = async () => {
             try {
                 const levels = Object.keys(LEVEL_CONFIG) as ViewLevel[];
@@ -115,7 +117,7 @@ const Dashboard = () => {
             }
         };
         load();
-    }, []);
+    }, [isMobile, dataState.geo]);
 
     const selectedMetric = useMemo(() => FLAT_METRICS.find(m => m.id === selectedMetricId) || FLAT_METRICS[0], [selectedMetricId]);
     const selectedMode = useMemo(() => MODES.find(m => m.id === selectedModeId) || MODES[0], [selectedModeId]);
@@ -403,7 +405,7 @@ const Dashboard = () => {
         setWeights(defaultWeights);
     };
 
-    if (dataState.loading) return (
+    if (dataState.loading && !isMobile) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-2`}>
             <Loader2 className="w-12 h-12 text-sky-800 animate-spin" />
             <div className="flex flex-col items-center gap-1">
