@@ -1,9 +1,9 @@
 import { MetricDef, ViewLevel, ScaleMethod } from './types';
 
 export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel }> = {
-    'municipality': { file: 'data/municipios_aggregated.geojson' },
-    'freguesia': { file: 'data/freguesias_aggregated.geojson', parent: 'municipality' },
-    'hex': { file: 'data/grid_aggregated.geojson', parent: 'freguesia' }
+    'municipality': { file: 'https://ushift.tecnico.ulisboa.pt/content/impt/municipios_aggregated.geojson' },
+    'freguesia': { file: 'https://ushift.tecnico.ulisboa.pt/content/impt/freguesias_aggregated.geojson', parent: 'municipality' },
+    'hex': { file: 'https://ushift.tecnico.ulisboa.pt/content/impt/grid_aggregated.geojson', parent: 'freguesia' }
 };
 
 export const getEqualIntervals = (value: number): string => {

@@ -1,0 +1,3 @@
+# Redirect for impt app at ushift.pt/apps/impt, located at /afs/.ist.utl.pt/groups/ushift/web/apps/impt
+RewriteEngine On
+RewriteRule ^/?(.*)$ https://u-shift.github.io/IMPT/$1 [R=301,L]

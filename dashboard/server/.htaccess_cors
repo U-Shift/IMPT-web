@@ -1,0 +1,4 @@
+# Cors policy for data folder, at /afs/.ist.utl.pt/groups/ushift/web/content/impt
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "https://u-shift.github.io/IMPT"
+</IfModule>
