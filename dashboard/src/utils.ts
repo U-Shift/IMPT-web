@@ -36,8 +36,6 @@ export const getMetricDomain = (values: number[], metric: MetricDef): number[] =
             scale[scale.length - 1] = maxAbs;
         }
     }
-
-    console.log("Scale for ", metric.id, scale, values);
     return scale;
 };
 /**
@@ -105,23 +103,99 @@ export const getLegendGradient = (metric: MetricDef, domain: number[]): string =
  * Resolves the value of a metric from a feature's properties, considering 
  * mode suffixes, fallbacks, and optional alternative IDs.
  */
-export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string }): any => {
+export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string }, variations?: Record<string, string>): any => {
     if (!properties) return undefined;
 
+    const resolveId = (id: string) => {
+        let resolved = id;
+        if (variations) {
+            Object.entries(variations).forEach(([group, value]) => {
+                resolved = resolved.replace(`{${group}}`, value);
+            });
+        }
+        return resolved;
+    }
+
     const idsToTry = [
-        metric.id + (mode.suffix || ''),
-        mode.suffixFallback !== undefined ? metric.id + mode.suffixFallback : undefined,
-        metric.id,
-        metric.id_optional ? metric.id_optional + (mode.suffix || '') : undefined,
-        (metric.id_optional && mode.suffixFallback !== undefined) ? metric.id_optional + mode.suffixFallback : undefined,
-        metric.id_optional
+        resolveId(metric.id) + (mode.suffix || ''),
+        mode.suffixFallback !== undefined ? resolveId(metric.id) + mode.suffixFallback : undefined,
+        resolveId(metric.id),
+        metric.id_optional ? resolveId(metric.id_optional) + (mode.suffix || '') : undefined,
+        (metric.id_optional && mode.suffixFallback !== undefined) ? resolveId(metric.id_optional) + mode.suffixFallback : undefined,
+        metric.id_optional ? resolveId(metric.id_optional) : undefined
     ].filter(Boolean) as string[];
-    console.log("ids to try", idsToTry);
 
     for (const id of idsToTry) {
-        if (properties[id] !== undefined) return properties[id];
+        if (properties[id] !== undefined) {
+            return properties[id];
+        }
     }
-    console.error("No value found for metric", metric.id, "in properties", properties);
     return undefined;
 };
+
+/**
+ * Dynamically discovers valid variation combinations for a metric by scanning feature properties.
+ */
+export const discoverMetricVariations = (metric: MetricDef, features: any[]): Record<string, string>[] => {
+    if (!metric.id_variations || !features || features.length === 0) return [];
+
+    const groups = Object.keys(metric.id_variations);
+    const validCombinations: Record<string, string>[] = [];
+    const seenCombos = new Set<string>();
+    const seenKeys = new Set<string>();
+
+    const patterns = [metric.id, metric.id_optional].filter(Boolean) as string[];
+
+    // Build regexes for each pattern
+    const regexes = patterns.map(pattern => {
+        let regexSource = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        groups.forEach(group => {
+            // Constrain match to ONLY the predefined options to avoid capturing mode suffixes
+            const options = metric.id_variations![group]
+                .slice()
+                .sort((a: string, b: string) => b.length - a.length)
+                .map((o: string) => o.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+                .join('|');
+            regexSource = regexSource.replace(`\\{${group}\\}`, `(?<${group}>${options})`);
+        });
+        return new RegExp(`^${regexSource}(?:_.*)?$`);
+    });
+
+    // Sample features to find valid keys (scanning all for robustness, but only unique keys)
+    features.forEach(f => {
+        if (!f.properties) return;
+        Object.keys(f.properties).forEach(key => {
+            if (seenKeys.has(key)) return;
+            seenKeys.add(key);
+
+            for (const regex of regexes) {
+                const match = key.match(regex);
+                if (match && match.groups) {
+                    const combo: Record<string, string> = {};
+                    let allMatched = true;
+                    groups.forEach(g => {
+                        if (match.groups![g]) {
+                            combo[g] = match.groups![g];
+                        } else {
+                            allMatched = false;
+                        }
+                    });
+
+                    if (allMatched) {
+                        const comboKey = Object.entries(combo).sort().map(e => e.join(':')).join('|');
+                        if (!seenCombos.has(comboKey)) {
+                            seenCombos.add(comboKey);
+                            validCombinations.push(combo);
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    console.log("Valid combinations for ", metric.id, validCombinations);
+
+    return validCombinations;
+};
+
 

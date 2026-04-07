@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Moon, Download, Info, ListFilter, ChevronDown, AlertTriangle, Activity, Languages } from 'lucide-react';
+import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages } from 'lucide-react';
 import { MetricDef } from '../types';
 import { METRICS, FLAT_METRICS } from '../constants';
 import { useTranslation } from 'react-i18next';
@@ -12,20 +12,24 @@ interface SidebarLeftProps {
     selectedMetric: MetricDef;
     selectedMetricId: string;
     setSelectedMetricId: (val: string) => void;
-    viewLevel: string;
     collapsedSections: Record<string, boolean>;
     toggleSection: (cat: string) => void;
     weights: Record<string, number>;
     setWeights: (val: any) => void;
     resetWeights: () => void;
     setIsAHPModalOpen: (val: boolean) => void;
+    selectedVariations: Record<string, string>;
+    setSelectedVariations: (val: any) => void;
+    discoveredVariations: Record<string, string>[];
 }
 
 export const SidebarLeft: React.FC<SidebarLeftProps> = ({
     isDarkMode, setIsDarkMode, setShowDownload, setShowAbout,
     selectedMetric, selectedMetricId, setSelectedMetricId,
-    viewLevel, collapsedSections, toggleSection,
-    weights, setWeights, resetWeights, setIsAHPModalOpen
+    collapsedSections, toggleSection,
+    weights, setWeights, resetWeights, setIsAHPModalOpen,
+    selectedVariations, setSelectedVariations,
+    discoveredVariations
 }) => {
     const { t, i18n } = useTranslation();
     const toggleLanguage = () => {
@@ -108,20 +112,111 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                     <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-300 ${collapsedSections[cat] ? '' : 'rotate-180'}`} />
                                 </button>
                                 {!collapsedSections[cat] && (
-                                    <div className={`p-2 space-y-1.5 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
-                                        {METRICS[cat].map(m => {
+                                    <div className={`p-2 space-y-1.5 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>                                        {METRICS[cat].map(m => {
+                                            const isSelected = selectedMetricId === m.id;
+                                            const validVariations = m.valid_id_variations || (isSelected ? discoveredVariations : []);
+                                            
                                             return (
-                                                <button key={m.id} onClick={() => setSelectedMetricId(m.id)}
-                                                    data-tooltip={t(m.description as string)}
-                                                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${selectedMetricId === m.id
-                                                        ? 'bg-sky-900 text-white shadow-lg'
-                                                        : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
-                                                >
-                                                    <span className="flex items-center gap-3">
-                                                        <span>{m.icon}</span>
-                                                        <span className="truncate">{t(m.label)}</span>
-                                                    </span>
-                                                </button>
+                                                <div key={m.id} className="space-y-1">
+                                                    <button onClick={() => {
+                                                        setSelectedMetricId(m.id);
+
+                                                        // Enforce valid variations for the new metric
+                                                        if (validVariations && validVariations.length > 0) {
+                                                            setSelectedVariations((prev: any) => {
+                                                                const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
+                                                                    acc[g] = prev[g] || (m.id_variations![g][0]);
+                                                                    return acc;
+                                                                }, {} as Record<string, string>);
+
+                                                                const isValid = validVariations.some((validComb: any) => {
+                                                                    return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
+                                                                });
+
+                                                                if (!isValid) {
+                                                                    // Fallback to first valid combination for this metric
+                                                                    return { ...prev, ...validVariations[0] };
+                                                                }
+                                                                return prev;
+                                                            });
+                                                        }
+                                                    }}
+                                                        data-tooltip={t(m.description as string)}
+                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
+                                                            ? 'bg-sky-900 text-white shadow-lg'
+                                                            : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
+                                                    >
+                                                        <span className="flex items-center gap-3">
+                                                            <span>{m.icon}</span>
+                                                            <span className="truncate">{t(m.label)}</span>
+                                                        </span>
+                                                    </button>
+
+                                                    {isSelected && m.id_variations && (
+                                                        <div className={`mt-2 mb-3 p-3 rounded-2xl space-y-3 ${isDarkMode ? 'bg-neutral-950/50' : 'bg-white/50 border border-neutral-100'}`}>
+                                                            {Object.entries(m.id_variations).map(([group, options], index, arr) => {
+                                                                let visibleOptions = options;
+                                                                if (validVariations && validVariations.length > 0) {
+                                                                    const priorGroups = arr.slice(0, index).map(a => a[0]);
+                                                                    const validSubset = validVariations.filter((comb: any) => {
+                                                                        return priorGroups.every(g => comb[g] === (selectedVariations[g] || m.id_variations![g][0]));
+                                                                    });
+                                                                    visibleOptions = options.filter(opt => {
+                                                                        return validSubset.some((comb: any) => comb[group] === opt);
+                                                                    });
+                                                                }
+
+                                                                if (visibleOptions.length === 0) return null;
+
+                                                                return (
+                                                                    <div key={group} className="space-y-1.5">
+                                                                        <label className={`text-[10px] font-black uppercase tracking-widest opacity-40 px-1 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>{t(`variations.${group}`)}</label>
+                                                                        <div className="flex flex-wrap gap-1">
+                                                                            {visibleOptions.map(opt => {
+                                                                                const isOptSelected = selectedVariations[group] === opt || (!selectedVariations[group] && options[0] === opt);
+                                                                                return (
+                                                                                    <button
+                                                                                        key={opt}
+                                                                                        onClick={() => {
+                                                                                            setSelectedVariations((prev: any) => {
+                                                                                                const next = { ...prev, [group]: opt };
+
+                                                                                                if (validVariations && validVariations.length > 0) {
+                                                                                                    const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
+                                                                                                        acc[g] = next[g] || (m.id_variations![g][0]);
+                                                                                                        return acc;
+                                                                                                    }, {} as Record<string, string>);
+
+                                                                                                    const isValid = validVariations.some((validComb: any) => {
+                                                                                                        return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
+                                                                                                    });
+
+                                                                                                    if (!isValid) {
+                                                                                                        // Find the FIRST valid combination that includes the newly selected option
+                                                                                                        const fallbackComb = validVariations.find((validComb: any) => validComb[group] === opt);
+                                                                                                        if (fallbackComb) {
+                                                                                                            return { ...prev, ...fallbackComb };
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                                return next;
+                                                                                            });
+                                                                                        }}
+                                                                                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold transition-all ${isOptSelected
+                                                                                            ? 'bg-sky-800 text-white shadow-sm'
+                                                                                            : (isDarkMode ? 'bg-neutral-800 text-neutral-500 hover:text-neutral-300' : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200')}`}
+                                                                                    >
+                                                                                        {t(`variations.${opt}`)}
+                                                                                    </button>
+                                                                                );
+                                                                            })}
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             );
                                         })}
                                     </div>

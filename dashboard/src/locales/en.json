@@ -111,7 +111,25 @@
     "modal_census_share": "Modal share (Residents)",
     "census_income_income_hh": "Household income",
     "census_income_gini_coef": "Gini coefficient",
-    "census_income_housing_costs": "Housing costs"
+    "census_income_housing_costs": "Housing costs",
+    "mobility_cost": {
+      "label": "Access cost (Time)",
+      "description": "Travel time to the nearest services, considering the selected population and number of opportunities."
+    }
+  },
+  "variations": {
+    "poi_type": "Point of Interest",
+    "n_opportunities": "Opportunities",
+    "population": "Target Population",
+    "health": "Health",
+    "schools_primary": "Primary Schools",
+    "recreation": "Recreation",
+    "groceries": "Groceries",
+    "greenspaces": "Green Spaces",
+    "n1": "Nearest (1)",
+    "n3": "Closest 3",
+    "residents": "General (Residents)",
+    "kids": "Children"
   },
   "regions": {
     "metropolis": "Metro Area",

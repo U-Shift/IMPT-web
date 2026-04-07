@@ -184,46 +184,15 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.GreenToRed
         },
         {
-            id: 'mobility_cost_health_n1_residents',
-            id_optional: 'mobility_cost_health_n1',
-            label: 'metrics.mobility_cost_health_n1_residents',
-            description: 'metrics.mobility_cost_health_n1_residents.description',
-            format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
-            scaleMethod: continuousScale,
-            pallete: COLORS.GreenToRed
-        },
-        {
-            id: 'mobility_cost_schools_primary_n1_kids',
-            id_optional: 'mobility_cost_schools_primary_n1',
-            label: 'metrics.mobility_cost_schools_primary_n1_kids',
-            description: 'metrics.mobility_cost_schools_primary_n1_kids.description',
-            format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
-            scaleMethod: continuousScale,
-            pallete: COLORS.GreenToRed
-        },
-        {
-            id: 'mobility_cost_greenspaces_n1_residents',
-            id_optional: 'mobility_cost_greenspaces_n1',
-            label: 'metrics.mobility_cost_greenspaces_n1_residents',
-            description: 'metrics.mobility_cost_greenspaces_n1_residents.description',
-            format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
-            scaleMethod: continuousScale,
-            pallete: COLORS.GreenToRed
-        },
-        {
-            id: 'mobility_cost_recreation_n3_residents',
-            id_optional: 'mobility_cost_recreation_n3',
-            label: 'metrics.mobility_cost_recreation_n3_residents',
-            description: 'metrics.mobility_cost_recreation_n3_residents.description',
-            format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
-            scaleMethod: continuousScale,
-            pallete: COLORS.GreenToRed
-        },
-        {
-            id: 'mobility_cost_groceries_n3_residents',
-            id_optional: 'mobility_cost_groceries_n3',
-            label: 'metrics.mobility_cost_groceries_n3_residents',
-            description: 'metrics.mobility_cost_groceries_n3_residents.description',
+            id: 'mobility_cost_{poi_type}_{n_opportunities}_{population}',
+            id_optional: 'mobility_cost_{poi_type}_{n_opportunities}',
+            id_variations: {
+                poi_type: ['health', 'health_primary', 'health_hospital', 'groceries', 'greenspaces', 'recreation', 'schools', 'schools_primary', 'schools_high', 'transit', 'transit_bus', 'transit_mass'],
+                n_opportunities: ['n1', 'n2', 'n3'],
+                population: ['residents', 'elder', 'kids', 'active', 'young']
+            },
+            label: 'metrics.mobility_cost.label',
+            description: 'metrics.mobility_cost.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
             pallete: COLORS.GreenToRed

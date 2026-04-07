@@ -3,8 +3,16 @@ export type ViewLevel = 'hex' | 'freguesia' | 'municipality';
 export type ScaleMethod = (values: number[], steps?: number) => number[];
 
 export type MetricDef = {
+    // Variable identifiers
     id: string;
-    id_optional?: string; // Optional alternative ID (e.g. for different aggregation levels)
+    id_optional?: string; // Optional alternative ID (e.g. for different aggregation levels, such as mobility_cost_health_n1 for grid and mobility_cost_health_n1_residents for parish and municipality)
+    id_variations?: {
+        // ID variations selectable by user (e.g. for different time periods)
+        // Groups are prensent at id or id_optional through {group} placeholder
+        // e.g. mobility_cost_{poi_type}_{n_opportunities}_{population} with groups poi_type: [recreation, schools], n_opportunities: [n1,n2,n3], population: [kids, residents]
+        [group: string]: string[];
+    };
+    valid_id_variations?: Record<string, string>[]; // List of explicit valid combinations. If defined, constrains selections.
     label: string;
     category: string;
     icon?: string;

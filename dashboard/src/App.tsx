@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 import { ViewLevel } from './types';
 import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS } from './constants';
-import { getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored, getMetricValue } from './utils';
+import { getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored, getMetricValue, discoverMetricVariations } from './utils';
 import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './components/MapHandlers';
 import { AHPModal } from './components/AHPModal';
 import { SidebarLeft } from './components/SidebarLeft';
@@ -25,6 +25,31 @@ const Dashboard = () => {
     const [selectedMetricId, setSelectedMetricId] = useState<string>(FLAT_METRICS.find(m => m.default)?.id || FLAT_METRICS[0].id);
     const [selectedModeId, setSelectedModeId] = useState<ModeId>('all');
     const [selectedFeature, setSelectedFeature] = useState<any>(null);
+
+    const initialVariations = useMemo(() => {
+        const initial: Record<string, string> = {};
+        FLAT_METRICS.forEach(m => {
+            if (m.id_variations) {
+                Object.entries(m.id_variations).forEach(([group, options]) => {
+                    if (!initial[group]) initial[group] = options[0];
+                });
+            }
+        });
+
+        // After setting all defaults, enforce validity based primarily on the default metric
+        const defaultMetric = FLAT_METRICS.find(m => m.default) || FLAT_METRICS[0];
+        if (defaultMetric.valid_id_variations && defaultMetric.valid_id_variations.length > 0) {
+            Object.assign(initial, defaultMetric.valid_id_variations[0]);
+        } else {
+            const firstWithValid = FLAT_METRICS.find(m => m.valid_id_variations && m.valid_id_variations.length > 0);
+            if (firstWithValid) {
+                Object.assign(initial, firstWithValid.valid_id_variations![0]);
+            }
+        }
+
+        return initial;
+    }, []);
+    const [selectedVariations, setSelectedVariations] = useState<Record<string, string>>(initialVariations);
     const [mapStyle, setMapStyle] = useState<string>('carto');
     const [zoomRequest, setZoomRequest] = useState<{ id: string | number, timestamp: number } | null>(null);
     const contributoryMetrics = useMemo(() => FLAT_METRICS.filter(m => m.isContributory), []);
@@ -94,6 +119,14 @@ const Dashboard = () => {
     const selectedMetric = useMemo(() => FLAT_METRICS.find(m => m.id === selectedMetricId) || FLAT_METRICS[0], [selectedMetricId]);
     const selectedMode = useMemo(() => MODES.find(m => m.id === selectedModeId) || MODES[0], [selectedModeId]);
 
+    // Log effective ID when selection changes
+    useEffect(() => {
+        let resId = selectedMetric.id;
+        Object.entries(selectedVariations).forEach(([k, v]) => resId = resId.replace(`{${k}}`, v));
+        const effectiveId = resId + (selectedMode.suffix || '');
+        console.log(`[Metric Selection] ${selectedMetricId} -> ${effectiveId}`);
+    }, [selectedMetricId, selectedVariations, selectedModeId, selectedMetric, selectedMode]);
+
     // Helper to check if a specific mode is available for a metric at a certain view level
     const isModeAvailable = useCallback((modeId: string, metricId: string, level: string) => {
         const metric = FLAT_METRICS.find(m => m.id === metricId);
@@ -109,8 +142,8 @@ const Dashboard = () => {
         if (!features || !features.length) return false;
 
         // Check if any feature has the metric (hex grids can have many empty cells, so we check using .some)
-        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, mode) !== undefined);
-    }, [dataState.geo]);
+        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, mode, selectedVariations) !== undefined);
+    }, [dataState.geo, selectedVariations]);
 
     // Helper to check if a metric is available at a certain view level with the current mode
     const isMetricAvailable = useCallback((metricId: string, level: string, modeSuffix: string = selectedMode.suffix) => {
@@ -126,8 +159,8 @@ const Dashboard = () => {
         if (!features || !features.length) return false;
 
         // Check if any feature has the metric (hex grids can have many empty cells, so we check using .some)
-        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, { suffix: modeSuffix }) !== undefined);
-    }, [dataState.geo, selectedMode.suffix]);
+        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, { suffix: modeSuffix }, selectedVariations) !== undefined);
+    }, [dataState.geo, selectedMode.suffix, selectedVariations]);
 
     // Derive effective level and mode to ensure consistent rendering even before useEffect synchronizes state
     const effectiveLevel = useMemo(() => {
@@ -141,6 +174,11 @@ const Dashboard = () => {
         const firstAvailable = MODES.find(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel));
         return firstAvailable || MODES[0];
     }, [selectedModeId, selectedMetricId, effectiveLevel, dataState.geo, selectedMode, selectedMetric, isModeAvailable]);
+
+    const discoveredVariations = useMemo(() => {
+        const features = dataState.geo[effectiveLevel]?.features || [];
+        return discoverMetricVariations(selectedMetric, features);
+    }, [selectedMetric, dataState.geo, effectiveLevel]);
 
     // Auto-switch view level OR reset mode if not available for selected metric
     useEffect(() => {
@@ -187,7 +225,7 @@ const Dashboard = () => {
                 Object.entries(weights).forEach(([metricId, weight]) => {
                     const metricDef = FLAT_METRICS.find(m => m.id === metricId);
                     if (!metricDef) return;
-                    const val = getMetricValue(f.properties, metricDef, effectiveMode);
+                    const val = getMetricValue(f.properties, metricDef, effectiveMode, selectedVariations);
                     if (val !== undefined) {
                         computedIndex += val * weight;
                     }
@@ -212,7 +250,7 @@ const Dashboard = () => {
         }
 
         return { ...raw, features };
-    }, [effectiveLevel, nutFilter, dataState, weights, effectiveMode.suffix]);
+    }, [effectiveLevel, nutFilter, dataState, weights, effectiveMode.suffix, selectedVariations]);
     const filteredLimits = useMemo(() => {
         if (!dataState.limits) return null;
         if (nutFilter === REGION_KEYS[0]) return dataState.limits;
@@ -226,11 +264,11 @@ const Dashboard = () => {
     const currentDomain = useMemo(() => {
         if (!computedGeoData?.features?.length) return [0, 1];
         const values = computedGeoData.features
-            .map((f: any) => getMetricValue(f.properties, selectedMetric, effectiveMode))
+            .map((f: any) => getMetricValue(f.properties, selectedMetric, effectiveMode, selectedVariations))
             .filter((v: any) => !isMetricValueIgnored(v, selectedMetric));
 
         return getMetricDomain(values, selectedMetric);
-    }, [computedGeoData, selectedMetric, effectiveMode]);
+    }, [computedGeoData, selectedMetric, effectiveMode, selectedVariations]);
 
     // Precompute domains for all metrics shown in details to support dynamic coloring
     const allDomains = useMemo(() => {
@@ -238,17 +276,17 @@ const Dashboard = () => {
         if (!computedGeoData?.features?.length) return result;
         FLAT_METRICS.filter(m => m.showAlwaysOnDetails || m.id === selectedMetricId).forEach(m => {
             const values = computedGeoData.features
-                .map((f: any) => getMetricValue(f.properties, m, effectiveMode))
+                .map((f: any) => getMetricValue(f.properties, m, effectiveMode, selectedVariations))
                 .filter((v: any) => !isMetricValueIgnored(v, m));
 
             result[m.id] = getMetricDomain(values, m);
         });
         return result;
-    }, [computedGeoData, effectiveMode]);
+    }, [computedGeoData, effectiveMode, selectedVariations]);
 
 
     const getStyle = (feature: any) => {
-        const val = getMetricValue(feature.properties, selectedMetric, effectiveMode);
+        const val = getMetricValue(feature.properties, selectedMetric, effectiveMode, selectedVariations);
         const isSelected = selectedFeature && feature.properties.id === selectedFeature.id;
         return {
             fillColor: getColor(val, currentDomain, selectedMetric),
@@ -262,7 +300,7 @@ const Dashboard = () => {
 
     const onEachFeature = (feature: any, layer: any) => {
         const props = feature.properties;
-        const val = getMetricValue(props, selectedMetric, effectiveMode);
+        const val = getMetricValue(props, selectedMetric, effectiveMode, selectedVariations);
         const formattedVal = selectedMetric.format(val, currentDomain[0], currentDomain[currentDomain.length - 1]);
 
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
@@ -320,12 +358,12 @@ const Dashboard = () => {
             .filter((f: any) => String(f.properties.group_id) === String(selectedFeature.id))
             .map((f: any) => f.properties)
             .filter((p: any) => {
-                const val = getMetricValue(p, selectedMetric, effectiveMode);
+                const val = getMetricValue(p, selectedMetric, effectiveMode, selectedVariations);
                 return !isMetricValueIgnored(val, selectedMetric);
             })
             .sort((a: any, b: any) => {
-                const valA = getMetricValue(a, selectedMetric, effectiveMode);
-                const valB = getMetricValue(b, selectedMetric, effectiveMode);
+                const valA = getMetricValue(a, selectedMetric, effectiveMode, selectedVariations);
+                const valB = getMetricValue(b, selectedMetric, effectiveMode, selectedVariations);
                 return (valB || 0) - (valA || 0);
             });
     }, [effectiveLevel, selectedFeature, selectedMetric, effectiveMode, dataState]);
@@ -335,11 +373,11 @@ const Dashboard = () => {
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const feats = computedGeoData.features
             .filter((f: any) => {
-                const val = getMetricValue(f.properties, selectedMetric, effectiveMode);
+                const val = getMetricValue(f.properties, selectedMetric, effectiveMode, selectedVariations);
                 return !isMetricValueIgnored(val, selectedMetric);
             })
             .map((f: any) => {
-                const val = getMetricValue(f.properties, selectedMetric, effectiveMode) ?? 0;
+                const val = getMetricValue(f.properties, selectedMetric, effectiveMode, selectedVariations) ?? 0;
                 const groupName = (parentLevel && f.properties?.group_id)
                     ? (dataState.parentLookup[`${parentLevel}-${f.properties.group_id}`] || f.properties.group_id)
                     : 'LMA';
@@ -378,13 +416,15 @@ const Dashboard = () => {
                     selectedMetric={selectedMetric}
                     selectedMetricId={selectedMetricId}
                     setSelectedMetricId={setSelectedMetricId}
-                    viewLevel={effectiveLevel}
                     collapsedSections={collapsedSections}
                     toggleSection={toggleSection}
                     weights={weights}
                     setWeights={setWeights}
                     resetWeights={resetWeights}
                     setIsAHPModalOpen={setIsAHPModalOpen}
+                    selectedVariations={selectedVariations}
+                    setSelectedVariations={setSelectedVariations}
+                    discoveredVariations={discoveredVariations}
                 />
             )}
 
@@ -474,7 +514,7 @@ const Dashboard = () => {
                         })()}
                         <MapTools isDarkMode={isDarkMode} mapStyle={mapStyle} setMapStyle={setMapStyle} />
                         {computedGeoData?.features && (
-                            <GeoJSON key={`${effectiveLevel}-${nutFilter}-${selectedMetricId}-${effectiveMode.id}-${isDarkMode}-${selectedFeature?.id}-${i18n.language}-${JSON.stringify(weights)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
+                            <GeoJSON key={`${effectiveLevel}-${nutFilter}-${selectedMetricId}-${effectiveMode.id}-${isDarkMode}-${selectedFeature?.id}-${i18n.language}-${JSON.stringify(weights)}-${JSON.stringify(selectedVariations)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
                         )}
                         <Pane name="limits-pane" style={{ zIndex: 450 }}>
                             {effectiveLevel !== 'municipality' && filteredLimits && (
@@ -497,6 +537,7 @@ const Dashboard = () => {
                     allDomains={allDomains}
                     subLevelData={subLevelData}
                     chartData={chartData}
+                    selectedVariations={selectedVariations}
                     setSelectedFeature={setSelectedFeature}
                     computedGeoData={computedGeoData}
                     setZoomRequest={setZoomRequest}
