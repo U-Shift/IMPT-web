@@ -130,7 +130,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                 }, {} as Record<string, string>);
 
                                                                 const isValid = validVariations.some((validComb: any) => {
-                                                                    return Object.entries(validComb).every(([k, v]) => currentComb[k] === v);
+                                                                    return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
                                                                 });
 
                                                                 if (!isValid) {
@@ -159,7 +159,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                 if (validVariations && validVariations.length > 0) {
                                                                     const priorGroups = arr.slice(0, index).map(a => a[0]);
                                                                     const validSubset = validVariations.filter((comb: any) => {
-                                                                        return priorGroups.every(g => comb[g] === undefined || comb[g] === (selectedVariations[g] || m.id_variations![g][0]));
+                                                                        return priorGroups.every(g => comb[g] === (selectedVariations[g] || m.id_variations![g][0]));
                                                                     });
                                                                     visibleOptions = options.filter(opt => {
                                                                         return validSubset.some((comb: any) => comb[group] === opt);
@@ -188,7 +188,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                                                     }, {} as Record<string, string>);
 
                                                                                                     const isValid = validVariations.some((validComb: any) => {
-                                                                                                        return Object.entries(validComb).every(([k, v]) => currentComb[k] === v);
+                                                                                                        return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
                                                                                                     });
 
                                                                                                     if (!isValid) {

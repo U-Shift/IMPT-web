@@ -12,7 +12,6 @@ export type MetricDef = {
         // e.g. mobility_cost_{poi_type}_{n_opportunities}_{population} with groups poi_type: [recreation, schools], n_opportunities: [n1,n2,n3], population: [kids, residents]
         [group: string]: string[];
     };
-    id_variations_optional?: string[]; // Optional variations of the id (e.g. for different time periods)
     valid_id_variations?: Record<string, string>[]; // List of explicit valid combinations. If defined, constrains selections.
     label: string;
     category: string;

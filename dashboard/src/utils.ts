@@ -112,43 +112,30 @@ export const getLegendGradient = (metric: MetricDef, domain: number[]): string =
 export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string }, variations?: Record<string, string>): any => {
     if (!properties) return undefined;
 
-    const resolveId = (id: string, stripOptionals: boolean = false) => {
+    const resolveId = (id: string) => {
         let resolved = id;
         if (variations) {
             Object.entries(variations).forEach(([group, value]) => {
-                const isOptional = metric.id_variations_optional?.includes(group);
-                if (value && !(stripOptionals && isOptional)) {
-                    resolved = resolved.replace(`{${group}}`, value);
-                } else if (isOptional || !value) {
-                    resolved = resolved.replace(new RegExp(`_?\\{${group}\\}`), '');
-                }
+                resolved = resolved.replace(`{${group}}`, value);
             });
         }
         return resolved;
     }
 
-    const patterns = [metric.id, metric.id_optional].filter(Boolean) as string[];
+    const idsToTry = [
+        resolveId(metric.id) + (mode.suffix || ''),
+        mode.suffixFallback !== undefined ? resolveId(metric.id) + mode.suffixFallback : undefined,
+        resolveId(metric.id),
+        metric.id_optional ? resolveId(metric.id_optional) + (mode.suffix || '') : undefined,
+        (metric.id_optional && mode.suffixFallback !== undefined) ? resolveId(metric.id_optional) + mode.suffixFallback : undefined,
+        metric.id_optional ? resolveId(metric.id_optional) : undefined
+    ].filter(Boolean) as string[];
 
-    // Try with exact variations first, then try stripping optional ones
-    for (const strip of [false, true]) {
-        if (strip && !metric.id_variations_optional?.length) continue;
-
-        for (const pattern of patterns) {
-            const resolved = resolveId(pattern, strip);
-            const idsToTry = [
-                resolved + (mode.suffix || ''),
-                mode.suffixFallback !== undefined ? resolved + mode.suffixFallback : undefined,
-                resolved
-            ].filter(Boolean) as string[];
-
-            for (const id of idsToTry) {
-                if (properties[id] !== undefined) {
-                    return properties[id];
-                }
-            }
+    for (const id of idsToTry) {
+        if (properties[id] !== undefined) {
+            return properties[id];
         }
     }
-
     return undefined;
 };
 
@@ -175,15 +162,7 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
                 .sort((a: string, b: string) => b.length - a.length)
                 .map((o: string) => o.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
                 .join('|');
-
-            if (metric.id_variations_optional?.includes(group)) {
-                regexSource = regexSource.replace(
-                    new RegExp(`_?\\\\\\{${group}\\\\\\}`),
-                    `(?:_?(?<${group}>${options}))?`
-                );
-            } else {
-                regexSource = regexSource.replace(`\\{${group}\\}`, `(?<${group}>${options})`);
-            }
+            regexSource = regexSource.replace(`\\{${group}\\}`, `(?<${group}>${options})`);
         });
         return new RegExp(`^${regexSource}(?:_.*)?$`);
     });
@@ -204,9 +183,7 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
                         if (match.groups![g]) {
                             combo[g] = match.groups![g];
                         } else {
-                            if (!metric.id_variations_optional?.includes(g)) {
-                                allMatched = false;
-                            }
+                            allMatched = false;
                         }
                     });
 
