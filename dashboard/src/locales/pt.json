@@ -15,10 +15,7 @@
     "calculate": "Calcular",
     "fix": "Corrigir",
     "no_data": "Sem dados",
-    "source": "Fonte",
-    "sources": "Fontes de Dados",
-    "description": "Descrição",
-    "no_description": "Sem descrição disponível para esta métrica."
+    "source": "Fonte"
   },
   "tooltips": {
     "toggle_theme": "Alternar Tema",
@@ -37,8 +34,7 @@
     "constituent_dynamics": "Subdivisões",
     "regional_contrast": "Contrastes Regionais",
     "top_performers": "Valores mais elevados",
-    "low_performers": "Valores mais baixos",
-    "metric_details": "Detalhes da Métrica"
+    "low_performers": "Valores mais baixos"
   },
   "map": {
     "view_level": "Visualização",

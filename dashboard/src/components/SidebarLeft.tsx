@@ -24,7 +24,6 @@ interface SidebarLeftProps {
     discoveredVariations: Record<string, string>[];
     selectedMode: { id: string };
     viewLevel: string;
-    setSelectedDetailMetric: (m: MetricDef | null) => void;
 }
 
 export const SidebarLeft: React.FC<SidebarLeftProps> = ({
@@ -33,8 +32,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
     collapsedSections, toggleSection,
     weights, setWeights, resetWeights, setIsAHPModalOpen,
     selectedVariations, setSelectedVariations,
-    discoveredVariations, selectedMode, viewLevel,
-    setSelectedDetailMetric
+    discoveredVariations, selectedMode, viewLevel
 }) => {
     const { t, i18n } = useTranslation();
     const toggleLanguage = () => {
@@ -131,49 +129,45 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
                                         return (
                                             <div key={m.id} className="space-y-1">
-                                                <button onClick={() => {
-                                                    setSelectedMetricId(m.id);
-
-                                                    // Enforce valid variations for the new metric
-                                                    if (validVariations && validVariations.length > 0) {
-                                                        setSelectedVariations((prev: any) => {
-                                                            const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
-                                                                const gDef = m.id_variations![g];
-                                                                const opts = Array.isArray(gDef) ? gDef : gDef.options;
-                                                                acc[g] = prev[g] || opts[0];
-                                                                return acc;
-                                                            }, {} as Record<string, string>);
-
-                                                            const isValid = validVariations.some((validComb: any) => {
-                                                                return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
-                                                            });
-
-                                                            if (!isValid) {
-                                                                // Fallback to first valid combination for this metric
-                                                                return { ...prev, ...validVariations[0] };
-                                                            }
-                                                            return prev;
-                                                        });
-                                                    }
-                                                }}
-                                                    className={`w-full group flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
-                                                        ? 'bg-sky-900 text-white shadow-lg shadow-sky-900/20'
-                                                        : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
+                                                <Tooltip
+                                                    content={`${t(m.description as string)}${m.sources && m.sources.length > 0 ? `\n\n${t('common.source')}: ${m.sources.map(s => t(`sources.${s}`)).join(', ')}` : ''}`}
+                                                    isDarkMode={true}
                                                 >
-                                                    <span className="flex items-center gap-3">
-                                                        <span>{m.icon}</span>
-                                                        <span className="truncate">{t(m.label)}</span>
-                                                    </span>
-                                                    <div 
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            setSelectedDetailMetric(m);
-                                                        }}
-                                                        className={`p-1 rounded-md transition-all ${isSelected ? 'hover:bg-white/10 text-white/40 hover:text-white' : 'hover:bg-neutral-700/50 text-neutral-600 hover:text-neutral-400 opacity-0 group-hover:opacity-100'}`}
+                                                    <button onClick={() => {
+                                                        setSelectedMetricId(m.id);
+
+                                                        // Enforce valid variations for the new metric
+                                                        if (validVariations && validVariations.length > 0) {
+                                                            setSelectedVariations((prev: any) => {
+                                                                const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
+                                                                    const gDef = m.id_variations![g];
+                                                                    const opts = Array.isArray(gDef) ? gDef : gDef.options;
+                                                                    acc[g] = prev[g] || opts[0];
+                                                                    return acc;
+                                                                }, {} as Record<string, string>);
+
+                                                                const isValid = validVariations.some((validComb: any) => {
+                                                                    return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
+                                                                });
+
+                                                                if (!isValid) {
+                                                                    // Fallback to first valid combination for this metric
+                                                                    return { ...prev, ...validVariations[0] };
+                                                                }
+                                                                return prev;
+                                                            });
+                                                        }
+                                                    }}
+                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
+                                                            ? 'bg-sky-900 text-white shadow-lg'
+                                                            : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
                                                     >
-                                                        <Info className="w-3.5 h-3.5" />
-                                                    </div>
-                                                </button>
+                                                        <span className="flex items-center gap-3">
+                                                            <span>{m.icon}</span>
+                                                            <span className="truncate">{t(m.label)}</span>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
 
                                                 {isSelected && m.id_variations && (
                                                     <div className={`mt-2 mb-3 p-3 rounded-2xl space-y-3 ${isDarkMode ? 'bg-neutral-950/50' : 'bg-white/50 border border-neutral-100'}`}>

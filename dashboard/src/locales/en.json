@@ -15,10 +15,7 @@
     "calculate": "Calculate",
     "fix": "Fix",
     "no_data": "No data",
-    "source": "Source",
-    "sources": "Data Sources",
-    "description": "Description",
-    "no_description": "No description available for this metric."
+    "source": "Source"
   },
   "tooltips": {
     "toggle_theme": "Toggle Theme",
@@ -37,8 +34,7 @@
     "constituent_dynamics": "Subareas",
     "regional_contrast": "Regional Contrasts",
     "top_performers": "Highest values",
-    "low_performers": "Lowest values",
-    "metric_details": "Full Metric Details"
+    "low_performers": "Lowest values"
   },
   "map": {
     "view_level": "View Level",
