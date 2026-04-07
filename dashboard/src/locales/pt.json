@@ -53,8 +53,12 @@
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Índice Pobreza nos Transportes",
-      "census_landuse": "Censos & Uso do Solo",
-      "dimensions": "Dimensões Agregadas"
+      "dimensions": "Dimensões Agregadas",
+      "mobility": "Mobilidade",
+      "accessibility": "Acessibilidade",
+      "safety": "Segurança",
+      "affordability": "Acessibilidade Económica",
+      "census_landuse": "Censos & Uso do Solo"
     },
     "impt_entropy": {
       "label": "IMPT com entropia",
@@ -146,12 +150,16 @@
       "label": "Custo da mobilidade",
       "description": "Despesa mensal estimada em transportes"
     },
-    "modal_census_share": "Quota modal (Residentes)",
-    "census_income_income_hh": "Rendimento das famílias",
+    "modal_census_share": "Quota Modal (Residentes)",
+    "modal_imob_share": "Quota Modal (Pendulares)",
+    "mobility_commuting_avg_tt": "Tempo Médio de Deslocação",
+    "mobility_shared_mobility_points": "Pontos de Mobilidade Partilhada",
+    "mobility_stop_coverage_ratio_served_population": "Índice de Cobertura de Transportes",
+    "census_income_income_hh": "Rendimento das Famílias",
     "census_income_gini_coef": "Coeficiente de Gini",
-    "census_income_housing_costs": "Custos com habitação",
+    "census_income_housing_costs": "Custos com Habitação",
     "mobility_cost": {
-      "label": "Custo de acesso (Tempo)",
+      "label": "Custo de Acesso (Tempo)",
       "description": "Tempo de viagem até aos serviços mais próximos, considerando a população e o número de oportunidades selecionados."
     }
   },
@@ -159,15 +167,29 @@
     "poi_type": "Serviço / Equipamento",
     "n_opportunities": "Oportunidades",
     "population": "População Alvo",
+    "n_transfers": "Transbordos",
     "health": "Saúde",
-    "schools_primary": "Escolas Primárias",
-    "recreation": "Lazer",
+    "health_primary": "Saúde (Primários)",
+    "health_hospital": "Saúde (Hospitais)",
     "groceries": "Mercearias",
     "greenspaces": "Espaços Verdes",
+    "recreation": "Lazer",
+    "schools": "Escolas",
+    "schools_primary": "Escolas (Primárias)",
+    "schools_high": "Escolas (Secundárias)",
+    "transit": "Transportes",
+    "transit_bus": "Autocarro",
+    "transit_mass": "Modos Pesados",
     "n1": "Mais Próximo (1)",
+    "n2": "Os 2 mais próximos",
     "n3": "Os 3 mais próximos",
     "residents": "Geral (Residentes)",
-    "kids": "Crianças"
+    "elder": "Idosos",
+    "kids": "Crianças",
+    "active": "População Ativa",
+    "young": "Jovens",
+    "1t": "Até 1 transbordo",
+    "2t": "Até 2 transbordos"
   },
   "regions": {
     "metropolis": "Área Metropolitana",

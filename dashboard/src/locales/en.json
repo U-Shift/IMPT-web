@@ -54,6 +54,10 @@
     "categories": {
       "mobility_poverty_index": "Transportation Poverty Index",
       "dimensions": "Aggregated Dimensions",
+      "mobility": "Mobility",
+      "accessibility": "Accessibility",
+      "safety": "Safety",
+      "affordability": "Affordability",
       "census_population": "Census Population",
       "census_landuse": "Census & Land Use"
     },
@@ -108,12 +112,13 @@
       "label": "Cost of Mobility",
       "description": "Estimated monthly expenditure on transportation"
     },
-    "modal_census_share": "Modal share (Residents)",
-    "census_income_income_hh": "Household income",
-    "census_income_gini_coef": "Gini coefficient",
-    "census_income_housing_costs": "Housing costs",
+    "modal_census_share": "Modal Share (Residents)",
+    "modal_imob_share": "Modal Share (Commuters)",
+    "mobility_commuting_avg_tt": "Average Commuting Time",
+    "mobility_shared_mobility_points": "Shared Mobility Points",
+    "mobility_stop_coverage_ratio_served_population": "Transport Coverage Index",
     "mobility_cost": {
-      "label": "Access cost (Time)",
+      "label": "Access Cost (Time)",
       "description": "Travel time to the nearest services, considering the selected population and number of opportunities."
     }
   },

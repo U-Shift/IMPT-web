@@ -10,6 +10,7 @@ export type MetricDef = {
         // ID variations selectable by user (e.g. for different time periods)
         // Groups are prensent at id or id_optional through {group} placeholder
         // e.g. mobility_cost_{poi_type}_{n_opportunities}_{population} with groups poi_type: [recreation, schools], n_opportunities: [n1,n2,n3], population: [kids, residents]
+        // Some might be optional, in that case id definition is appended with :optional, example mobility_cost_{poi_type}_{n_opportunities}_{population:optional}
         [group: string]: string[];
     };
     valid_id_variations?: Record<string, string>[]; // List of explicit valid combinations. If defined, constrains selections.

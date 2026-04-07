@@ -155,7 +155,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                     {isSelected && m.id_variations && (
                                                         <div className={`mt-2 mb-3 p-3 rounded-2xl space-y-3 ${isDarkMode ? 'bg-neutral-950/50' : 'bg-white/50 border border-neutral-100'}`}>
                                                             {Object.entries(m.id_variations).map(([group, options], index, arr) => {
-                                                                let visibleOptions = options;
+                                                                let visibleOptions: string[] = [];
                                                                 if (validVariations && validVariations.length > 0) {
                                                                     const priorGroups = arr.slice(0, index).map(a => a[0]);
                                                                     const validSubset = validVariations.filter((comb: any) => {
@@ -164,6 +164,8 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                     visibleOptions = options.filter(opt => {
                                                                         return validSubset.some((comb: any) => comb[group] === opt);
                                                                     });
+                                                                } else {
+                                                                    visibleOptions = options;
                                                                 }
 
                                                                 if (visibleOptions.length === 0) return null;
@@ -206,7 +208,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                                             ? 'bg-sky-800 text-white shadow-sm'
                                                                                             : (isDarkMode ? 'bg-neutral-800 text-neutral-500 hover:text-neutral-300' : 'bg-neutral-100 text-neutral-500 hover:bg-neutral-200')}`}
                                                                                     >
-                                                                                        {t(`variations.${opt}`)}
+                                                                                        {t(`variations.${opt.replace(/^_/, '')}`)}
                                                                                     </button>
                                                                                 );
                                                                             })}

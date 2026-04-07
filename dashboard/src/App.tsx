@@ -142,7 +142,7 @@ const Dashboard = () => {
         if (!features || !features.length) return false;
 
         // Check if any feature has the metric (hex grids can have many empty cells, so we check using .some)
-        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, mode, selectedVariations) !== undefined);
+        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, mode, selectedVariations, true) !== undefined);
     }, [dataState.geo, selectedVariations]);
 
     // Helper to check if a metric is available at a certain view level with the current mode
@@ -159,7 +159,7 @@ const Dashboard = () => {
         if (!features || !features.length) return false;
 
         // Check if any feature has the metric (hex grids can have many empty cells, so we check using .some)
-        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, { suffix: modeSuffix }, selectedVariations) !== undefined);
+        return features.some((f: any) => getMetricValue(f.properties, checkMetric!, { suffix: modeSuffix }, selectedVariations, true) !== undefined);
     }, [dataState.geo, selectedMode.suffix, selectedVariations]);
 
     // Derive effective level and mode to ensure consistent rendering even before useEffect synchronizes state
@@ -179,6 +179,19 @@ const Dashboard = () => {
         const features = dataState.geo[effectiveLevel]?.features || [];
         return discoverMetricVariations(selectedMetric, features);
     }, [selectedMetric, dataState.geo, effectiveLevel]);
+
+    // Filter discovered variations to only those valid for the CURRENT mode and level
+    const filteredVariations = useMemo(() => {
+        const features = dataState.geo[effectiveLevel]?.features || [];
+        if (features.length === 0) return discoveredVariations;
+
+        return discoveredVariations.filter(combo => {
+            // Use extra-strict mode (6th param) to only keep combinations that truly exist as dedicated data columns
+            return features.some((f: any) =>
+                getMetricValue(f.properties, selectedMetric, effectiveMode, combo, false, true) !== undefined
+            );
+        });
+    }, [discoveredVariations, effectiveLevel, effectiveMode, selectedMetric, dataState.geo]);
 
     // Auto-switch view level OR reset mode if not available for selected metric
     useEffect(() => {
@@ -408,24 +421,24 @@ const Dashboard = () => {
         <div className={`relative h-screen w-screen ${isDarkMode ? 'bg-neutral-950 text-neutral-100' : 'bg-neutral-50 text-neutral-900'} font-sans overflow-hidden transition-colors duration-300`}>
 
             {!isMobile && (
-                <SidebarLeft
-                    isDarkMode={isDarkMode}
-                    setIsDarkMode={setIsDarkMode}
-                    setShowDownload={setShowDownload}
-                    setShowAbout={setShowAbout}
-                    selectedMetric={selectedMetric}
-                    selectedMetricId={selectedMetricId}
-                    setSelectedMetricId={setSelectedMetricId}
-                    collapsedSections={collapsedSections}
-                    toggleSection={toggleSection}
-                    weights={weights}
-                    setWeights={setWeights}
-                    resetWeights={resetWeights}
-                    setIsAHPModalOpen={setIsAHPModalOpen}
-                    selectedVariations={selectedVariations}
-                    setSelectedVariations={setSelectedVariations}
-                    discoveredVariations={discoveredVariations}
-                />
+                    <SidebarLeft
+                        isDarkMode={isDarkMode}
+                        setIsDarkMode={setIsDarkMode}
+                        setShowDownload={setShowDownload}
+                        setShowAbout={setShowAbout}
+                        selectedMetric={selectedMetric}
+                        selectedMetricId={selectedMetricId}
+                        setSelectedMetricId={setSelectedMetricId}
+                        collapsedSections={collapsedSections}
+                        toggleSection={toggleSection}
+                        weights={weights}
+                        setWeights={setWeights}
+                        resetWeights={resetWeights}
+                        setIsAHPModalOpen={setIsAHPModalOpen}
+                        selectedVariations={selectedVariations}
+                        setSelectedVariations={setSelectedVariations}
+                        discoveredVariations={filteredVariations}
+                    />
             )}
 
             {/* Map Canvas: Main View */}

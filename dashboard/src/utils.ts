@@ -103,29 +103,62 @@ export const getLegendGradient = (metric: MetricDef, domain: number[]): string =
  * Resolves the value of a metric from a feature's properties, considering 
  * mode suffixes, fallbacks, and optional alternative IDs.
  */
-export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string }, variations?: Record<string, string>): any => {
+export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string }, variations?: Record<string, string>, strict?: boolean, extraStrict?: boolean): any => {
     if (!properties) return undefined;
 
-    const resolveId = (id: string) => {
-        let resolved = id;
-        if (variations) {
-            Object.entries(variations).forEach(([group, value]) => {
-                resolved = resolved.replace(`{${group}}`, value);
+    const getAllResolvedIds = (pattern: string) => {
+        let currentIds = [pattern];
+        const groupsInPattern = (pattern.match(/\{([^}:]+)(:optional)?\}/g) || [])
+            .map(m => m.replace(/[\{\}]/g, '').split(':')[0]);
+
+        groupsInPattern.forEach(group => {
+            const nextIds: string[] = [];
+            const isOptional = pattern.includes(`{${group}:optional}`);
+            const val = variations ? variations[group] : undefined;
+
+            currentIds.forEach(id => {
+                const escapedOptionalGroup = new RegExp(`_?\\{${group}:optional\\}`, 'g');
+                
+                if (val !== undefined) {
+                    // Try with value
+                    nextIds.push(id.replace(`{${group}}`, val).replace(`{${group}:optional}`, val));
+                    
+                    // If not extra-strict, also try WITHOUT the value (fallback)
+                    if (isOptional && !extraStrict) {
+                        nextIds.push(id.replace(escapedOptionalGroup, ''));
+                    }
+                } else if (isOptional) {
+                    // If optional and no value provided, we MUST remove it to match base keys
+                    nextIds.push(id.replace(escapedOptionalGroup, ''));
+                } else {
+                    // Required but missing, keep placeholder (will fail property match)
+                    nextIds.push(id);
+                }
             });
-        }
-        return resolved;
-    }
+            currentIds = Array.from(new Set(nextIds));
+        });
 
-    const idsToTry = [
-        resolveId(metric.id) + (mode.suffix || ''),
-        mode.suffixFallback !== undefined ? resolveId(metric.id) + mode.suffixFallback : undefined,
-        resolveId(metric.id),
-        metric.id_optional ? resolveId(metric.id_optional) + (mode.suffix || '') : undefined,
-        (metric.id_optional && mode.suffixFallback !== undefined) ? resolveId(metric.id_optional) + mode.suffixFallback : undefined,
-        metric.id_optional ? resolveId(metric.id_optional) : undefined
-    ].filter(Boolean) as string[];
+        return currentIds;
+    };
 
-    for (const id of idsToTry) {
+    const baseIds = getAllResolvedIds(metric.id);
+    const altIds = metric.id_optional ? getAllResolvedIds(metric.id_optional) : [];
+
+    const idsToTry = strict ? [
+        ...baseIds.map(id => id + (mode.suffix || '')),
+        ...altIds.map(id => id + (mode.suffix || ''))
+    ] : [
+        ...baseIds.map(id => id + (mode.suffix || '')),
+        ...(mode.suffixFallback !== undefined ? baseIds.map(id => id + mode.suffixFallback) : []),
+        ...baseIds,
+        ...altIds.map(id => id + (mode.suffix || '')),
+        ...(mode.suffixFallback !== undefined ? altIds.map(id => id + mode.suffixFallback) : []),
+        ...altIds
+    ];
+
+    const cleanIdsToTry = idsToTry.filter(Boolean) as string[];
+
+    for (const id of cleanIdsToTry) {
         if (properties[id] !== undefined) {
             return properties[id];
         }
@@ -156,7 +189,16 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
                 .sort((a: string, b: string) => b.length - a.length)
                 .map((o: string) => o.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
                 .join('|');
-            regexSource = regexSource.replace(`\\{${group}\\}`, `(?<${group}>${options})`);
+
+            const escapedGroup = `\\{${group}\\}`;
+            const escapedOptionalGroup = `\\{${group}:optional\\}`;
+
+            if (regexSource.includes(escapedOptionalGroup)) {
+                // Handle optional: move any preceding underscore into the optional non-capturing group
+                regexSource = regexSource.replace(new RegExp(`(_?)${escapedOptionalGroup.replace(/\\/g, '\\\\')}`, 'g'), `(?:$1(?<${group}>${options}))?`);
+            } else {
+                regexSource = regexSource.replace(escapedGroup, `(?<${group}>${options})`);
+            }
         });
         return new RegExp(`^${regexSource}(?:_.*)?$`);
     });
@@ -177,7 +219,11 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
                         if (match.groups![g]) {
                             combo[g] = match.groups![g];
                         } else {
-                            allMatched = false;
+                            // If it's missing, only fail if it was NOT marked as optional in any pattern
+                            const isOptional = patterns.some(p => p.includes(`{${g}:optional}`));
+                            if (!isOptional) {
+                                allMatched = false;
+                            }
                         }
                     });
 
