@@ -207,35 +207,33 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
 };
 
 
-const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, selectedFeature: any, allDomains: any, isDarkMode: boolean, t: any, selectedVariations: Record<string, string>, viewLevel: string) => {
-    const filtered = FLAT_METRICS.filter(m =>
+
+const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, selectedFeature: any, allDomains: any, isDarkMode: boolean, t: any) => {
+    return FLAT_METRICS.filter(m =>
         m.showAlwaysOnDetails || m.id === selectedMetricId
-    );
-
-    // De-duplicate by ID (keep the first one encountered)
-    const unique = Array.from(new Map(filtered.map(m => [m.id, m])).values());
-
-    return unique.sort((a, b) => {
-        if (a.id === selectedMetricId) return -1;
-        if (b.id === selectedMetricId) return 1;
-        return 0;
-    }).map(m => {
-        const val = getMetricValue(selectedFeature, m, selectedMode, viewLevel, selectedVariations);
-        if (isMetricValueIgnored(val, m)) {
-            return null;
-        }
-        const isSelected = m.id === selectedMetricId;
-        return (
-            <div key={m.id} className={isSelected ? "col-span-2" : ""}>
-                <DetailCard
-                    label={t(m.label)}
-                    value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 1)}
-                    unit={m.unit}
-                    hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
-                    isDark={isDarkMode}
-                    isFullWidth={isSelected}
-                />
-            </div>
-        );
-    });
+    )
+        .sort((a, b) => {
+            if (a.id === selectedMetricId) return -1;
+            if (b.id === selectedMetricId) return 1;
+            return 0;
+        }).map(m => {
+            const effectiveId = `${m.id}${selectedMode.suffix}`;
+            const fallbackId = selectedMode.suffixFallback !== undefined ? `${m.id}${selectedMode.suffixFallback}` : undefined;
+            const val = (selectedFeature[effectiveId] ?? (fallbackId ? selectedFeature[fallbackId] : undefined));
+            if (isMetricValueIgnored(val, m)) {
+                return null;
+            }
+            const isSelected = m.id === selectedMetricId;
+            return (
+                <div key={m.id} className={isSelected ? "col-span-2" : ""}>
+                    <DetailCard
+                        key={m.id}
+                        label={t(m.label)}
+                        value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 1)}
+                        hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
+                        isDark={isDarkMode}
+                    />
+                </div>
+            );
+        });
 };
