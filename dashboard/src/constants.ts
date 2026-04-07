@@ -276,6 +276,14 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.WhiteToRed
         },
         {
+            id: 'safety_inner_total_veiculos',
+            label: 'metrics.safety_inner_total_veiculos.label',
+            description: 'metrics.safety_inner_total_veiculos.description',
+            format: (v, _min, _max) => Math.round(v || 0).toString(),
+            scaleMethod: logarithmicScale, steps: 10, ignoreValues: [0, null],
+            pallete: COLORS.WhiteToRed
+        },
+        {
             id: 'safety_inner_indice_gravidade',
             label: 'metrics.safety_inner_indice_gravidade.label',
             description: 'metrics.safety_inner_indice_gravidade.description',

@@ -200,6 +200,14 @@
         "pmus"
       ]
     },
+    "safety_inner_total_veiculos": {
+      "label": "Total involved vehicles",
+      "description": "Total number of vehicles involved in road accidents",
+      "sources": [
+        "ansr",
+        "pmus"
+      ]
+    },
     "safety_inner_indice_gravidade": {
       "label": "Severity index",
       "description": "Accident severity ratio",

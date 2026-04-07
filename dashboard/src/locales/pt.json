@@ -200,6 +200,14 @@
         "pmus"
       ]
     },
+    "safety_inner_total_veiculos": {
+      "label": "Total de veículos envolvidos",
+      "description": "Número total de veículos envolvidos em acidentes rodoviários",
+      "sources": [
+        "ansr",
+        "pmus"
+      ]
+    },
     "safety_inner_indice_gravidade": {
       "label": "Índice de gravidade",
       "description": "Rácio de gravidade dos acidentes",
