@@ -402,7 +402,7 @@ const Dashboard = () => {
             <Loader2 className="w-12 h-12 text-sky-800 animate-spin" />
             <div className="flex flex-col items-center gap-1">
                 <p className={`font-black uppercase tracking-[0.2em] text-[12px] ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>{t('common.loading')}</p>
-                <p className={`italic font-medium text-[10px] ${isDarkMode ? 'text-neutral-600' : 'text-neutral-500'}`}>{t('common.loading_note')}</p>
+                <p className={`font-medium text-[10px] ${isDarkMode ? 'text-neutral-600' : 'text-neutral-500'}`}>{t('common.loading_note')}</p>
             </div>
         </div>
     );
