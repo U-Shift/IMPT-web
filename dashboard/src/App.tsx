@@ -2,10 +2,11 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, GeoJSON, Pane } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Loader2, Activity, Layers, Globe, RocketIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Loader2, Activity, Layers, Globe, RocketIcon, Info } from 'lucide-react';
+import { MetricDetailModal } from './components/MetricDetailModal';
 
-import { ViewLevel } from './types';
+import { ViewLevel, MetricDef } from './types';
 import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS } from './constants';
 import { getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored, getMetricValue, discoverMetricVariations } from './utils';
 import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './components/MapHandlers';
@@ -66,6 +67,7 @@ const Dashboard = () => {
     const [showDownload, setShowDownload] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(false);
     const [isAHPModalOpen, setIsAHPModalOpen] = useState(false);
+    const [selectedDetailMetric, setSelectedDetailMetric] = useState<MetricDef | null>(null);
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
         const keys = Object.keys(METRICS);
         return keys.slice(1).reduce((acc, key) => ({ ...acc, [key]: true }), {});
@@ -438,6 +440,7 @@ const Dashboard = () => {
                     discoveredVariations={discoveredVariations}
                     selectedMode={effectiveMode}
                     viewLevel={effectiveLevel}
+                    setSelectedDetailMetric={setSelectedDetailMetric}
                 />
             )}
 
@@ -507,8 +510,15 @@ const Dashboard = () => {
                                     </div>
                                 </div>
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
-                                    <p className="text-[13px] font-black leading-tight mb-2 uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit})` : ''}</p>
-                                    <p className="text-[13px] opacity-40 leading-relaxed font-bold tracking-tight">{selectedMetric.description ? t(selectedMetric.description) : `Spatial distribution and variance of ${t(selectedMetric.label).toLowerCase()} across the ${t(`map.${effectiveLevel}`)} network.`}</p>
+                                    <div className="flex items-start justify-between gap-4">
+                                        <p className="text-[13px] font-black leading-tight uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit})` : ''}</p>
+                                        <button 
+                                            onClick={() => setSelectedDetailMetric(selectedMetric)}
+                                            className={`p-1.5 -mt-1 rounded-lg transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-400'}`}
+                                        >
+                                            <Info className="w-3.5 h-3.5" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -578,8 +588,15 @@ const Dashboard = () => {
                 isDarkMode={isDarkMode}
                 onApplyWeights={(newWeights: Record<string, number>) => {
                     setWeights(newWeights);
+                    setSelectedDetailMetric(null);
                     setIsAHPModalOpen(false);
                 }}
+            />
+
+            <MetricDetailModal 
+                metric={selectedDetailMetric} 
+                onClose={() => setSelectedDetailMetric(null)} 
+                isDarkMode={isDarkMode}
             />
 
             {isMobile && !showAbout && (
