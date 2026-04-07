@@ -96,7 +96,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.GreenToRed,
             format: (v, _min, _max) => (v || 0).toFixed(1),
             scaleMethod: continuousScale,
-            showDetails: true, showDetailsOnlyWhenSelected: true
         },
         {
             id: 'IMPT_score_pca_geom',
@@ -105,7 +104,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => (v || 0).toFixed(1),
             scaleMethod: continuousScale,
             pallete: COLORS.GreenToRed,
-            showDetails: true, showDetailsOnlyWhenSelected: true, default: true
+            default: true
         },
         {
             id: 'IMPT_dynamic',
@@ -114,7 +113,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => (v || 0).toFixed(1),
             scaleMethod: continuousScale,
             pallete: COLORS.GreenToRed,
-            showDetails: true, showDetailsOnlyWhenSelected: true,
             isCalculated: true
         },
     ],
@@ -126,7 +124,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showDetails: true,
+            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25
         },
         {
@@ -136,7 +134,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showDetails: true,
+            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25
         },
         {
@@ -146,7 +144,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showDetails: true,
+            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25
         },
         {
@@ -156,7 +154,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showDetails: true,
+            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25
         }
     ],
@@ -167,7 +165,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             description: 'metrics.modal_census_share.description',
             format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
-            pallete: COLORS.WhiteToGreen
+            pallete: COLORS.WhiteToGreen,
         },
         {
             id: 'modal_imob_share',

@@ -236,7 +236,7 @@ const Dashboard = () => {
     const allDomains = useMemo(() => {
         const result: Record<string, number[]> = {};
         if (!computedGeoData?.features?.length) return result;
-        FLAT_METRICS.filter(m => m.showDetails).forEach(m => {
+        FLAT_METRICS.filter(m => m.showAlwaysOnDetails || m.id === selectedMetricId).forEach(m => {
             const values = computedGeoData.features
                 .map((f: any) => getMetricValue(f.properties, m, effectiveMode))
                 .filter((v: any) => !isMetricValueIgnored(v, m));

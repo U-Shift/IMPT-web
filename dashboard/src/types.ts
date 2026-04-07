@@ -19,8 +19,7 @@ export type MetricDef = {
     ignoreValues?: any[]; // Values to ignore when computing the scale
     format: (v: number, min: number, max: number) => string;
     // Area details sidebar (opens on the right, when user clicks on a feature)
-    showDetails?: boolean; // Show in "Area details" section
-    showDetailsOnlyWhenSelected?: boolean; // Show in details only when active
+    showAlwaysOnDetails?: boolean; // If true, the variable is always visible in the details sidebar. By default, variables are only visible when selected.
     // IMPT Calculation
     isCalculated?: boolean; // Identifies this metric as a dynamically computed index
     isContributory?: boolean; // Identifies that this metric can be used to compute a dynamic index

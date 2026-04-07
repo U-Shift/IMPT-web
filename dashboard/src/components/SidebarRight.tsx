@@ -32,7 +32,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
 }) => {
     const { t } = useTranslation();
     return (
-        <div className={`absolute top-4 right-4 w-[400px] max-h-[calc(100vh-2rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
+        <div className={`absolute top-4 right-4 w-[400px] max-h-[calc(100vh-18rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
             <div className="flex-1 overflow-y-auto p-7 space-y-8 scrollbar-hide">
 
                 {/* Selection Detail - Visible only when an area is selected */}
@@ -207,21 +207,27 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
 
 const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, selectedFeature: any, allDomains: any, isDarkMode: boolean, t: any) => {
     return FLAT_METRICS.filter(m =>
-        m.showDetails &&
-        (!m.showDetailsOnlyWhenSelected || m.id === selectedMetricId)
-    ).map(m => {
+        m.showAlwaysOnDetails || m.id === selectedMetricId
+    ).sort((a, b) => {
+        if (a.id === selectedMetricId) return -1;
+        if (b.id === selectedMetricId) return 1;
+        return 0;
+    }).map(m => {
         const val = getMetricValue(selectedFeature, m, selectedMode);
         if (isMetricValueIgnored(val, m)) {
             return null;
         }
+        const isSelected = m.id === selectedMetricId;
         return (
-            <DetailCard
-                key={m.id}
-                label={t(m.label)}
-                value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 1)}
-                hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
-                isDark={isDarkMode}
-            />
+            <div key={m.id} className={isSelected ? "col-span-2" : ""}>
+                <DetailCard
+                    label={t(m.label)}
+                    value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 1)}
+                    hexColor={getColor(val, allDomains[m.id] || [0, 1], m)}
+                    isDark={isDarkMode}
+                    isFullWidth={isSelected}
+                />
+            </div>
         );
     });
 };
