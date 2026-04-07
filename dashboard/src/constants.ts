@@ -224,6 +224,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id_optional: 'mobility_cost_groceries_n3',
             label: 'metrics.mobility_cost_groceries_n3_residents.label',
             description: 'metrics.mobility_cost_groceries_n3_residents.description',
+            sources: ['census', 'osm'],
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
             pallete: COLORS.GreenToRed
@@ -247,9 +248,9 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     ],
     'metrics.categories.accessibility': [
         {
-            id: 'access_gap_money_cost_gap',
-            label: 'metrics.access_gap_money_cost_gap.label',
-            description: 'metrics.access_gap_money_cost_gap.description',
+            id: 'access_gap_time_accessibility_gap',
+            label: 'metrics.access_gap_time_accessibility_gap.label',
+            description: 'metrics.access_gap_time_accessibility_gap.description',
             format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: 'min',
             scaleMethod: continuousScale, scaleMinEqualsMax: true,
             pallete: COLORS.RedToGreen
@@ -410,14 +411,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.label',
             description: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.description',
             format: (v, _min, _max) => (v || 0).toFixed(2),
-            scaleMethod: continuousScale,
-            pallete: COLORS.WhiteToBlue
-        },
-        {
-            id: 'census_landuse_buildings',
-            label: 'metrics.census_landuse_buildings.label',
-            description: 'metrics.census_landuse_buildings.description',
-            format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue
         },

@@ -157,14 +157,9 @@
       "description": "Rácio dos caminhos pedonais face à rede rodoviária",
       "sources": ["osm"]
     },
-    "census_landuse_buildings": {
-      "label": "Edifícios",
-      "description": "Número de edifícios",
-      "sources": ["gba"]
-    },
     "census_landuse_buildings_pre1945_percentage": {
       "label": "Edifícios pré-1945 (%)",
-      "description": "Percentagem de edifícios construídos antes de 1945 (_sem garagem automóvel?_)",
+      "description": "Percentagem de edifícios construídos antes de 1945 (<i>sem garagem automóvel</i>)",
       "sources": ["census"]
     },
     "census_landuse_volume_density": {
@@ -174,17 +169,17 @@
     },
     "safety_inner_total_acidentes": {
       "label": "Total de acidentes",
-      "description": "Número total de acidentes rodoviários registados",
+      "description": "Número total de acidentes rodoviários registados (2019-2023)",
       "sources": ["ansr", "pmus"]
     },
     "safety_inner_indice_gravidade": {
       "label": "Índice de gravidade",
-      "description": "Rácio de gravidade dos acidentes baseado no número de vítimas",
+      "description": "Rácio de gravidade dos acidentes",
       "sources": ["ansr", "pmus"]
     },
     "affordability_total_money": {
-      "label": "Custo da mobilidade",
-      "description": "Despesa mensal estimada em transportes",
+      "label": "Custo da deslocação para o trabalho",
+      "description": "Despesa estimada em transportes por deslocação para o trabalho",
       "sources": ["iptoll", "accounting"]
     },
     "modal_census_share": {
@@ -209,7 +204,7 @@
     },
     "modal_imob_share": {
       "label": "Repartição Modal (Todas as viagens)",
-      "description": "Repartição modal baseada em inquéritos de mobilidade para todas as deslocações",
+      "description": "Repartição modal para todas as deslocações",
       "sources": ["imob"]
     },
     "mobility_commuting_avg_tt": {
@@ -218,28 +213,28 @@
       "sources": ["imob", "gba"]
     },
     "mobility_cost_health_n1_residents": {
-      "label": "Acesso a Saúde (N1)",
-      "description": "Tempo de viagem para o centro de saúde mais próximo",
+      "label": "Acesso a Saúde",
+      "description": "Tempo de viagem para o hospital ou centro de saúde mais próximo",
       "sources": ["pmus","gba"]
     },
     "mobility_cost_schools_primary_n1_kids": {
-      "label": "Acesso a Escolas Primárias (N1)",
+      "label": "Acesso a Escolas Primárias",
       "description": "Tempo de viagem para a escola primária mais próxima",
       "sources": ["pmus"]
     },
     "mobility_cost_greenspaces_n1_residents": {
-      "label": "Acesso a Espaços Verdes (N1)",
+      "label": "Acesso a Espaços Verdes",
       "description": "Tempo de viagem para o espaço verde mais próximo",
       "sources": ["osm"]
     },
     "mobility_cost_recreation_n3_residents": {
-      "label": "Acesso a Lazer (N3)",
-      "description": "Tempo médio de viagem para os 3 locais de lazer mais próximos",
+      "label": "Acesso a Lazer",
+      "description": "Tempo médio de viagem para os locais de lazer mais próximos",
       "sources": ["osm"]
     },
     "mobility_cost_groceries_n3_residents": {
-      "label": "Acesso a Bens Alimentares (N3)",
-      "description": "Tempo médio de viagem para os 3 locais de venda de bens alimentares mais próximos",
+      "label": "Acesso a Bens Alimentares",
+      "description": "Tempo médio de viagem para os supermercados e mercearias mais próximos",
       "sources": ["osm"]
     },
     "mobility_shared_mobility_points": {
@@ -249,21 +244,26 @@
     },
     "mobility_stop_coverage_ratio_served_population": {
       "label": "Cobertura de Paragens TP",
-      "description": "Proporção da população com acesso a paragens de transporte público",
+      "description": "Proporção da população com acesso em 500m a paragens de transporte público",
       "sources": ["gtfs", "census"]
     },
     "access_gap_money_cost_gap": {
-      "label": "Diferença de Custo de Acesso",
-      "description": "Diferença de custo entre o modo atual e o modo alternativo mais barato"
+      "label": "Diferença de Custo de Viagem",
+      "description": "Diferença de custo entre TP e Automóvel. Valores positivos indicam que o TP é mais caro que o Automóvel",
+      "sources": ["iptoll", "accounting"]
+    },
+    "access_gap_time_accessibility_gap": {
+      "label": "Diferença de Tempo de Viagem",
+      "description": "Diferença de tempo entre TP e Automóvel. Valores positivos indicam que o TP é mais demorado que o Automóvel"
     },
     "veh_ownership_total_motor_vehicles_per_hh": {
-      "label": "Veículos por agregado",
+      "label": "Veículos motorizados por agregado",
       "description": "Número médio de veículos motorizados por agregado familiar",
       "sources": ["imob"]
     },
     "veh_ownership_pct_hh_no_vehicle": {
-      "label": "Agregados sem veículo (%)",
-      "description": "Percentagem de agregados familiares que não possuem veículo próprio",
+      "label": "Agregados sem veículos (%)",
+      "description": "Percentagem de agregados familiares que não possuem veículo próprios (motorizados ou velocípedes)",
       "sources": ["imob"]
     }
   },

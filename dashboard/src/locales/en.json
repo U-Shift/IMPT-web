@@ -160,14 +160,9 @@
       "description": "Ratio of pedestrian paths to road length",
       "sources": ["osm"]
     },
-    "census_landuse_buildings": {
-      "label": "Buildings",
-      "description": "Number of buildings",
-      "sources": ["gba"]
-    },
     "census_landuse_buildings_pre1945_percentage": {
       "label": "Buildings pre-1945 (%)",
-      "description": "Percentage of buildings built before 1945 (_without car garage?_)",
+      "description": "Percentage of buildings built before 1945 (<i>without car garage</i>)",
       "sources": ["census"]
     },
     "census_landuse_volume_density": {
@@ -177,17 +172,17 @@
     },
     "safety_inner_total_acidentes": {
       "label": "Total accidents",
-      "description": "Total number of recorded road accidents",
+      "description": "Total number of recorded road accidents (2019-2023)",
       "sources": ["ansr", "pmus"]
     },
     "safety_inner_indice_gravidade": {
       "label": "Severity index",
-      "description": "Accident severity ratio based on the number of victims",
+      "description": "Accident severity ratio",
       "sources": ["ansr", "pmus"]
     },
     "affordability_total_money": {
-      "label": "Cost of Mobility",
-      "description": "Estimated monthly expenditure on transportation",
+      "label": "Cost of Commuting",
+      "description": "Estimated expenditure on commuting per trip",
       "sources": ["iptoll", "accounting"]
     },
     "modal_census_share": {
@@ -212,7 +207,7 @@
     },
     "modal_imob_share": {
       "label": "Modal Share (All trips)",
-      "description": "Modal share based on mobility surveys for all trips",
+      "description": "Modal share for all trips",
       "sources": ["imob"]
     },
     "mobility_commuting_avg_tt": {
@@ -221,28 +216,28 @@
       "sources": ["imob", "gba"]
     },
     "mobility_cost_health_n1_residents": {
-      "label": "Health Access (N1)",
-      "description": "Travel time to the nearest health center",
+      "label": "Health Access",
+      "description": "Travel time to the nearest health facility: hospital or health center",
       "sources": ["pmus", "gba"]
     },
     "mobility_cost_schools_primary_n1_kids": {
-      "label": "Primary School Access (N1)",
+      "label": "Primary School Access",
       "description": "Travel time to the nearest primary school",
       "sources": ["pmus"]
     },
     "mobility_cost_greenspaces_n1_residents": {
-      "label": "Green Space Access (N1)",
+      "label": "Green Space Access",
       "description": "Travel time to the nearest green space",
       "sources": ["osm"]
     },
     "mobility_cost_recreation_n3_residents": {
-      "label": "Recreation Access (N3)",
-      "description": "Average travel time to the 3 nearest recreation spots",
+      "label": "Recreation Access",
+      "description": "Average travel time to the nearest recreation spots",
       "sources": ["osm"]
     },
     "mobility_cost_groceries_n3_residents": {
-      "label": "Grocery Access (N3)",
-      "description": "Average travel time to the 3 nearest grocery stores",
+      "label": "Grocery Access",
+      "description": "Average travel time to the nearest grocery stores",
       "sources": ["osm"]
     },
     "mobility_shared_mobility_points": {
@@ -252,21 +247,26 @@
     },
     "mobility_stop_coverage_ratio_served_population": {
       "label": "PT Stop Coverage",
-      "description": "Proportion of the population with access to public transport stops",
+      "description": "Proportion of the population with 500m access to public transport stops",
       "sources": ["gtfs", "census"]
     },
     "access_gap_money_cost_gap": {
-      "label": "Access Cost Gap",
-      "description": "Cost difference between the current mode and the cheapest alternative mode"
+      "label": "Affordability Gap (Cost)",
+      "description": "Cost difference between travel cost for PT and Car. Positive values indicate PT is more expensive than Car",
+      "sources": ["iptoll", "accounting"]
+    },
+    "access_gap_time_accessibility_gap": {
+      "label": "Accessibility Gap (Time)",
+      "description": "Time difference between travel time for Car and PT. Positive values indicate Car is faster than PT"
     },
     "veh_ownership_total_motor_vehicles_per_hh": {
-      "label": "Vehicles per household",
+      "label": "Motorized vehicles per household",
       "description": "Average number of motor vehicles per household",
       "sources": ["imob"]
     },
     "veh_ownership_pct_hh_no_vehicle": {
-      "label": "Households without vehicle (%)",
-      "description": "Percentage of households that do not own a vehicle",
+      "label": "Households without vehicles (%)",
+      "description": "Percentage of households that do not own a vehicle (motorized or bicycle)",
       "sources": ["imob"]
     }
   },
