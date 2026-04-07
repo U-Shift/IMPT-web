@@ -161,7 +161,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     'metrics.categories.mobility': [
         {
             id: 'modal_census_share',
-            label: 'metrics.modal_census_share',
+            label: 'metrics.modal_census_share.label',
             description: 'metrics.modal_census_share.description',
             format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
@@ -169,7 +169,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'modal_imob_share',
-            label: 'metrics.modal_imob_share',
+            label: 'metrics.modal_imob_share.label',
             description: 'metrics.modal_imob_share.description',
             format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
@@ -177,7 +177,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'mobility_commuting_avg_tt',
-            label: 'metrics.mobility_commuting_avg_tt',
+            label: 'metrics.mobility_commuting_avg_tt.label',
             description: 'metrics.mobility_commuting_avg_tt.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -186,7 +186,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         {
             id: 'mobility_cost_health_n1_residents',
             id_optional: 'mobility_cost_health_n1',
-            label: 'metrics.mobility_cost_health_n1_residents',
+            label: 'metrics.mobility_cost_health_n1_residents.label',
             description: 'metrics.mobility_cost_health_n1_residents.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -195,7 +195,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         {
             id: 'mobility_cost_schools_primary_n1_kids',
             id_optional: 'mobility_cost_schools_primary_n1',
-            label: 'metrics.mobility_cost_schools_primary_n1_kids',
+            label: 'metrics.mobility_cost_schools_primary_n1_kids.label',
             description: 'metrics.mobility_cost_schools_primary_n1_kids.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -204,7 +204,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         {
             id: 'mobility_cost_greenspaces_n1_residents',
             id_optional: 'mobility_cost_greenspaces_n1',
-            label: 'metrics.mobility_cost_greenspaces_n1_residents',
+            label: 'metrics.mobility_cost_greenspaces_n1_residents.label',
             description: 'metrics.mobility_cost_greenspaces_n1_residents.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -213,7 +213,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         {
             id: 'mobility_cost_recreation_n3_residents',
             id_optional: 'mobility_cost_recreation_n3',
-            label: 'metrics.mobility_cost_recreation_n3_residents',
+            label: 'metrics.mobility_cost_recreation_n3_residents.label',
             description: 'metrics.mobility_cost_recreation_n3_residents.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -222,7 +222,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         {
             id: 'mobility_cost_groceries_n3_residents',
             id_optional: 'mobility_cost_groceries_n3',
-            label: 'metrics.mobility_cost_groceries_n3_residents',
+            label: 'metrics.mobility_cost_groceries_n3_residents.label',
             description: 'metrics.mobility_cost_groceries_n3_residents.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
@@ -230,7 +230,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'mobility_shared_mobility_points',
-            label: 'metrics.mobility_shared_mobility_points',
+            label: 'metrics.mobility_shared_mobility_points.label',
             description: 'metrics.mobility_shared_mobility_points.description',
             format: (v, _min, _max) => (v || 0).toString(),
             scaleMethod: continuousScale,
@@ -238,7 +238,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'mobility_stop_coverage_ratio_served_population',
-            label: 'metrics.mobility_stop_coverage_ratio_served_population',
+            label: 'metrics.mobility_stop_coverage_ratio_served_population.label',
             description: 'metrics.mobility_stop_coverage_ratio_served_population.description',
             format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
@@ -248,7 +248,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     'metrics.categories.accessibility': [
         {
             id: 'access_gap_money_cost_gap',
-            label: 'metrics.access_gap_money_cost_gap',
+            label: 'metrics.access_gap_money_cost_gap.label',
             description: 'metrics.access_gap_money_cost_gap.description',
             format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: 'min',
             scaleMethod: continuousScale, scaleMinEqualsMax: true,
@@ -258,7 +258,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
     'metrics.categories.safety': [
         {
             id: 'safety_inner_total_acidentes',
-            label: 'metrics.safety_inner_total_acidentes',
+            label: 'metrics.safety_inner_total_acidentes.label',
             description: 'metrics.safety_inner_total_acidentes.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: logarithmicScale, steps: 10, ignoreValues: [0, null],
@@ -266,7 +266,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'safety_inner_indice_gravidade',
-            label: 'metrics.safety_inner_indice_gravidade',
+            label: 'metrics.safety_inner_indice_gravidade.label',
             description: 'metrics.safety_inner_indice_gravidade.description',
             format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale, ignoreValues: [null],
@@ -293,7 +293,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         // census_income_income_hh, census_income_gini_coef, census_income_housing_costs, veh_ownership_total_motor_vehicles_per_hh, veh_ownership_pct_hh_no_vehicle
         {
             id: 'census_income_income_hh',
-            label: 'metrics.census_income_income_hh',
+            label: 'metrics.census_income_income_hh.label',
             description: 'metrics.census_income_income_hh.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale, ignoreValues: [null], unit: "€",
@@ -301,7 +301,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'census_income_gini_coef',
-            label: 'metrics.census_income_gini_coef',
+            label: 'metrics.census_income_gini_coef.label',
             description: 'metrics.census_income_gini_coef.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: "%",
             scaleMethod: continuousScale, ignoreValues: [null],
@@ -309,7 +309,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'census_income_housing_costs',
-            label: 'metrics.census_income_housing_costs',
+            label: 'metrics.census_income_housing_costs.label',
             description: 'metrics.census_income_housing_costs.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: "€",
             scaleMethod: continuousScale, ignoreValues: [null],
@@ -317,7 +317,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'veh_ownership_total_motor_vehicles_per_hh',
-            label: 'metrics.veh_ownership_total_motor_vehicles_per_hh',
+            label: 'metrics.veh_ownership_total_motor_vehicles_per_hh.label',
             description: 'metrics.veh_ownership_total_motor_vehicles_per_hh.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'vh',
             scaleMethod: continuousScale, ignoreValues: [null],
@@ -325,7 +325,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
         },
         {
             id: 'veh_ownership_pct_hh_no_vehicle',
-            label: 'metrics.veh_ownership_pct_hh_no_vehicle',
+            label: 'metrics.veh_ownership_pct_hh_no_vehicle.label',
             description: 'metrics.veh_ownership_pct_hh_no_vehicle.description',
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: '%',
             scaleMethod: continuousScale, ignoreValues: [null],
