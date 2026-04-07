@@ -449,6 +449,16 @@ const Dashboard = () => {
                     <div className="absolute top-8 left-[416px] z-[1002] flex items-start pointer-events-none">
                         <div className="flex gap-4 pointer-events-auto items-center">
                             <MapFilterDropdown
+                                label={t('map.mode')}
+                                value={effectiveMode.id}
+                                isDark={isDarkMode}
+                                icon={<RocketIcon className="w-3.5 h-3.5" />}
+                                options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel))
+                                    .map(m => ({ id: m.id, label: t(m.label), icon: m.icon }))}
+                                onChange={(id) => setSelectedModeId(id as ModeId)}
+                            />
+
+                            <MapFilterDropdown
                                 label={t('map.view_level')}
                                 value={viewLevel}
                                 isDark={isDarkMode}
@@ -476,15 +486,6 @@ const Dashboard = () => {
                                 }}
                             />
 
-                            <MapFilterDropdown
-                                label={t('map.mode')}
-                                value={effectiveMode.id}
-                                isDark={isDarkMode}
-                                icon={<RocketIcon className="w-3.5 h-3.5" />}
-                                options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel))
-                                    .map(m => ({ id: m.id, label: t(m.label), icon: m.icon }))}
-                                onChange={(id) => setSelectedModeId(id as ModeId)}
-                            />
                         </div>
                     </div>
                 )}
