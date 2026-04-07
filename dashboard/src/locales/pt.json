@@ -13,7 +13,8 @@
     "next": "Seguinte",
     "calculate": "Calcular",
     "fix": "Corrigir",
-    "no_data": "Sem dados"
+    "no_data": "Sem dados",
+    "source": "Fonte"
   },
   "tooltips": {
     "toggle_theme": "Alternar Tema",
@@ -21,6 +22,7 @@
     "about": "Sobre"
   },
   "sidebar": {
+    "index": "Índice",
     "indicators": "Indicadores",
     "dimension_weighting": "Ponderação de Dimensões",
     "ahp_methodology": "Metodologia AHP",
@@ -50,15 +52,28 @@
     "layer_satellite": "Satélite",
     "layer_osm": "OpenStreetMap"
   },
+  "sources": {
+    "census": "Censos 2021",
+    "ine": "INE",
+    "imob": "IMOB 2018",
+    "osm": "OpenStreetMap",
+    "ansr": "ANSR",
+    "pmus": "TML - PMUS 2025",
+    "gba": "Global Building Atlas",
+    "gtfs": "GTFS",
+    "iptoll": "Infraestruturas de Portugal",
+    "accounting": "Relatório de contas anual de operadores"
+  },
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Índice Pobreza nos Transportes",
+      "census_landuse": "Censos & Uso do Solo",
       "dimensions": "Dimensões Agregadas",
       "mobility": "Mobilidade",
       "accessibility": "Acessibilidade",
       "safety": "Segurança",
       "affordability": "Acessibilidade Económica",
-      "census_landuse": "Censos & Uso do Solo"
+      "census_population": "População Censos"
     },
     "impt_entropy": {
       "label": "IMPT com entropia",
@@ -94,102 +109,163 @@
     },
     "census_landuse_population": {
       "label": "População",
-      "description": "Número de residentes"
+      "description": "Número de residentes",
+      "sources": ["census"]
     },
     "census_landuse_population_density": {
       "label": "Densidade populacional",
-      "description": "Densidade populacional (residentes/km2)"
+      "description": "Densidade populacional (residentes/km2)",
+      "sources": ["census"]
     },
     "census_landuse_youth_ratio": {
       "label": "Rácio de jovens",
-      "description": "Proporção da população com menos de 15 anos"
+      "description": "Proporção da população com menos de 15 anos",
+      "sources": ["census"]
     },
     "census_landuse_elderly_ratio": {
       "label": "Rácio de idosos",
-      "description": "Proporção da população com mais de 65 anos"
+      "description": "Proporção da população com mais de 65 anos",
+      "sources": ["census"]
     },
     "census_landuse_women_percentage": {
       "label": "Percentagem de mulheres",
-      "description": "Percentagem de mulheres"
+      "description": "Percentagem de mulheres",
+      "sources": ["census"]
     },
     "mobility_infrastructure_road_length": {
       "label": "Extensão vias rodoviárias",
-      "description": "Comprimento total da rede rodoviária"
+      "description": "Comprimento total da rede rodoviária",
+      "sources": ["osm"]
     },
     "mobility_infrastructure_cycleway_length": {
       "label": "Extensão rede ciclável",
-      "description": "Comprimento total da rede ciclável"
+      "description": "Comprimento total da rede ciclável",
+      "sources": ["osm"]
     },
     "mobility_infrastructure_cycleway_to_road_ratio": {
       "label": "Rácio rede ciclável",
-      "description": "Rácio da rede ciclável face à rede rodoviária"
+      "description": "Rácio da rede ciclável face à rede rodoviária",
+      "sources": ["osm"]
     },
     "mobility_infrastructure_pedpath_length": {
       "label": "Extensão rede pedonal",
-      "description": "Comprimento total dos caminhos pedonais"
+      "description": "Comprimento total dos caminhos pedonais",
+      "sources": ["osm"]
     },
     "mobility_infrastructure_pedpath_to_road_ratio": {
       "label": "Rácio rede pedonal",
-      "description": "Rácio dos caminhos pedonais face à rede rodoviária"
-    },
-    "census_landuse_buildings": {
-      "label": "Edifícios",
-      "description": "Número de edifícios"
+      "description": "Rácio dos caminhos pedonais face à rede rodoviária",
+      "sources": ["osm"]
     },
     "census_landuse_buildings_pre1945_percentage": {
       "label": "Edifícios pré-1945 (%)",
-      "description": "Percentagem de edifícios construídos antes de 1945 (_sem garagem automóvel?_)"
+      "description": "Percentagem de edifícios construídos antes de 1945 (<i>sem garagem automóvel</i>)",
+      "sources": ["census"]
     },
     "census_landuse_volume_density": {
       "label": "Densidade de volume edificado",
-      "description": "Densidade de volume edificado (m3/m2)"
+      "description": "Densidade de volume edificado (m3/m2)",
+      "sources": ["gba"]
     },
-    "safety_inner_total_acidentes": "Total de acidentes",
-    "safety_inner_indice_gravidade": "Índice de gravidade",
+    "safety_inner_total_acidentes": {
+      "label": "Total de acidentes",
+      "description": "Número total de acidentes rodoviários registados (2019-2023)",
+      "sources": ["ansr", "pmus"]
+    },
+    "safety_inner_indice_gravidade": {
+      "label": "Índice de gravidade",
+      "description": "Rácio de gravidade dos acidentes",
+      "sources": ["ansr", "pmus"]
+    },
     "affordability_total_money": {
-      "label": "Custo da mobilidade",
-      "description": "Despesa mensal estimada em transportes"
+      "label": "Custo da deslocação para o trabalho",
+      "description": "Despesa estimada em transportes por deslocação para o trabalho",
+      "sources": ["iptoll", "accounting"]
     },
-    "modal_census_share": "Quota Modal (Residentes)",
-    "modal_imob_share": "Quota Modal (Pendulares)",
-    "mobility_commuting_avg_tt": "Tempo Médio de Deslocação",
-    "mobility_shared_mobility_points": "Pontos de Mobilidade Partilhada",
-    "mobility_stop_coverage_ratio_served_population": "Índice de Cobertura de Transportes",
-    "census_income_income_hh": "Rendimento das Famílias",
-    "census_income_gini_coef": "Coeficiente de Gini",
-    "census_income_housing_costs": "Custos com Habitação",
-    "mobility_cost": {
-      "label": "Custo de Acesso (Tempo)",
-      "description": "Tempo de viagem até aos serviços mais próximos, considerando a população e o número de oportunidades selecionados."
+    "modal_census_share": {
+      "label": "Repartição modal (Trabalho e Escola)",
+      "description": "Repartição modal baseada nos dados dos Censos para deslocações pendulares habituais",
+      "sources": ["census"]
+    },
+    "census_income_income_hh": {
+      "label": "Rendimento das famílias",
+      "description": "Rendimento líquido médio mensal por agregado familiar",
+      "sources": ["ine"]
+    },
+    "census_income_gini_coef": {
+      "label": "Coeficiente de Gini",
+      "description": "Medida de desigualdade na distribuição de rendimentos",
+      "sources": ["ine"]
+    },
+    "census_income_housing_costs": {
+      "label": "Custos com habitação",
+      "description": "Despesa média mensal com habitação (renda ou prestação bancária)",
+      "sources": ["ine"]
+    },
+    "modal_imob_share": {
+      "label": "Repartição Modal (Todas as viagens)",
+      "description": "Repartição modal para todas as deslocações",
+      "sources": ["imob"]
+    },
+    "mobility_commuting_avg_tt": {
+      "label": "Tempo médio de deslocação",
+      "description": "Tempo médio de viagem para deslocações pendulares (casa-trabalho/escola)",
+      "sources": ["imob", "gba"]
+    },
+    "mobility_cost_health_n1_residents": {
+      "label": "Acesso a Saúde",
+      "description": "Tempo de viagem para o hospital ou centro de saúde mais próximo",
+      "sources": ["pmus","gba"]
+    },
+    "mobility_cost_schools_primary_n1_kids": {
+      "label": "Acesso a Escolas Primárias",
+      "description": "Tempo de viagem para a escola primária mais próxima",
+      "sources": ["pmus"]
+    },
+    "mobility_cost_greenspaces_n1_residents": {
+      "label": "Acesso a Espaços Verdes",
+      "description": "Tempo de viagem para o espaço verde mais próximo",
+      "sources": ["osm"]
+    },
+    "mobility_cost_recreation_n3_residents": {
+      "label": "Acesso a Lazer",
+      "description": "Tempo médio de viagem para os locais de lazer mais próximos",
+      "sources": ["osm"]
+    },
+    "mobility_cost_groceries_n3_residents": {
+      "label": "Acesso a Bens Alimentares",
+      "description": "Tempo médio de viagem para os supermercados e mercearias mais próximos",
+      "sources": ["osm"]
+    },
+    "mobility_shared_mobility_points": {
+      "label": "Pontos de Mobilidade Partilhada",
+      "description": "Número de pontos de oferta de sistemas de mobilidade partilhada na área",
+      "sources": ["pmus"]
+    },
+    "mobility_stop_coverage_ratio_served_population": {
+      "label": "Cobertura de Paragens TP",
+      "description": "Proporção da população com acesso em 500m a paragens de transporte público",
+      "sources": ["gtfs", "census"]
+    },
+    "access_gap_money_cost_gap": {
+      "label": "Diferença de Custo de Viagem",
+      "description": "Diferença de custo entre TP e Automóvel. Valores positivos indicam que o TP é mais caro que o Automóvel",
+      "sources": ["iptoll", "accounting"]
+    },
+    "access_gap_time_accessibility_gap": {
+      "label": "Diferença de Tempo de Viagem",
+      "description": "Diferença de tempo entre TP e Automóvel. Valores positivos indicam que o TP é mais demorado que o Automóvel"
+    },
+    "veh_ownership_total_motor_vehicles_per_hh": {
+      "label": "Veículos motorizados por agregado",
+      "description": "Número médio de veículos motorizados por agregado familiar",
+      "sources": ["imob"]
+    },
+    "veh_ownership_pct_hh_no_vehicle": {
+      "label": "Agregados sem veículos (%)",
+      "description": "Percentagem de agregados familiares que não possuem veículo próprios (motorizados ou velocípedes)",
+      "sources": ["imob"]
     }
-  },
-  "variations": {
-    "poi_type": "Serviço / Equipamento",
-    "n_opportunities": "Oportunidades",
-    "population": "População Alvo",
-    "n_transfers": "Transbordos",
-    "health": "Saúde",
-    "health_primary": "Saúde (Primários)",
-    "health_hospital": "Saúde (Hospitais)",
-    "groceries": "Mercearias",
-    "greenspaces": "Espaços Verdes",
-    "recreation": "Lazer",
-    "schools": "Escolas",
-    "schools_primary": "Escolas (Primárias)",
-    "schools_high": "Escolas (Secundárias)",
-    "transit": "Transportes",
-    "transit_bus": "Autocarro",
-    "transit_mass": "Modos Pesados",
-    "n1": "Mais Próximo (1)",
-    "n2": "Os 2 mais próximos",
-    "n3": "Os 3 mais próximos",
-    "residents": "Geral (Residentes)",
-    "elder": "Idosos",
-    "kids": "Crianças",
-    "active": "População Ativa",
-    "young": "Jovens",
-    "1t": "Até 1 transbordo",
-    "2t": "Até 2 transbordos"
   },
   "regions": {
     "metropolis": "Área Metropolitana",

@@ -13,7 +13,8 @@
     "next": "Next",
     "calculate": "Calculate",
     "fix": "Fix",
-    "no_data": "No data"
+    "no_data": "No data",
+    "source": "Source"
   },
   "tooltips": {
     "toggle_theme": "Toggle Theme",
@@ -21,6 +22,7 @@
     "about": "About"
   },
   "sidebar": {
+    "index": "Index",
     "indicators": "Indicators",
     "dimension_weighting": "Dimension Weighting",
     "ahp_methodology": "AHP Methodology",
@@ -50,6 +52,18 @@
     "layer_satellite": "Satellite",
     "layer_osm": "OpenStreetMap"
   },
+  "sources": {
+    "census": "Census 2021",
+    "ine": "PT Statistics",
+    "imob": "Mobility Survey 2018",
+    "osm": "OpenStreetMap",
+    "ansr": "Road safety authority",
+    "pmus": "TML - SUMP 2025",
+    "gba": "Global Building Atlas",
+    "gtfs": "GTFS",
+    "iptoll": "IP - Toll caclculator",
+    "accounting": "Operators' annual accounting reports"
+  },
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Transportation Poverty Index",
@@ -59,7 +73,11 @@
       "safety": "Safety",
       "affordability": "Affordability",
       "census_population": "Census Population",
-      "census_landuse": "Census & Land Use"
+      "census_landuse": "Census & Land Use",
+      "mobility": "Mobility",
+      "accessibility": "Accessibility",
+      "safety": "Safety",
+      "affordability": "Affordability"
     },
     "impt_entropy": {
       "label": "IMPT with entropy",
@@ -93,48 +111,168 @@
       "label": "Affordability",
       "description": "Aggregated affordability metric, considering income and housing costs"
     },
-    "census_landuse_population": { "label": "Population", "description": "Number of residents" },
-    "census_landuse_population_density": { "label": "Population density", "description": "Population density (residents/km2)" },
-    "census_landuse_youth_ratio": { "label": "Youth ratio", "description": "Proportion of population under 15 years old" },
-    "census_landuse_elderly_ratio": { "label": "Elderly ratio", "description": "Proportion of population over 65 years old" },
-    "census_landuse_women_percentage": { "label": "Women percentage", "description": "Percentage of women in the population" },
-    "mobility_infrastructure_road_length": { "label": "Road infrastructure length", "description": "Total length of road network" },
-    "mobility_infrastructure_cycleway_length": { "label": "Cycling infrastructure length", "description": "Total length of cycling network" },
-    "mobility_infrastructure_cycleway_to_road_ratio": { "label": "Cycling infrastructure ratio", "description": "Ratio of cycling infrastructure to road length" },
-    "mobility_infrastructure_pedpath_length": { "label": "Pedestrian infrastructure length", "description": "Total length of pedestrian paths" },
-    "mobility_infrastructure_pedpath_to_road_ratio": { "label": "Pedestrian infrastructure ratio", "description": "Ratio of pedestrian paths to road length" },
-    "census_landuse_buildings": { "label": "Buildings", "description": "Number of buildings" },
-    "census_landuse_buildings_pre1945_percentage": { "label": "Buildings pre-1945 (%)", "description": "Percentage of buildings built before 1945 (_without car garage?_)" },
-    "census_landuse_volume_density": { "label": "Building volume density", "description": "Building volume density (m3/m2)" },
-    "safety_inner_total_acidentes": "Total accidents",
-    "safety_inner_indice_gravidade": "Severity index",
-    "affordability_total_money": {
-      "label": "Cost of Mobility",
-      "description": "Estimated monthly expenditure on transportation"
+
+
+
+    "census_landuse_population": {
+      "label": "Population",
+      "description": "Number of residents",
+      "sources": ["census"]
     },
-    "modal_census_share": "Modal Share (Residents)",
-    "modal_imob_share": "Modal Share (Commuters)",
-    "mobility_commuting_avg_tt": "Average Commuting Time",
-    "mobility_shared_mobility_points": "Shared Mobility Points",
-    "mobility_stop_coverage_ratio_served_population": "Transport Coverage Index",
-    "mobility_cost": {
-      "label": "Access Cost (Time)",
-      "description": "Travel time to the nearest services, considering the selected population and number of opportunities."
+    "census_landuse_population_density": {
+      "label": "Population density",
+      "description": "Population density (residents/km2)",
+      "sources": ["census"]
+    },
+    "census_landuse_youth_ratio": {
+      "label": "Youth ratio",
+      "description": "Proportion of population under 15 years old",
+      "sources": ["census"]
+    },
+    "census_landuse_elderly_ratio": {
+      "label": "Elderly ratio",
+      "description": "Proportion of population over 65 years old",
+      "sources": ["census"]
+    },
+    "census_landuse_women_percentage": {
+      "label": "Women percentage",
+      "description": "Percentage of women in the population",
+      "sources": ["census"]
+    },
+    "mobility_infrastructure_road_length": {
+      "label": "Road infrastructure length",
+      "description": "Total length of road network",
+      "sources": ["osm"]
+    },
+    "mobility_infrastructure_cycleway_length": {
+      "label": "Cycling infrastructure length",
+      "description": "Total length of cycling network",
+      "sources": ["osm"]
+    },
+    "mobility_infrastructure_cycleway_to_road_ratio": {
+      "label": "Cycling infrastructure ratio",
+      "description": "Ratio of cycling infrastructure to road length",
+      "sources": ["osm"]
+    },
+    "mobility_infrastructure_pedpath_length": {
+      "label": "Pedestrian infrastructure length",
+      "description": "Total length of pedestrian paths",
+      "sources": ["osm"]
+    },
+    "mobility_infrastructure_pedpath_to_road_ratio": {
+      "label": "Pedestrian infrastructure ratio",
+      "description": "Ratio of pedestrian paths to road length",
+      "sources": ["osm"]
+    },
+    "census_landuse_buildings_pre1945_percentage": {
+      "label": "Buildings pre-1945 (%)",
+      "description": "Percentage of buildings built before 1945 (<i>without car garage</i>)",
+      "sources": ["census"]
+    },
+    "census_landuse_volume_density": {
+      "label": "Building volume density",
+      "description": "Building volume density (m3/m2)",
+      "sources": ["gba"]
+    },
+    "safety_inner_total_acidentes": {
+      "label": "Total accidents",
+      "description": "Total number of recorded road accidents (2019-2023)",
+      "sources": ["ansr", "pmus"]
+    },
+    "safety_inner_indice_gravidade": {
+      "label": "Severity index",
+      "description": "Accident severity ratio",
+      "sources": ["ansr", "pmus"]
+    },
+    "affordability_total_money": {
+      "label": "Cost of Commuting",
+      "description": "Estimated expenditure on commuting per trip",
+      "sources": ["iptoll", "accounting"]
+    },
+    "modal_census_share": {
+      "label": "Modal share (Commuting)",
+      "description": "Modal share based on Census data for standard commuting trips",
+      "sources": ["census"]
+    },
+    "census_income_income_hh": {
+      "label": "Household income",
+      "description": "Average monthly net income per household",
+      "sources": ["ine"]
+    },
+    "census_income_gini_coef": {
+      "label": "Gini coefficient",
+      "description": "Measure of inequality in income distribution",
+      "sources": ["ine"]
+    },
+    "census_income_housing_costs": {
+      "label": "Housing costs",
+      "description": "Average monthly expenditure on housing (rent or mortgage)",
+      "sources": ["ine"]
+    },
+    "modal_imob_share": {
+      "label": "Modal Share (All trips)",
+      "description": "Modal share for all trips",
+      "sources": ["imob"]
+    },
+    "mobility_commuting_avg_tt": {
+      "label": "Average commuting time",
+      "description": "Average travel time for commuting trips (home-work/school)",
+      "sources": ["imob", "gba"]
+    },
+    "mobility_cost_health_n1_residents": {
+      "label": "Health Access",
+      "description": "Travel time to the nearest health facility: hospital or health center",
+      "sources": ["pmus", "gba"]
+    },
+    "mobility_cost_schools_primary_n1_kids": {
+      "label": "Primary School Access",
+      "description": "Travel time to the nearest primary school",
+      "sources": ["pmus"]
+    },
+    "mobility_cost_greenspaces_n1_residents": {
+      "label": "Green Space Access",
+      "description": "Travel time to the nearest green space",
+      "sources": ["osm"]
+    },
+    "mobility_cost_recreation_n3_residents": {
+      "label": "Recreation Access",
+      "description": "Average travel time to the nearest recreation spots",
+      "sources": ["osm"]
+    },
+    "mobility_cost_groceries_n3_residents": {
+      "label": "Grocery Access",
+      "description": "Average travel time to the nearest grocery stores",
+      "sources": ["osm"]
+    },
+    "mobility_shared_mobility_points": {
+      "label": "Shared Mobility Points",
+      "description": "Number of shared mobility service points in the area",
+      "sources": ["pmus"]
+    },
+    "mobility_stop_coverage_ratio_served_population": {
+      "label": "PT Stop Coverage",
+      "description": "Proportion of the population with 500m access to public transport stops",
+      "sources": ["gtfs", "census"]
+    },
+    "access_gap_money_cost_gap": {
+      "label": "Affordability Gap (Cost)",
+      "description": "Cost difference between travel cost for PT and Car. Positive values indicate PT is more expensive than Car",
+      "sources": ["iptoll", "accounting"]
+    },
+    "access_gap_time_accessibility_gap": {
+      "label": "Accessibility Gap (Time)",
+      "description": "Time difference between travel time for Car and PT. Positive values indicate Car is faster than PT"
+    },
+    "veh_ownership_total_motor_vehicles_per_hh": {
+      "label": "Motorized vehicles per household",
+      "description": "Average number of motor vehicles per household",
+      "sources": ["imob"]
+    },
+    "veh_ownership_pct_hh_no_vehicle": {
+      "label": "Households without vehicles (%)",
+      "description": "Percentage of households that do not own a vehicle (motorized or bicycle)",
+      "sources": ["imob"]
     }
-  },
-  "variations": {
-    "poi_type": "Point of Interest",
-    "n_opportunities": "Opportunities",
-    "population": "Target Population",
-    "health": "Health",
-    "schools_primary": "Primary Schools",
-    "recreation": "Recreation",
-    "groceries": "Groceries",
-    "greenspaces": "Green Spaces",
-    "n1": "Nearest (1)",
-    "n3": "Closest 3",
-    "residents": "General (Residents)",
-    "kids": "Children"
   },
   "regions": {
     "metropolis": "Metro Area",

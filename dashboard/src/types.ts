@@ -19,6 +19,7 @@ export type MetricDef = {
     icon?: string;
     description?: string;
     pallete: string[];
+    sources?: string[];
     unit?: string;
     default?: boolean; // Show by default
     // Display
@@ -26,6 +27,8 @@ export type MetricDef = {
     scaleMinEqualsMax?: boolean; // If true, the scale will be [a,b], such that a = -b and |a| = |b| and the midpoint is 0
     steps?: number; // Number of scale breaks for discrete scales (e.g. 5 for quintiles, 10 for deciles)
     ignoreValues?: any[]; // Values to ignore when computing the scale
+    scaleMin?: number; // Force a minimum value for the scale domain
+    scaleMax?: number; // Force a maximum value for the scale domain
     format: (v: number, min: number, max: number) => string;
     // Area details sidebar (opens on the right, when user clicks on a feature)
     showAlwaysOnDetails?: boolean; // If true, the variable is always visible in the details sidebar. By default, variables are only visible when selected.

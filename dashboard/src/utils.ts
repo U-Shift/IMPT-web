@@ -36,6 +36,12 @@ export const getMetricDomain = (values: number[], metric: MetricDef): number[] =
             scale[scale.length - 1] = maxAbs;
         }
     }
+
+    console.log("Scale for ", metric.id, scale, values);
+    
+    if (metric.scaleMin !== undefined) scale[0] = metric.scaleMin;
+    if (metric.scaleMax !== undefined) scale[scale.length - 1] = metric.scaleMax;
+
     return scale;
 };
 /**
@@ -243,5 +249,4 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
 
     return validCombinations;
 };
-
 
