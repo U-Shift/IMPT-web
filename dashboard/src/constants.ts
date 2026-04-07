@@ -363,7 +363,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'mobility_infrastructure_cycleway_to_road_ratio',
             label: 'metrics.mobility_infrastructure_cycleway_to_road_ratio.label',
             description: 'metrics.mobility_infrastructure_cycleway_to_road_ratio.description',
-            format: (v, _min, _max) => (v || 0).toFixed(2),
+            format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue
         },
@@ -379,7 +379,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'mobility_infrastructure_pedpath_to_road_ratio',
             label: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.label',
             description: 'metrics.mobility_infrastructure_pedpath_to_road_ratio.description',
-            format: (v, _min, _max) => (v || 0).toFixed(2),
+            format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue
         },

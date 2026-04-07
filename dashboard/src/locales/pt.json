@@ -149,12 +149,12 @@
     },
     "mobility_infrastructure_pedpath_length": {
       "label": "Extensão rede pedonal",
-      "description": "Comprimento total dos caminhos pedonais",
+      "description": "Comprimento total da rede pedonal",
       "sources": ["osm"]
     },
     "mobility_infrastructure_pedpath_to_road_ratio": {
       "label": "Rácio rede pedonal",
-      "description": "Rácio dos caminhos pedonais face à rede rodoviária",
+      "description": "Rácio da rede pedonal face à rede rodoviária",
       "sources": ["osm"]
     },
     "census_landuse_buildings_pre1945_percentage": {
