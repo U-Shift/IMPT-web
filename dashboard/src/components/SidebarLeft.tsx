@@ -3,6 +3,7 @@ import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages
 import { MetricDef } from '../types';
 import { METRICS, FLAT_METRICS } from '../constants';
 import { useTranslation } from 'react-i18next';
+import { Tooltip } from './Tooltip';
 
 interface SidebarLeftProps {
     isDarkMode: boolean;
@@ -57,18 +58,26 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex gap-1">
-                        <button onClick={() => setIsDarkMode(!isDarkMode)} data-tooltip={t('tooltips.toggle_theme')} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
-                            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-                        </button>
-                        <button onClick={toggleLanguage} data-tooltip={i18n.language === 'en' ? 'Português' : 'English'} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
-                            <Languages className="w-5 h-5" />
-                        </button>
-                        <button onClick={() => setShowDownload(true)} data-tooltip={t('tooltips.download_data')} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
-                            <Download className="w-5 h-5" />
-                        </button>
-                        <button onClick={() => setShowAbout(true)} data-tooltip={t('tooltips.about')} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
-                            <Info className="w-5 h-5" />
-                        </button>
+                        <Tooltip content={t('tooltips.toggle_theme')} isDarkMode={true}>
+                            <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                            </button>
+                        </Tooltip>
+                        <Tooltip content={i18n.language === 'en' ? 'Português' : 'English'} isDarkMode={true}>
+                            <button onClick={toggleLanguage} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <Languages className="w-5 h-5" />
+                            </button>
+                        </Tooltip>
+                        <Tooltip content={t('tooltips.download_data')} isDarkMode={true}>
+                            <button onClick={() => setShowDownload(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <Download className="w-5 h-5" />
+                            </button>
+                        </Tooltip>
+                        <Tooltip content={t('tooltips.about')} isDarkMode={true}>
+                            <button onClick={() => setShowAbout(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <Info className="w-5 h-5" />
+                            </button>
+                        </Tooltip>
                     </div>
                     <div className={`px-2.5 py-1 rounded-lg text-[13px] font-black uppercase tracking-widest ${isDarkMode ? 'bg-neutral-800 text-neutral-500' : 'bg-neutral-100 text-neutral-400'}`}>{t('common.beta')}</div>
                 </div>
@@ -120,41 +129,45 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
                                         return (
                                             <div key={m.id} className="space-y-1">
-                                                <button onClick={() => {
-                                                    setSelectedMetricId(m.id);
-
-                                                    // Enforce valid variations for the new metric
-                                                    if (validVariations && validVariations.length > 0) {
-                                                        setSelectedVariations((prev: any) => {
-                                                            const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
-                                                                const gDef = m.id_variations![g];
-                                                                const opts = Array.isArray(gDef) ? gDef : gDef.options;
-                                                                acc[g] = prev[g] || opts[0];
-                                                                return acc;
-                                                            }, {} as Record<string, string>);
-
-                                                            const isValid = validVariations.some((validComb: any) => {
-                                                                return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
-                                                            });
-
-                                                            if (!isValid) {
-                                                                // Fallback to first valid combination for this metric
-                                                                return { ...prev, ...validVariations[0] };
-                                                            }
-                                                            return prev;
-                                                        });
-                                                    }
-                                                }}
-                                                    data-tooltip={`${t(m.description as string)}${m.sources && m.sources.length > 0 ? `\n\n${t('common.source')}: ${m.sources.map(s => t(`sources.${s}`)).join(', ')}` : ''}`}
-                                                    className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
-                                                        ? 'bg-sky-900 text-white shadow-lg'
-                                                        : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
+                                                <Tooltip
+                                                    content={`${t(m.description as string)}${m.sources && m.sources.length > 0 ? `\n\n${t('common.source')}: ${m.sources.map(s => t(`sources.${s}`)).join(', ')}` : ''}`}
+                                                    isDarkMode={true}
                                                 >
-                                                    <span className="flex items-center gap-3">
-                                                        <span>{m.icon}</span>
-                                                        <span className="truncate">{t(m.label)}</span>
-                                                    </span>
-                                                </button>
+                                                    <button onClick={() => {
+                                                        setSelectedMetricId(m.id);
+
+                                                        // Enforce valid variations for the new metric
+                                                        if (validVariations && validVariations.length > 0) {
+                                                            setSelectedVariations((prev: any) => {
+                                                                const currentComb = Object.keys(m.id_variations || {}).reduce((acc, g) => {
+                                                                    const gDef = m.id_variations![g];
+                                                                    const opts = Array.isArray(gDef) ? gDef : gDef.options;
+                                                                    acc[g] = prev[g] || opts[0];
+                                                                    return acc;
+                                                                }, {} as Record<string, string>);
+
+                                                                const isValid = validVariations.some((validComb: any) => {
+                                                                    return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
+                                                                });
+
+                                                                if (!isValid) {
+                                                                    // Fallback to first valid combination for this metric
+                                                                    return { ...prev, ...validVariations[0] };
+                                                                }
+                                                                return prev;
+                                                            });
+                                                        }
+                                                    }}
+                                                        className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
+                                                            ? 'bg-sky-900 text-white shadow-lg'
+                                                            : (isDarkMode ? 'hover:bg-neutral-800 text-neutral-500' : 'hover:bg-neutral-100 text-neutral-500')}`}
+                                                    >
+                                                        <span className="flex items-center gap-3">
+                                                            <span>{m.icon}</span>
+                                                            <span className="truncate">{t(m.label)}</span>
+                                                        </span>
+                                                    </button>
+                                                </Tooltip>
 
                                                 {isSelected && m.id_variations && (
                                                     <div className={`mt-2 mb-3 p-3 rounded-2xl space-y-3 ${isDarkMode ? 'bg-neutral-950/50' : 'bg-white/50 border border-neutral-100'}`}>
