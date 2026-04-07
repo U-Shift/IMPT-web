@@ -68,7 +68,7 @@ const Dashboard = () => {
     const [isAHPModalOpen, setIsAHPModalOpen] = useState(false);
     const [collapsedSections, setCollapsedSections] = useState<Record<string, boolean>>(() => {
         const keys = Object.keys(METRICS);
-        return keys.slice(1).reduce((acc, key) => ({ ...acc, [key]: true }), {});
+        return keys.reduce((acc, key, i) => ({ ...acc, [key]: i !== 0 }), {});
     });
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
 
@@ -352,10 +352,24 @@ const Dashboard = () => {
     };
 
     const toggleSection = (cat: string) => {
-        setCollapsedSections(prev => ({
-            ...prev,
-            [cat]: !prev[cat]
-        }));
+        setCollapsedSections(prev => {
+            const isCurrentlyCollapsed = prev[cat];
+            if (isCurrentlyCollapsed) {
+                // Opening this section: collapse all others
+                const next: Record<string, boolean> = {};
+                Object.keys(METRICS).forEach(key => {
+                    next[key] = true;
+                });
+                next[cat] = false;
+                return next;
+            } else {
+                // Closing this section
+                return {
+                    ...prev,
+                    [cat]: true
+                };
+            }
+        });
     };
 
     const subLevelData = useMemo(() => {

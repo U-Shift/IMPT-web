@@ -304,7 +304,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                 )}
 
                                 {/* Dynamic Weights Sliders Section (Only for Index -> Mobility Poverty Index) */}
-                                {activeTab === 'index' && cat === 'metrics.categories.mobility_poverty_index' && selectedMetric.isCalculated && (
+                                {activeTab === 'index' && cat === 'metrics.categories.mobility_poverty_index' && !collapsedSections[cat] && selectedMetric.isCalculated && (
                                     <section className={`p-6 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
                                         <div className="flex items-center justify-between mb-4">
                                             <h4 className={`text-[13px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>
