@@ -206,9 +206,14 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
 
 
 const FLAT_METRICS_FILTERED = (selectedMetricId: string, selectedMode: any, selectedFeature: any, allDomains: any, isDarkMode: boolean, t: any) => {
-    return FLAT_METRICS.filter(m =>
+    const filtered = FLAT_METRICS.filter(m =>
         m.showAlwaysOnDetails || m.id === selectedMetricId
-    ).sort((a, b) => {
+    );
+
+    // De-duplicate by ID (keep the first one encountered)
+    const unique = Array.from(new Map(filtered.map(m => [m.id, m])).values());
+
+    return unique.sort((a, b) => {
         if (a.id === selectedMetricId) return -1;
         if (b.id === selectedMetricId) return 1;
         return 0;
