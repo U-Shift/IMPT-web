@@ -107,7 +107,7 @@ export const getLegendGradient = (metric: MetricDef, domain: number[]): string =
  * Resolves the value of a metric from a feature's properties, considering 
  * mode suffixes, fallbacks, and optional alternative IDs.
  */
-export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, suffixFallback?: string, excludedVariations?: readonly string[] | string[] }, variations?: Record<string, string>): any => {
+export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffix?: string, excludedVariations?: readonly string[] | string[] }, variations?: Record<string, string>): any => {
     if (!properties) return undefined;
 
     const resolveId = (id: string) => {
@@ -125,12 +125,7 @@ export const getMetricValue = (properties: any, metric: MetricDef, mode: { suffi
     }
 
     const idsToTry = [
-        resolveId(metric.id) + (mode.suffix || ''),
-        mode.suffixFallback !== undefined ? resolveId(metric.id) + mode.suffixFallback : undefined,
-        resolveId(metric.id),
-        metric.id_optional ? resolveId(metric.id_optional) + (mode.suffix || '') : undefined,
-        (metric.id_optional && mode.suffixFallback !== undefined) ? resolveId(metric.id_optional) + mode.suffixFallback : undefined,
-        metric.id_optional ? resolveId(metric.id_optional) : undefined
+        resolveId(metric.id) + (mode.suffix || '')
     ].filter(Boolean) as string[];
 
     for (const id of idsToTry) {
@@ -152,7 +147,7 @@ export const discoverMetricVariations = (metric: MetricDef, features: any[]): Re
     const seenCombos = new Set<string>();
     const seenKeys = new Set<string>();
 
-    const patterns = [metric.id, metric.id_optional].filter(Boolean) as string[];
+    const patterns = [metric.id].filter(Boolean) as string[];
 
     // Build regexes for each pattern
     const regexes = patterns.map(pattern => {
