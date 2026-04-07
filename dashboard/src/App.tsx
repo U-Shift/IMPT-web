@@ -490,7 +490,7 @@ const Dashboard = () => {
                 )}
 
                 {!isMobile && (
-                    <div className="absolute bottom-8 right-8 z-[1000] pointer-events-none w-[280px]">
+                    <div className="absolute bottom-8 right-8 z-[1000] pointer-events-none w-[320px]">
                         <div className={`p-6 rounded-[32px] border pointer-events-auto shadow-2xl backdrop-blur-xl ${isDarkMode ? 'bg-neutral-900/90 border-neutral-800' : 'bg-white/90 border-neutral-100'}`}>
                             <h4 className="flex items-center gap-2.5 text-[12px] font-black text-sky-800 mb-5 uppercase tracking-[0.1em]">
                                 <Activity className="w-3.5 h-3.5" /> {nutFilter !== REGION_KEYS[0] ? t('map.local_rescaling') : t('map.global_scale')}

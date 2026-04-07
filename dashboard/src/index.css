@@ -47,7 +47,7 @@ body {
   font-size: 13px;
   font-weight: 500;
   border-radius: 10px;
-  white-space: normal;
+  white-space: pre-line;
   width: max-content;
   max-width: 220px;
   z-index: 9999;
