@@ -10,6 +10,7 @@ export type MetricDef = {
     icon?: string;
     description?: string;
     pallete: string[];
+    sources?: string[];
     unit?: string;
     default?: boolean; // Show by default
     // Display

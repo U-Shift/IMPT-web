@@ -52,6 +52,18 @@
     "layer_satellite": "Satellite",
     "layer_osm": "OpenStreetMap"
   },
+  "sources": {
+    "census": "Census 2021",
+    "ine": "PT Statistics",
+    "imob": "Mobility Survey 2018",
+    "osm": "OpenStreetMap",
+    "ansr": "Road safety authority",
+    "pmus": "TML - SUMP 2025",
+    "gba": "Global Building Atlas",
+    "gtfs": "GTFS",
+    "iptoll": "IP - Toll caclculator",
+    "accounting": "Operators' annual accounting reports"
+  },
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Transportation Poverty Index",

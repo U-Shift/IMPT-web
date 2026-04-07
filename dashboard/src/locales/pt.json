@@ -52,6 +52,18 @@
     "layer_satellite": "Satélite",
     "layer_osm": "OpenStreetMap"
   },
+  "sources": {
+    "census": "Censos 2021",
+    "ine": "INE",
+    "imob": "IMOB 2018",
+    "osm": "OpenStreetMap",
+    "ansr": "ANSR",
+    "pmus": "TML - PMUS 2025",
+    "gba": "Global Building Atlas",
+    "gtfs": "GTFS",
+    "iptoll": "Infraestruturas de Portugal",
+    "accounting": "Relatório de contas anual de operadores"
+  },
   "metrics": {
     "categories": {
       "mobility_poverty_index": "Índice Pobreza nos Transportes",
