@@ -376,9 +376,9 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             sources: ['ansr', 'pmus', 'census']
         },
         {
-            id: 'safety_inner_total_vitimas30',
-            label: 'metrics.safety_inner_total_vitimas30.label',
-            description: 'metrics.safety_inner_total_vitimas30.description',
+            id: 'safety_inner_vitimas_mortais30',
+            label: 'metrics.safety_inner_vitimas_mortais30.label',
+            description: 'metrics.safety_inner_vitimas_mortais30.description',
             icon: '🚑',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale, ignoreValues: [0, null],
