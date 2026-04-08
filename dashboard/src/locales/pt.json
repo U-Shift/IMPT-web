@@ -246,19 +246,19 @@
       "description": "Proporção da população com acesso em 500m a paragens de transporte público"
     },
     "access_gap_money_cost_gap": {
-      "label": "Diferença de Custo de Viagem",
+      "label": "TP vs. Automóvel (custo)",
       "description": "Diferença de custo entre TP e Automóvel. Valores positivos indicam que o TP é mais caro que o Automóvel"
     },
     "access_gap_money_relative_gap_cost": {
-      "label": "Diferença de Custo de Viagem (Relativo)",
+      "label": "TP vs. Automóvel (custo relativo)",
       "description": "Diferença relativa de custo entre TP e Automóvel. Valores positivos indicam que o TP é X vezes mais caro que o Automóvel"
     },
     "access_gap_time_accessibility_gap": {
-      "label": "Diferença de Tempo de Viagem",
+      "label": "TP vs. Automóvel (tempo)",
       "description": "Diferença de tempo entre TP e Automóvel. Valores positivos indicam que o TP é mais demorado que o Automóvel"
     },
     "access_gap_time_relative_gap_time": {
-      "label": "Diferença de Tempo de Viagem (Relativo)",
+      "label": "TP vs. Automóvel (tempo relativo)",
       "description": "Diferença relativa de tempo entre TP e Automóvel. Valores positivos indicam que o TP é X vezes mais demorado que o Automóvel"
     },
     "veh_ownership_total_motor_vehicles_per_hh": {

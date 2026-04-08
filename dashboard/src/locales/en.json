@@ -246,19 +246,19 @@
       "description": "Proportion of the population with 500m access to public transport stops"
     },
     "access_gap_money_cost_gap": {
-      "label": "Affordability Gap (Cost)",
+      "label": "PT vs. Car (cost)",
       "description": "Cost difference between travel cost for PT and Car. Positive values indicate PT is more expensive than Car"
     },
     "access_gap_money_relative_gap_cost": {
-      "label": "Affordability Gap (Relative Cost)",
+      "label": "PT vs. Car (relative cost)",
       "description": "Relative cost difference between travel cost for PT and Car. Positive values indicate PT is x times more expensive than Car"
     },
     "access_gap_time_accessibility_gap": {
-      "label": "Accessibility Gap (Time)",
+      "label": "PT vs. Car (time)",
       "description": "Time difference between travel time for Car and PT. Positive values indicate Car is faster than PT"
     },
     "access_gap_time_relative_gap_time": {
-      "label": "Accessibility Gap (Relative Time)",
+      "label": "PT vs. Car (relative time)",
       "description": "Relative time difference between travel time for Car and PT. Positive values indicate Car is x times faster than PT"
     },
     "veh_ownership_total_motor_vehicles_per_hh": {
