@@ -34,7 +34,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
 }) => {
     const { t } = useTranslation();
     return (
-        <div className={`absolute top-4 right-4 w-[400px] max-h-[calc(100vh-22rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
+        <div className={`absolute top-4 right-4 w-[360px] max-h-[calc(100vh-22rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
             <div className="flex-1 overflow-y-auto p-7 space-y-8 scrollbar-hide">
 
                 {/* Selection Detail - Visible only when an area is selected */}
