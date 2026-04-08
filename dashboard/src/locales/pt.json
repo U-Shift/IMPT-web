@@ -30,8 +30,8 @@
     "ahp_description": "Definir pesos manualmente pode ser subjetivo e inconsistente. O Processo Hierárquico Analítico (AHP) confronta-o com comparações entre pares para derivar os pesos matematicamente, medindo a consistência da sua decisão.",
     "start_ahp": "Iniciar Inquérito AHP",
     "area_details": "Detalhes da área",
-    "mobility_profile": "Perfil de Mobilidade (Repartição Modal)",
-    "constituent_dynamics": "Subdivisões",
+    "mobility_profile": "Repartição Modal",
+    "constituent_dynamics": "Freguesias",
     "regional_contrast": "Contrastes Regionais",
     "top_performers": "Valores mais elevados",
     "low_performers": "Valores mais baixos"

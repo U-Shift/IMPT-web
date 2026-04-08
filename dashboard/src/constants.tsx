@@ -129,7 +129,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
             renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
@@ -157,7 +156,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
             renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
@@ -185,7 +183,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
             renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
@@ -213,7 +210,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => getEqualIntervals(v || 0),
             scaleMethod: continuousScale,
             pallete: COLORS.RedToGreen,
-            showAlwaysOnDetails: true,
             isContributory: true, defaultWeight: 0.25,
             sources: ['ansr', 'pmus', 'osm', 'ine', 'iptoll', 'accounting']
         }
@@ -247,6 +243,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'min',
             scaleMethod: continuousScale,
             pallete: COLORS.GreenToRed,
+            showAlwaysOnDetails: true,
             sources: ['imob', 'gba']
         },
         {
@@ -376,6 +373,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale, ignoreValues: [0, null],
             pallete: COLORS.WhiteToRed,
+            showAlwaysOnDetails: true,
             sources: ['ansr', 'pmus', 'census']
         },
         {
@@ -449,6 +447,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale, ignoreValues: [null], unit: "€",
             pallete: COLORS.Viridis.reverse(),
+            showAlwaysOnDetails: true,
             sources: ['ine']
         },
         {
@@ -510,6 +509,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => Math.round(v || 0).toString(), unit: '%',
             scaleMethod: continuousScale, ignoreValues: [null],
             pallete: COLORS.Viridis.reverse(),
+            showAlwaysOnDetails: true,
             sources: ['imob']
         }
     ],
@@ -522,6 +522,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, _min, _max) => Math.round(v || 0).toString(),
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
+            showAlwaysOnDetails: true,
             sources: ['census']
         },
         {

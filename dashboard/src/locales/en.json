@@ -30,7 +30,7 @@
     "ahp_description": "Defining weights manually can be subjective and inconsistent. The Analytic Hierarchy Process uses pairwise comparisons to mathematically derive optimal weights while measuring your decision consistency.",
     "start_ahp": "Start AHP Survey",
     "area_details": "Area details",
-    "mobility_profile": "Mobility Profile (Modal Share)",
+    "mobility_profile": "Modal Share",
     "constituent_dynamics": "Subareas",
     "regional_contrast": "Regional Contrasts",
     "top_performers": "Highest values",
