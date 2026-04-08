@@ -2,17 +2,17 @@ import { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 import { MetricDef } from '../types';
 
-export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
+export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
 
     // Enhance data with a max value for the "ghost" bar that holds labels
     const minValue = useMemo(() => Math.min(...data.map(d => d.value), 0), [data]);
     const maxValue = useMemo(() => Math.max(...data.map(d => d.value), 0), [data]);
-    const chartData = useMemo(() => data.map(d => ({ ...d, fullSpace: maxValue })), [data, maxValue]);
+    const chartData = useMemo(() => data.map(d => ({ ...d, fullSpace: [minValue, maxValue] })), [data, minValue, maxValue]);
 
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} layout="vertical" margin={{ left: 0, right: 35, top: 0, bottom: 0 }}>
-                <XAxis type="number" hide />
+                <XAxis type="number" hide domain={[minValue, maxValue]} />
                 <YAxis dataKey="name" type="category" hide />
                 <RechartsTooltip cursor={{ fill: 'rgba(99, 102, 241, 0.05)' }} wrapperStyle={{ pointerEvents: 'auto' }} content={({ active, payload }) => {
                     if (active && payload && payload.length) {
@@ -41,9 +41,9 @@ export const MiniBarChart = ({ data, metric, isDark, onSelect }: { data: any[], 
                     <LabelList
                         dataKey="name"
                         content={(props: any) => {
-                            const { x, y, value } = props;
+                            const { y, value } = props;
                             return (
-                                <foreignObject x={x} y={y - 14} width="90%" height="28" style={{ pointerEvents: 'none' }}>
+                                <foreignObject x={0} y={y - 14} width="90%" height="28" style={{ pointerEvents: 'none' }}>
                                     <div style={{
                                         width: '100%',
                                         height: '100%',
