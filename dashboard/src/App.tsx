@@ -6,7 +6,7 @@ import { Loader2, Activity, Layers, Globe, RocketIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { ViewLevel } from './types';
-import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS } from './constants';
+import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS, DATA_BASE_URL } from './constants';
 import { getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored, getMetricValue, discoverMetricVariations } from './utils';
 import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './components/MapHandlers';
 import { AHPModal } from './components/AHPModal';
@@ -91,7 +91,7 @@ const Dashboard = () => {
                 const levels = Object.keys(LEVEL_CONFIG) as ViewLevel[];
                 const results = await Promise.all([
                     ...levels.map(l => fetch(LEVEL_CONFIG[l].file).then(r => r.json())),
-                    fetch('data/municipios_limits.json').then(r => r.json())
+                    fetch(`${DATA_BASE_URL}municipios_limits.json`).then(r => r.json())
                 ]);
 
                 const geo: Record<string, any> = {};
