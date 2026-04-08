@@ -558,7 +558,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {!isMobile && (
+            {!isMobile && (selectedFeature || viewLevel !== 'hex') && (
                 <SidebarRight
                     isDarkMode={isDarkMode}
                     selectedFeature={selectedFeature}
