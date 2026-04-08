@@ -118,7 +118,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                     </div>
                                 </div>
                             )}
-                            {Object.values(LEVEL_CONFIG).some(config => config.parent === viewLevel) && subLevelData.length > 0 && (
+                            {viewLevel === 'municipality' && Object.values(LEVEL_CONFIG).some(config => config.parent === viewLevel) && subLevelData.length > 0 && (
                                 <div className="mt-8 pt-6 border-t border-neutral-800/50">
                                     <h4 className="text-[12px] font-black opacity-30 uppercase mb-4 tracking-widest">{t('sidebar.constituent_dynamics')}</h4>
                                     <div className="space-y-3 max-h-40 overflow-y-auto pr-2 scrollbar-hide">
