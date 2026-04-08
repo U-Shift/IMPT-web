@@ -256,6 +256,10 @@
     "access": {
       "label": "Acesso a oportunidades",
       "description": "Número de oportunidades alcançáveis dentro do limiar de tempo definido, por modo."
+    },
+    "pois": {
+      "label": "Pontos de Interesse",
+      "description": "Número de locais de cada tipo existentes na área"
     }
   },
   "regions": {
@@ -344,6 +348,9 @@
     "_2t": "Máx 2",
     "_n1": "1",
     "_n2": "2",
-    "_n3": "3"
+    "_n3": "3",
+    "_jobs": "Empregos",
+    "_schools_high": "Escolas Secundárias",
+    "_pt": "Paragens de Transportes Públicos"
   }
 }

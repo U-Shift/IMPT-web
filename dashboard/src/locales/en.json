@@ -256,6 +256,10 @@
     "access": {
       "label": "Access to opportunities",
       "description": "Number of opportunities reachable within the time threshold defined, by mode."
+    },
+    "pois": {
+      "label": "POIs Density",
+      "description": "Number of facilities of each type in the area"
     }
   },
   "regions": {
@@ -344,6 +348,9 @@
     "_2t": "Max 2",
     "_n1": "1",
     "_n2": "2",
-    "_n3": "3"
+    "_n3": "3",
+    "_jobs": "Jobs",
+    "_schools_high": "Secondary Schools",
+    "_pt": "Public Transport Stops"
   }
 }

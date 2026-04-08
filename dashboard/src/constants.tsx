@@ -315,6 +315,18 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             sources: ['pmus', 'gba', 'osm']
         },
         {
+            id: 'pois_n{poi_type}',
+            id_variations: {
+                poi_type: ['_jobs', '_health', '_health_primary', '_health_hospital', '_groceries', '_greenspaces', '_recreation', '_schools_primary', '_schools_high', '_pt']
+            },
+            label: 'metrics.pois.label',
+            description: 'metrics.pois.description',
+            format: (v, _min, _max) => Math.round(v || 0).toString(),
+            scaleMethod: continuousScale,
+            pallete: COLORS.Magma.reverse(),
+            sources: ['pmus', 'gba', 'osm']
+        },
+        {
             id: 'access_gap_time_accessibility_gap',
             label: 'metrics.access_gap_time_accessibility_gap.label',
             description: 'metrics.access_gap_time_accessibility_gap.description',
