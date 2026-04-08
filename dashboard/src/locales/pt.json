@@ -254,8 +254,8 @@
       "description": "Percentagem de agregados familiares que não possuem veículo próprios (motorizados ou velocípedes)"
     },
     "access": {
-      "label": "Número de oportunidades",
-      "description": "Este indicador representa o número de oportunidades alcançáveis dentro do limiar de tempo definido. Os valores ao nível da freguesia e do município são agregados considerando uma média ponderada do número de oportunidades alcançáveis em cada célula da grelha dentro dessa unidade geográfica, ponderada pela população dessas células."
+      "label": "Acesso a oportunidades",
+      "description": "Número de oportunidades alcançáveis dentro do limiar de tempo definido, por modo."
     }
   },
   "regions": {

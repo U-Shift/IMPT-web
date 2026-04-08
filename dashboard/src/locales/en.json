@@ -254,8 +254,8 @@
       "description": "Percentage of households that do not own a vehicle (motorized or bicycle)"
     },
     "access": {
-      "label": "Number of opportunities",
-      "description": "This indicator represents the number of opportunities reachable within the time threshold defined. Values at parish and municipality level are aggregated considering a weighted mean of the number of opportunities reachable in each grid cell within that geographical unit, weighted by the population of those cells."
+      "label": "Access to opportunities",
+      "description": "Number of opportunities reachable within the time threshold defined, by mode."
     }
   },
   "regions": {
