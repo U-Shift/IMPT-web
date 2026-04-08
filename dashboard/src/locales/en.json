@@ -318,7 +318,7 @@
     "poi_type": "POIs",
     "n_time": "Time Threshold",
     "population": "Target Population",
-    "n_transfers": "Transfers",
+    "n_transfers": "Transfers (PT)",
     "n_opportunities": "Number of opportunities to reach",
     "_health": "Health Facilities",
     "_health_primary": "Primary Health Centers",

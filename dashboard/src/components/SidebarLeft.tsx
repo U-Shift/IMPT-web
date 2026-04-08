@@ -225,7 +225,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                             const selectedOpt = selectedVariations[group] || options[0];
 
                                                             return (
-                                                                <div key={group} className="space-y-1.5">
+                                                                <div key={group} className={`space-y-1.5 ${isSlider ? 'pt-2' : ''} ${group === 'n_transfers' ? '-mt-1' : ''}`}>
                                                                     <div className="flex justify-between items-center px-1">
                                                                         <label className={`text-[10px] font-black uppercase tracking-widest opacity-40 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
                                                                             {t(`variations.${group}`)}
