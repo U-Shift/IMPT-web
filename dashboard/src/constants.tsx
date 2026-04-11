@@ -449,7 +449,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             showAlwaysOnDetails: true,
             sources: ['ine']
         },
-       {
+        {
             id: 'census_income_housing_costs',
             label: 'metrics.census_income_housing_costs.label',
             description: 'metrics.census_income_housing_costs.description',
@@ -501,7 +501,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             showAlwaysOnDetails: true,
             sources: ['imob']
         },
-         {
+        {
             id: 'census_income_gini_coef',
             label: 'metrics.census_income_gini_coef.label',
             description: 'metrics.census_income_gini_coef.description',
@@ -579,7 +579,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.mobility_infrastructure_road_length.label',
             description: 'metrics.mobility_infrastructure_road_length.description',
             icon: '🛣️',
-            format: (v, _min, _max) => Math.round(v || 0).toString(),
+            format: (v, _min, _max) => Math.round((v || 0) / 1000).toString(), unit: 'km',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
             sources: ['osm']
@@ -589,7 +589,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.mobility_infrastructure_cycleway_length.label',
             description: 'metrics.mobility_infrastructure_cycleway_length.description',
             icon: '🚲',
-            format: (v, _min, _max) => Math.round(v || 0).toString(),
+            format: (v, _min, _max) => ((v || 0) / 1000).toFixed(1), unit: 'km',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
             sources: ['osm']
@@ -609,7 +609,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.mobility_infrastructure_pedpath_length.label',
             description: 'metrics.mobility_infrastructure_pedpath_length.description',
             icon: '🚶',
-            format: (v, _min, _max) => Math.round(v || 0).toString(),
+            format: (v, _min, _max) => Math.round((v || 0) / 1000).toString(), unit: 'km',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
             sources: ['osm']
