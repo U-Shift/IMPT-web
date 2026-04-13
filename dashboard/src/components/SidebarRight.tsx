@@ -33,6 +33,8 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
     selectedVariations
 }) => {
     const { t } = useTranslation();
+    const isIMPT = ['IMPT_entropy_pca', 'IMPT_score_pca_geom', 'IMPT_dynamic'].includes(selectedMetricId);
+
     return (
         <div className={`absolute top-4 right-4 w-[360px] max-h-[calc(100vh-22rem)] flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800' : 'bg-white/95 border-neutral-200'} border rounded-[32px] shadow-2xl z-[1001] backdrop-blur-xl transition-all overflow-hidden`}>
             <div className="flex-1 overflow-y-auto p-6 space-y-8 scrollbar-hide">
@@ -97,12 +99,44 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
                                 })()}
                             </div>
 
-                            <div className="grid grid-cols-2 gap-2 mb-3">
-                                {FLAT_METRICS_FILTERED(selectedMetricId, selectedMode, selectedFeature, allDomains, isDarkMode, t, selectedVariations, viewLevel)}
-                            </div>
+                            {!isIMPT && (
+                                <div className="grid grid-cols-2 gap-2 mb-3">
+                                    {FLAT_METRICS_FILTERED(selectedMetricId, selectedMode, selectedFeature, allDomains, isDarkMode, t, selectedVariations, viewLevel)}
+                                </div>
+                            )}
+
+                            {isIMPT && (
+                                <div className="grid grid-cols-2 gap-2 mb-3">
+                                    {['Mobility_Index', 'Accessibility_Index', 'Safety_Index', 'Affordability_Index'].map(dimId => {
+                                        const m = FLAT_METRICS.find(metric => metric.id === dimId);
+                                        if (!m) return null;
+
+                                        const effectiveId = `${m.id}${selectedMode.suffix || ''}`;
+                                        const fallbackId = selectedMode.suffixFallback !== undefined ? `${m.id}${selectedMode.suffixFallback}` : undefined;
+                                        const val = selectedFeature[effectiveId] ??
+                                            (fallbackId ? selectedFeature[fallbackId] : undefined) ??
+                                            selectedFeature[m.id];
+
+                                        if (isMetricValueIgnored(val, m)) return null;
+
+                                        return (
+                                            <div key={m.id} className="h-full min-w-0">
+                                                <DetailCard
+                                                    key={m.id}
+                                                    label={t(m.label)}
+                                                    value={m.format(val, allDomains[m.id]?.[0] || 0, allDomains[m.id]?.[allDomains[m.id].length - 1] || 100).split('.').map((p, i) => i === 0 ? p.replace(/\B(?=(\d{3})+(?!\d))/g, " ") : p).join('.')}
+                                                    unit={m.unit}
+                                                    hexColor={getColor(val, allDomains[m.id] || [0, 100], m)}
+                                                    isDark={isDarkMode}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
 
                             {/* Modal Share Breakdown */}
-                            {selectedFeature.modal_imob_share_car !== undefined && (
+                            {!isIMPT && selectedFeature.modal_imob_share_car !== undefined && (
                                 <div className="mb-0 pt-3">
                                     <h4 className="text-[12px] font-black opacity-30 uppercase mb-2 tracking-widest">{t('sidebar.mobility_profile')}</h4>
                                     <div className="h-14 flex items-center">
