@@ -266,6 +266,14 @@
       "label": "PT vs. Car (relative time)",
       "description": "Relative time difference between travel time for Car and PT. Positive values indicate Car is x times faster than PT"
     },
+    "access_gap_time_accessibility_gap_bike": {
+      "label": "Bike vs. Car (time)",
+      "description": "Time difference between travel time for Car and Bike. Positive values indicate Car is faster than Bike"
+    },
+    "access_gap_time_relative_gap_bike_time": {
+      "label": "Bike vs. Car (relative time)",
+      "description": "Relative time difference between travel time for Car and Bike. Positive values indicate Car is x times faster than Bike"
+    },
     "veh_ownership_total_motor_vehicles_per_hh": {
       "label": "Motorized vehicles per household",
       "description": "Average number of motor vehicles per household"

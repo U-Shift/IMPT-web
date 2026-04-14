@@ -266,6 +266,14 @@
       "label": "TP vs. Automóvel (tempo relativo)",
       "description": "Diferença relativa de tempo entre TP e Automóvel. Valores positivos indicam que o TP é X vezes mais demorado que o Automóvel"
     },
+    "access_gap_time_accessibility_gap_bike": {
+      "label": "Bicicleta vs. Automóvel (tempo)",
+      "description": "Diferença de tempo entre Bicicleta e Automóvel. Valores positivos indicam que a Bicicleta é mais lenta que o Automóvel"
+    },
+    "access_gap_time_relative_gap_bike_time": {
+      "label": "Bicicleta vs. Automóvel (tempo relativo)",
+      "description": "Diferença relativa de tempo entre Bicicleta e Automóvel. Valores positivos indicam que a Bicicleta é X vezes mais lenta que o Automóvel"
+    },
     "veh_ownership_total_motor_vehicles_per_hh": {
       "label": "Veículos motorizados por agregado",
       "description": "Número médio de veículos motorizados por agregado familiar"
