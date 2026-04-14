@@ -508,7 +508,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.veh_ownership_total_motor_vehicles_per_hh.label',
             description: 'metrics.veh_ownership_total_motor_vehicles_per_hh.description',
             icon: '🚗🛵',
-            format: (v, _min, _max) => Math.round(v || 0).toString(), unit: 'vh',
+            format: (v, _min, _max) => (v || 0).toFixed(1), unit: 'vh',
             scaleMethod: continuousScale, ignoreValues: [null],
             pallete: COLORS.Viridis.reverse(),
             sources: ['imob']
