@@ -666,6 +666,16 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
             sources: ['gba']
+        },
+        {
+            id: 'cos_builtarea',
+            label: 'metrics.categories.cos_builtarea_title',
+            description: 'metrics.categories.cos_builtarea_desc',
+            icon: '🏗️',
+            format: (v, min, max) => v === min ? '0.3' : (v === max ? '3.0' : String(v)),
+            scaleMethod: continuousScale,
+            pallete: ['#fed976', '#fd8d3c', '#e31a1c', '#800026'],
+            sources: ['cos']
         }
     ]
 };

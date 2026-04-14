@@ -72,6 +72,17 @@ const Dashboard = () => {
         return keys.reduce((acc, key, i) => ({ ...acc, [key]: i !== 0 }), {});
     });
     const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+    const [showBuiltArea, setShowBuiltArea] = useState(false);
+    const [builtAreaData, setBuiltAreaData] = useState<any>(null);
+
+    useEffect(() => {
+        if ((showBuiltArea || selectedMetricId === 'cos_builtarea') && !builtAreaData) {
+            fetch('data/cos_builtarea.geojson')
+                .then(r => r.json())
+                .then(d => setBuiltAreaData(d))
+                .catch(e => console.error("Error loading built area:", e));
+        }
+    }, [showBuiltArea, selectedMetricId, builtAreaData]);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth < 1024);
@@ -455,6 +466,8 @@ const Dashboard = () => {
                     discoveredVariations={discoveredVariations}
                     selectedMode={effectiveMode}
                     viewLevel={effectiveLevel}
+                    showBuiltArea={showBuiltArea}
+                    setShowBuiltArea={setShowBuiltArea}
                 />
             )}
 
@@ -548,8 +561,39 @@ const Dashboard = () => {
                             const url = 'getUrl' in layer && typeof layer.getUrl === 'function' ? layer.getUrl(isDarkMode) : layer.url;
                             return <TileLayer url={url!} attribution={layer.attribution} />;
                         })()}
-                        <MapTools isDarkMode={isDarkMode} mapStyle={mapStyle} setMapStyle={setMapStyle} />
-                        {computedGeoData?.features && (
+                        <MapTools isDarkMode={isDarkMode} mapStyle={mapStyle} setMapStyle={setMapStyle} showBuiltArea={showBuiltArea} setShowBuiltArea={setShowBuiltArea} />
+                        <Pane name="builtarea-pane" style={{ zIndex: 350 }}>
+                            {(showBuiltArea || selectedMetricId === 'cos_builtarea') && builtAreaData && (
+                                <GeoJSON 
+                                    key={`builtarea-${isDarkMode}-${isColorBlindMode}`}
+                                    data={builtAreaData}
+                                    style={(f: any) => {
+                                        const cls = f?.properties?.classification || '';
+                                        let fillColor = '#fed976';
+                                        if (cls === 'Áreas edificadas residenciais contínuas predominantemente verticais') {
+                                            fillColor = '#800026';
+                                        } else if (cls === 'Áreas edificadas residenciais contínuas predominantemente horizontais') {
+                                            fillColor = '#e31a1c';
+                                        } else if (cls === 'Áreas edificadas residenciais descontínuas') {
+                                            fillColor = '#fd8d3c';
+                                        }
+                                        return {
+                                            fillColor,
+                                            weight: 0.5,
+                                            opacity: 1,
+                                            color: isDarkMode ? '#1a1a1a' : '#ffffff',
+                                            fillOpacity: 0.85
+                                        };
+                                    }}
+                                    onEachFeature={(f, l) => {
+                                        if (f.properties?.classification) {
+                                            l.bindTooltip(`<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; max-width: 200px; text-align: center;">${f.properties.classification}</div>`, { sticky: true, direction: 'top', offset: [0, -10] });
+                                        }
+                                    }}
+                                />
+                            )}
+                        </Pane>
+                        {computedGeoData?.features && selectedMetricId !== 'cos_builtarea' && (
                             <GeoJSON key={`${effectiveLevel}-${nutFilter}-${selectedMetricId}-${effectiveMode.id}-${isDarkMode}-${isColorBlindMode}-${selectedFeature?.id}-${i18n.language}-${JSON.stringify(weights)}-${JSON.stringify(selectedVariations)}`} data={computedGeoData as any} style={getStyle} onEachFeature={onEachFeature} />
                         )}
                         <Pane name="limits-pane" style={{ zIndex: 450 }}>
@@ -561,7 +605,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {!isMobile && (selectedFeature || viewLevel !== 'hex') && (
+            {!isMobile && (selectedFeature || viewLevel !== 'hex') && selectedMetricId !== 'cos_builtarea' && (
                 <SidebarRight
                     isDarkMode={isDarkMode}
                     isColorBlindMode={isColorBlindMode}

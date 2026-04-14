@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages, Eye, EyeOff } from 'lucide-react';
+import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages, Eye, EyeOff, Layers } from 'lucide-react';
 import { MetricDef } from '../types';
 import { METRICS, FLAT_METRICS } from '../constants';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +26,8 @@ interface SidebarLeftProps {
     discoveredVariations: Record<string, string>[];
     selectedMode: { id: string };
     viewLevel: string;
+    showBuiltArea: boolean;
+    setShowBuiltArea: (val: boolean) => void;
 }
 
 const AuxiliaryDataRenderer: React.FC<{
@@ -67,7 +69,8 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
     collapsedSections, toggleSection,
     weights, setWeights, resetWeights, setIsAHPModalOpen,
     selectedVariations, setSelectedVariations,
-    discoveredVariations, selectedMode, viewLevel
+    discoveredVariations, selectedMode, viewLevel,
+    showBuiltArea, setShowBuiltArea
 }) => {
     const { t, i18n } = useTranslation();
     const toggleLanguage = () => {
