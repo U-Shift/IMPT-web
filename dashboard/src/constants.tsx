@@ -355,7 +355,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'access_gap_time_accessibility_gap',
             label: 'metrics.access_gap_time_accessibility_gap.label',
             description: 'metrics.access_gap_time_accessibility_gap.description',
-            icon: '⚖️🚍🚗⌛',
+            icon: '⚖️🚗⌛',
             format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: 'min',
             scaleMethod: continuousScale, scaleMinEqualsMax: true,
             pallete: COLORS.GreenToRed,
@@ -365,28 +365,8 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'access_gap_time_relative_gap_time',
             label: 'metrics.access_gap_time_relative_gap_time.label',
             description: 'metrics.access_gap_time_relative_gap_time.description',
-            icon: '⚖️🚍🚗⏳',
+            icon: '⚖️🚗⏳',
             format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [38.67, 35.5, 22.8, 18.83, 18.13],
-            scaleMethod: continuousScale, scaleMinEqualsMax: true,
-            pallete: COLORS.GreenToRed,
-            sources: ['pmus', 'gba']
-        },
-        {
-            id: 'access_gap_time_accessibility_gap_bike',
-            label: 'metrics.access_gap_time_accessibility_gap_bike.label',
-            description: 'metrics.access_gap_time_accessibility_gap_bike.description',
-            icon: '⚖️🚲🚗⌛',
-            format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [0, null], unit: 'min',
-            scaleMethod: continuousScale, scaleMinEqualsMax: true,
-            pallete: COLORS.GreenToRed,
-            sources: ['pmus', 'gba']
-        },
-        {
-            id: 'access_gap_time_relative_gap_time_bike',
-            label: 'metrics.access_gap_time_relative_gap_bike_time.label',
-            description: 'metrics.access_gap_time_relative_gap_bike_time.description',
-            icon: '⚖️🚲🚗⏳',
-            format: (v, _min, _max) => (v || 0).toFixed(2), ignoreValues: [null],
             scaleMethod: continuousScale, scaleMinEqualsMax: true,
             pallete: COLORS.GreenToRed,
             sources: ['pmus', 'gba']
