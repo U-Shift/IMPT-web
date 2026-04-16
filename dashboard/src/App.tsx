@@ -195,6 +195,28 @@ const Dashboard = () => {
         return discoverMetricVariations(selectedMetric, features);
     }, [selectedMetric, dataState.geo, effectiveLevel]);
 
+    // Automatically enforce valid variations for the selected metric
+    useEffect(() => {
+        if (discoveredVariations.length > 0) {
+            const currentComb = Object.keys(selectedMetric.id_variations || {}).reduce((acc, g) => {
+                const groupDef = selectedMetric.id_variations![g];
+                const opts = Array.isArray(groupDef) ? groupDef : groupDef.options;
+                acc[g] = selectedVariations[g] || opts[0];
+                return acc;
+            }, {} as Record<string, string>);
+
+            const isValid = discoveredVariations.some((validComb: any) => {
+                return Object.entries(currentComb).every(([k, v]) => validComb[k] === v);
+            });
+
+            if (!isValid) {
+                console.log("[Variation Auto-Sync] Current combination invalid for", selectedMetricId, "falling back to first valid variation.");
+                setSelectedVariations(prev => ({ ...prev, ...discoveredVariations[0] }));
+            }
+        }
+    }, [discoveredVariations, selectedMetric, selectedMetricId]);
+
+
     // Auto-switch view level OR reset mode if not available for selected metric
     useEffect(() => {
         if (!isModeAvailable(selectedModeId, selectedMetricId, viewLevel)) {
