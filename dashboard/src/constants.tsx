@@ -399,7 +399,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             description: 'metrics.safety_inner_total_acidentes.description',
             icon: '💥',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
-            scaleMethod: logarithmicScale, steps: 10, ignoreValues: [0, null],
+            scaleMethod: logarithmicScale, steps: 100, ignoreValues: [0, null],
             pallete: COLORS.WhiteToRed,
             sources: ['ansr', 'pmus']
         },
@@ -440,7 +440,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             description: 'metrics.safety_inner_total_veiculos.description',
             icon: '🚗',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
-            scaleMethod: logarithmicScale, steps: 10, ignoreValues: [0, null],
+            scaleMethod: logarithmicScale, steps: 100, ignoreValues: [0, null],
             pallete: COLORS.WhiteToRed,
             sources: ['ansr', 'pmus']
         }
