@@ -245,7 +245,7 @@
     },
     "mobility_stop_coverage_ratio_served_population": {
       "label": "Cobertura de Paragens TP",
-      "description": "Proporção da população com acesso em 500m a paragens de transporte público"
+      "description": "Proporção da população com acesso a pé em 5 min a paragens de autocarro; 10 min a estações de metro; 15 min a estações de comboio ou ferry"
     },
     "access_gap_money_cost_gap": {
       "label": "TP vs. Automóvel (custo)",

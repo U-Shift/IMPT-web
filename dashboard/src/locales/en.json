@@ -245,7 +245,7 @@
     },
     "mobility_stop_coverage_ratio_served_population": {
       "label": "PT Stop Coverage",
-      "description": "Proportion of the population with 500m access to public transport stops"
+      "description": "Proportion of the population with walking access in 5 min to bus stops; 10 min to metro stations; 15 min to train or ferry stations"
     },
     "access_gap_money_cost_gap": {
       "label": "PT vs. Car (cost)",
