@@ -607,7 +607,13 @@ const Dashboard = () => {
                                     }}
                                     onEachFeature={(f, l) => {
                                         if (f.properties?.classification) {
-                                            l.bindTooltip(`<div style="font-family: sans-serif; font-size: 11px; font-weight: bold; max-width: 200px; text-align: center;">${f.properties.classification}</div>`, { sticky: true, direction: 'top', offset: [0, -10] });
+                                            l.bindTooltip(`
+                                                <div style="font-family: sans-serif; font-size: 11px; font-weight: bold; max-width: 200px; text-align: center; text-wrap: wrap; ">
+                                                ${f.properties.classification}
+                                                </div>`,
+                                                {
+                                                    sticky: true, direction: 'top', offset: [0, -10]
+                                                });
                                         }
                                     }}
                                 />
