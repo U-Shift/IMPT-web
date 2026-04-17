@@ -1,7 +1,7 @@
 import React from 'react';
 import { MetricDef, ViewLevel, ScaleMethod } from './types';
 
-export const DATA_BASE_URL = import.meta.env.DEV ? 'data/' : 'https://ushift.tecnico.ulisboa.pt/content/impt/';
+export const DATA_BASE_URL = 'https://ushift.tecnico.ulisboa.pt/content/impt/';
 
 export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel }> = {
     'municipality': { file: `${DATA_BASE_URL}municipios_aggregated.geojson` },
@@ -600,26 +600,6 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             label: 'metrics.census_landuse_population_density.label',
             description: 'metrics.census_landuse_population_density.description',
             icon: '🏙️',
-            format: (v, _min, _max) => (v || 0).toFixed(1),
-            scaleMethod: continuousScale,
-            pallete: COLORS.WhiteToBlue,
-            sources: ['census']
-        },
-        {
-            id: 'census_landuse_youth_ratio',
-            label: 'metrics.census_landuse_youth_ratio.label',
-            description: 'metrics.census_landuse_youth_ratio.description',
-            icon: '👶',
-            format: (v, _min, _max) => (v || 0).toFixed(1),
-            scaleMethod: continuousScale,
-            pallete: COLORS.WhiteToBlue,
-            sources: ['census']
-        },
-        {
-            id: 'census_landuse_elderly_ratio',
-            label: 'metrics.census_landuse_elderly_ratio.label',
-            description: 'metrics.census_landuse_elderly_ratio.description',
-            icon: '👵',
             format: (v, _min, _max) => (v || 0).toFixed(1),
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToBlue,
