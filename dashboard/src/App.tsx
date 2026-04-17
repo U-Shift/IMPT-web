@@ -6,7 +6,7 @@ import { Loader2, Activity, Layers, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { ViewLevel } from './types';
-import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS } from './constants';
+import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, DEFAULT_REGION, MODES, RegionKey, ModeId, LEVEL_CONFIG, MAP_LAYERS, DATA_BASE_URL } from './constants';
 import { getMetricDomain, getColor, getLegendGradient, isMetricValueIgnored, getMetricValue, discoverMetricVariations } from './utils';
 import { ZoomHandler, SelectedFeatureCentering, MapDeselectHandler } from './components/MapHandlers';
 import { AHPModal } from './components/AHPModal';
@@ -78,7 +78,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if ((showBuiltArea || selectedMetricId === 'cos_builtarea') && !builtAreaData) {
-            fetch('data/cos_builtarea.geojson')
+            fetch(`${DATA_BASE_URL}cos_builtarea.geojson`)
                 .then(r => r.json())
                 .then(d => setBuiltAreaData(d))
                 .catch(e => console.error("Error loading built area:", e));
@@ -584,7 +584,7 @@ const Dashboard = () => {
                         <MapTools isDarkMode={isDarkMode} mapStyle={mapStyle} setMapStyle={setMapStyle} showBuiltArea={showBuiltArea} setShowBuiltArea={setShowBuiltArea} />
                         <Pane name="builtarea-pane" style={{ zIndex: 350 }}>
                             {(showBuiltArea || selectedMetricId === 'cos_builtarea') && builtAreaData && (
-                                <GeoJSON 
+                                <GeoJSON
                                     key={`builtarea-${isDarkMode}-${isColorBlindMode}`}
                                     data={builtAreaData}
                                     style={(f: any) => {

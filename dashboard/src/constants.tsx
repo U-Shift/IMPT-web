@@ -1,7 +1,7 @@
 import React from 'react';
 import { MetricDef, ViewLevel, ScaleMethod } from './types';
 
-const DATA_BASE_URL = import.meta.env.DEV ? 'data/' : 'https://ushift.tecnico.ulisboa.pt/content/impt/';
+export const DATA_BASE_URL = import.meta.env.DEV ? 'data/' : 'https://ushift.tecnico.ulisboa.pt/content/impt/';
 
 export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel }> = {
     'municipality': { file: `${DATA_BASE_URL}municipios_aggregated.geojson` },
