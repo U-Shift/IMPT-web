@@ -408,6 +408,7 @@
     "_15w": "15 min",
     "_20w": "20 min",
     "_30w": "30 min",
+    "time_of_day": "Altura do dia",
     "_peak": "Hora de Ponta (08h - 09h)",
     "_night": "Noite (22h - 23h)",
     "_day": "Dia Útil Completo",

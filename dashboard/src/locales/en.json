@@ -402,6 +402,7 @@
     "_15w": "15 min",
     "_20w": "20 min",
     "_30w": "30 min",
+    "time_of_day": "Time of day",
     "_peak": "Peak Hour (08h - 09h)",
     "_night": "Night Time (22h - 23h)",
     "_day": "Full Week Day",

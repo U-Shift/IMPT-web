@@ -304,13 +304,13 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             id: 'mobility_weighted_waiting_time{time_of_day}',
             id_variations: {
                 time_of_day: {
-                    options: ['_peak', '_night', '_day', '_weekend'],
+                    options: ['_peak', '_night', '_weekend'], //'_day', 
                     modes: ['pt']
                 }
             },
             label: 'metrics.mobility_weighted_waiting_time_pt.label',
             description: 'metrics.mobility_weighted_waiting_time_pt.description',
-            icon: '🕐',
+            icon: '🕐🚏',
             format: (v, _min, _max) => (v || 0).toFixed(1), unit: 'min',
             scaleMethod: continuousScale,
             pallete: COLORS.WhiteToRed,
