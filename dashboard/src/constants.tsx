@@ -663,7 +663,13 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             format: (v, min, max) => v === min ? '0.3' : (v === max ? '3.0' : String(v)),
             scaleMethod: continuousScale,
             pallete: ['#fed976', '#fd8d3c', '#e31a1c', '#800026'],
-            sources: ['cos']
+            sources: ['cos'],
+            legendCategories: [
+                { color: '#800026', label: 'metrics.categories.cos_builtarea_cat_vertical' },
+                { color: '#e31a1c', label: 'metrics.categories.cos_builtarea_cat_horizontal' },
+                { color: '#fd8d3c', label: 'metrics.categories.cos_builtarea_cat_discontinuous' },
+                { color: '#fed976', label: 'metrics.categories.cos_builtarea_cat_other' }
+            ]
         }
     ]
 };

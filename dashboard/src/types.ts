@@ -39,6 +39,7 @@ export type MetricDef = {
     scaleMin?: number; // Force a minimum value for the scale domain
     scaleMax?: number; // Force a maximum value for the scale domain
     format: (v: number, min: number, max: number) => string;
+    legendCategories?: { color: string; label: string }[]; // Specific legend categories for non-continuous layers
     // Area details sidebar (opens on the right, when user clicks on a feature)
     showAlwaysOnDetails?: boolean; // If true, the variable is always visible in the details sidebar. By default, variables are only visible when selected.
     // IMPT Calculation

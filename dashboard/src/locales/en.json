@@ -79,7 +79,11 @@
       "affordability": "Affordability",
       "top_contributors": "Top Contributors",
       "cos_builtarea_title": "Buildings",
-      "cos_builtarea_desc": "Residential Building Classes"
+      "cos_builtarea_desc": "Residential Building Classes",
+      "cos_builtarea_cat_vertical": "Continuous Vertical Residential",
+      "cos_builtarea_cat_horizontal": "Continuous Horizontal Residential",
+      "cos_builtarea_cat_discontinuous": "Discontinuous Residential",
+      "cos_builtarea_cat_other": "Other/Mixed"
     },
     "impt_entropy": {
       "label": "IMPT contrasting",

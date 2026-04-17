@@ -79,7 +79,11 @@
       "census_population": "População Censos",
       "top_contributors": "Principais Contribuidores",
       "cos_builtarea_title": "Edificado",
-      "cos_builtarea_desc": "Classes de Edificado Residencial"
+      "cos_builtarea_desc": "Classes de Edificado Residencial",
+      "cos_builtarea_cat_vertical": "Residencial Vertical Contínua",
+      "cos_builtarea_cat_horizontal": "Residencial Horizontal Contínua",
+      "cos_builtarea_cat_discontinuous": "Residencial Descontínua",
+      "cos_builtarea_cat_other": "Outro/Misto"
     },
     "impt_entropy": {
       "label": "IMPT contrastante",
@@ -311,6 +315,12 @@
     "mobility_frequency_ratio_peak_pt": {
       "label": "Rácio de Frequências TP",
       "description": "Rácio da frequência de TP em diferentes períodos face à hora de ponta"
+    },
+    "cos_builtarea": {
+      "vertical": "Residencial Vertical Contínua",
+      "horizontal": "Residencial Horizontal Contínua",
+      "discontinuous": "Residencial Descontínua",
+      "mixed": "Outro/Misto"
     }
   },
   "regions": {

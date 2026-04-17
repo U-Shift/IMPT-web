@@ -547,16 +547,32 @@ const Dashboard = () => {
                                 <Activity className="w-3.5 h-3.5" /> {nutFilter !== REGION_KEYS[0] ? t('map.local_rescaling') : t('map.global_scale')}
                             </h4>
                             <div className="space-y-5">
-                                <div className="flex flex-col gap-3">
-                                    <div
-                                        className="h-2.5 rounded-full w-full shadow-inner"
-                                        style={{ background: getLegendGradient(selectedMetric, currentDomain, isColorBlindMode) }}
-                                    />
-                                    <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
-                                        <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
-                                        <span>{selectedMetric.format(currentDomain[currentDomain.length - 1], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
+                                {selectedMetric.legendCategories ? (
+                                    <div className="flex flex-col gap-3 pt-1">
+                                        {selectedMetric.legendCategories.map((cat, i) => (
+                                            <div key={i} className="flex items-center gap-3 group transition-transform hover:translate-x-1">
+                                                <div 
+                                                    className="w-4 h-4 rounded-sm shadow-sm flex-shrink-0 border border-black/5" 
+                                                    style={{ backgroundColor: cat.color }}
+                                                />
+                                                <span className={`text-[11px] font-black uppercase tracking-tight leading-tight ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
+                                                    {t(cat.label)}
+                                                </span>
+                                            </div>
+                                        ))}
                                     </div>
-                                </div>
+                                ) : (
+                                    <div className="flex flex-col gap-3">
+                                        <div
+                                            className="h-2.5 rounded-full w-full shadow-inner"
+                                            style={{ background: getLegendGradient(selectedMetric, currentDomain, isColorBlindMode) }}
+                                        />
+                                        <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
+                                            <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
+                                            <span>{selectedMetric.format(currentDomain[currentDomain.length - 1], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
+                                        </div>
+                                    </div>
+                                )}
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
                                     <p className="text-[13px] font-black leading-tight mb-2 uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit})` : ''}</p>
                                     <p className="text-[13px] opacity-40 leading-relaxed font-bold tracking-tight">{selectedMetric.description ? t(selectedMetric.description) : `Spatial distribution and variance of ${t(selectedMetric.label).toLowerCase()} across the ${t(`map.${effectiveLevel}`)} network.`}</p>
