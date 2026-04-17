@@ -301,6 +301,38 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             sources: ['gtfs', 'census']
         },
         {
+            id: 'mobility_weighted_waiting_time{time_of_day}',
+            id_variations: {
+                time_of_day: {
+                    options: ['_peak', '_night', '_day', '_weekend'],
+                    modes: ['pt']
+                }
+            },
+            label: 'metrics.mobility_weighted_waiting_time_pt.label',
+            description: 'metrics.mobility_weighted_waiting_time_pt.description',
+            icon: '🕐',
+            format: (v, _min, _max) => (v || 0).toFixed(1), unit: 'min',
+            scaleMethod: continuousScale,
+            pallete: COLORS.WhiteToRed,
+            sources: ['gtfs', 'census']
+        },
+        {
+            id: 'mobility_frequency_ratio_peak{time_of_day}',
+            id_variations: {
+                time_of_day: {
+                    options: ['_night', '_weekend'],
+                    modes: ['pt']
+                }
+            },
+            label: 'metrics.mobility_frequency_ratio_peak_pt.label',
+            description: 'metrics.mobility_frequency_ratio_peak_pt.description',
+            icon: '🕐➗',
+            format: (v, _min, _max) => Math.round((v || 0) * 100).toString(), unit: '%',
+            scaleMethod: continuousScale,
+            pallete: COLORS.RedToWhite,
+            sources: ['gtfs', 'census']
+        },
+        {
             id: 'modal_census_share',
             label: 'metrics.modal_census_share.label',
             description: 'metrics.modal_census_share.description',

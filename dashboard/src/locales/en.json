@@ -303,6 +303,14 @@
     "mobility_commuting_mean_transfers_pt": {
       "label": "Average number of commuting transfers",
       "description": "Average number of transfers for commuting by PT"
+    },
+    "mobility_weighted_waiting_time_pt": {
+      "label": "PT Waiting Time",
+      "description": "Weighted average waiting time for PT by time of day"
+    },
+    "mobility_frequency_ratio_peak_pt": {
+      "label": "PT Frequency Ratio",
+      "description": "Ratio of PT frequency during other periods compared to peak hours"
     }
   },
   "regions": {
@@ -388,6 +396,10 @@
     "_15w": "15 min",
     "_20w": "20 min",
     "_30w": "30 min",
+    "_peak": "Peak Hour (08h - 09h)",
+    "_night": "Night Time (22h - 23h)",
+    "_day": "Full Week Day",
+    "_weekend": "Weekend (10h - 11h)",
     "_residents": "Total Households",
     "_active": "Active Population",
     "_elder": "Elderly Population",

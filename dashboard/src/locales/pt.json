@@ -303,6 +303,14 @@
     "mobility_commuting_mean_transfers_pt": {
       "label": "Número médio de transbordos pendulares",
       "description": "Número médio de transbordos para deslocações pendulares em TP"
+    },
+    "mobility_weighted_waiting_time_pt": {
+      "label": "Tempo de espera TP",
+      "description": "Tempo médio de espera pelo transporte público em diferentes momentos do dia"
+    },
+    "mobility_frequency_ratio_peak_pt": {
+      "label": "Rácio de Frequências TP",
+      "description": "Rácio da frequência de TP em diferentes períodos face à hora de ponta"
     }
   },
   "regions": {
@@ -388,6 +396,10 @@
     "_15w": "15 min",
     "_20w": "20 min",
     "_30w": "30 min",
+    "_peak": "Hora de Ponta (08h - 09h)",
+    "_night": "Noite (22h - 23h)",
+    "_day": "Dia Útil Completo",
+    "_weekend": "Fim de Semana (10h - 11h)",
     "_residents": "Residentes (Total)",
     "_active": "População Ativa",
     "_elder": "População Idosa",
