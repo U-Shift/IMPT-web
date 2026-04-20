@@ -81,11 +81,11 @@
       "census_population": "População Censos",
       "top_contributors": "Principais Contribuidores",
       "cos_builtarea_title": "Edificado",
-      "cos_builtarea_desc": "Classes de Edificado Residencial",
-      "cos_builtarea_cat_vertical": "Residencial Vertical Contínua",
-      "cos_builtarea_cat_horizontal": "Residencial Horizontal Contínua",
-      "cos_builtarea_cat_discontinuous": "Residencial Descontínua",
-      "cos_builtarea_cat_other": "Outro/Misto"
+      "cos_builtarea_desc": "Classes de Edificado",
+      "cos_builtarea_cat_vertical": "Vertical Contínua",
+      "cos_builtarea_cat_horizontal": "Horizontal Contínua",
+      "cos_builtarea_cat_discontinuous": "Descontínua",
+      "cos_builtarea_cat_other": "Descontínua Esparsa"
     },
     "impt_entropy": {
       "label": "IMPT contrastante",
