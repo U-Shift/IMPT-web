@@ -288,6 +288,12 @@
     "indice_gravidade_carro": {
       "label": "Severity Index (Car)"
     },
+    "total_acidentes": {
+      "label": "Total accidents (all modes)"
+    },
+    "vitimas_mortais30_per_1000res": {
+      "label": "Fatalities per 1000 residents"
+    },
     "mobility_cost_groceries_walk_n3_residents": {
       "label": "Access to Groceries - 3 nearest (Walk)"
     },
@@ -297,6 +303,12 @@
     "mobility_cost_groceries_transit_2t_n3_residents": {
       "label": "Access to Groceries - 3 nearest (PT - 2 transfers)"
     },
+    "mobility_cost_health_bike_n1_residents": {
+      "label": "Access to Health - 1 nearest (Bicycle)"
+    },
+    "mobility_cost_recreation_car_n3_residents": {
+      "label": "Access to Recreation - 3 nearest (Car)"
+    },
     "mobility_commuting_avg_tt_transit_2t_120m_15w": {
       "label": "Average commuting time (PT - 2 transfers, 120 min)"
     },
@@ -305,6 +317,12 @@
     },
     "PT_Waitingtime": {
       "label": "Waiting Time (PT)"
+    },
+    "PT_Weight_frequency_peak": {
+      "label": "PT frequency at peak hour"
+    },
+    "mobility_commuting_avg_tt_bike": {
+      "label": "Average commuting time (Bike, 120 min)"
     },
     "mobility_commuting_mean_transfers_pt": {
       "label": "Average number of commuting transfers",

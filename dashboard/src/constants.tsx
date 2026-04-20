@@ -134,7 +134,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.RedToGreen,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
-            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
+            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 5) => {
                 const list = data[metricId] || [];
                 if (!list.length) return null;
                 return (
@@ -161,7 +161,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.RedToGreen,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
-            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
+            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 5) => {
                 const list = data[metricId] || [];
                 if (!list.length) return null;
                 return (
@@ -188,7 +188,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             pallete: COLORS.RedToGreen,
             isContributory: true, defaultWeight: 0.25,
             auxiliaryDataUrl: 'https://ushift.tecnico.ulisboa.pt/content/impt/champions.json',
-            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 3) => {
+            renderAuxiliaryData: (data: any, metricId: string, t: (key: string) => string, limit = 5) => {
                 const list = data[metricId] || [];
                 if (!list.length) return null;
                 return (
