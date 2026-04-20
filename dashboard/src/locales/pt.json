@@ -292,7 +292,7 @@
       "label": "Total de acidentes (todos os modos)"
     },
     "vitimas_mortais30_per_1000res": {
-      "label": "Fatalidades por 1000 habitantes"
+      "label": "Vítimas mortais por 1000 habitantes"
     },
     "mobility_cost_groceries_walk_n3_residents": {
       "label": "Acesso a Supermercados - 3 próximos (Pedonal)"
@@ -307,7 +307,7 @@
       "label": "Acesso à Saúde - 1 próximo (Bicicleta)"
     },
     "mobility_cost_recreation_car_n3_residents": {
-      "label": "Acesso a Recreação - 3 próximos (Carro)"
+      "label": "Acesso a Lazer - 3 próximos (Carro)"
     },
     "mobility_commuting_avg_tt_transit_2t_120m_15w": {
       "label": "Tempo médio deslocação (TP - 2 transbordos, 120 min)"
@@ -326,7 +326,7 @@
     },
     "mobility_commuting_mean_transfers_pt": {
       "label": "Número médio de transbordos pendulares",
-      "description": "Número médio de transbordos para deslocações pendulares em TP"
+      "description": "Número mínimo médio de transbordos para deslocações pendulares em TP"
     },
     "mobility_weighted_waiting_time_pt": {
       "label": "Tempo de espera TP",

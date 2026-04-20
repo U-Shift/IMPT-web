@@ -326,7 +326,7 @@
     },
     "mobility_commuting_mean_transfers_pt": {
       "label": "Average number of commuting transfers",
-      "description": "Average number of transfers for commuting by PT"
+      "description": "Average minimum number of transfers for commuting by PT"
     },
     "mobility_weighted_waiting_time_pt": {
       "label": "PT Waiting Time",
