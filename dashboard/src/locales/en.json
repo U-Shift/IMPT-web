@@ -351,6 +351,10 @@
     "mobility_frequency_ratio_peak_pt": {
       "label": "PT Frequency Ratio",
       "description": "Ratio of PT frequency during other periods compared to peak hours"
+    },
+    "census_landuse_age_ratio": {
+      "label": "Age Dependency Ratio",
+      "description": "Ratio of dependent population (children and elderly) to working-age population"
     }
   },
   "regions": {
@@ -446,6 +450,8 @@
     "_elder": "Elderly Population",
     "_kids": "Children",
     "_young": "Young Population",
+    "_youth": "Youth",
+    "_elderly": "Elderly",
     "_0t": "Max 0",
     "_1t": "Max 1",
     "_2t": "Max 2",

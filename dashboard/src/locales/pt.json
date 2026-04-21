@@ -357,6 +357,10 @@
       "horizontal": "Residencial Horizontal Contínua",
       "discontinuous": "Residencial Descontínua",
       "mixed": "Outro/Misto"
+    },
+    "census_landuse_age_ratio": {
+      "label": "Rácio de Dependência",
+      "description": "Rácio da população dependente (crianças e idosos) em relação à população em idade ativa"
     }
   },
   "regions": {
@@ -452,6 +456,8 @@
     "_elder": "População Idosa",
     "_kids": "Crianças",
     "_young": "População Jovem",
+    "_youth": "Jovens",
+    "_elderly": "Idosos",
     "_1t": "Máx 1",
     "_2t": "Máx 2",
     "_n1": "1",

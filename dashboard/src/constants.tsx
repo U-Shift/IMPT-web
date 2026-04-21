@@ -638,6 +638,19 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             sources: ['census']
         },
         {
+            id: 'census_landuse{age}_ratio',
+            id_variations: {
+                age: ['_youth', '_elderly']
+            },
+            label: 'metrics.census_landuse_age_ratio.label',
+            description: 'metrics.census_landuse_age_ratio.description',
+            icon: '🔢',
+            format: (v, _min, _max) => (v || 0).toFixed(1), unit: '%',
+            scaleMethod: continuousScale,
+            pallete: COLORS.WhiteToBlue,
+            sources: ['census']
+        },
+        {
             id: 'mobility_infrastructure_length',
             label: 'metrics.mobility_infrastructure_length.label',
             description: 'metrics.mobility_infrastructure_length.description',
