@@ -3,10 +3,10 @@ import { MetricDef, ViewLevel, ScaleMethod } from './types';
 
 export const DATA_BASE_URL = 'https://ushift.tecnico.ulisboa.pt/content/impt/';
 
-export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel }> = {
-    'municipality': { file: `${DATA_BASE_URL}municipios_aggregated.geojson` },
-    'freguesia': { file: `${DATA_BASE_URL}freguesias_aggregated.geojson`, parent: 'municipality' },
-    'hex': { file: `${DATA_BASE_URL}grid_aggregated.geojson`, parent: 'freguesia' }
+export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel, download_geojson: string, download_csv: string }> = {
+    'municipality': { file: `${DATA_BASE_URL}municipios_dashboard.geojson`, download_geojson: `${DATA_BASE_URL}municipios_aggregated.geojson`, download_csv: `${DATA_BASE_URL}municipios_aggregated.csv` },
+    'freguesia': { file: `${DATA_BASE_URL}freguesias_dashboard.geojson`, parent: 'municipality', download_geojson: `${DATA_BASE_URL}freguesias_aggregated.geojson`, download_csv: `${DATA_BASE_URL}freguesias_aggregated.csv` },
+    'hex': { file: `${DATA_BASE_URL}grid_dashboard.geojson`, parent: 'freguesia', download_geojson: `${DATA_BASE_URL}grid_aggregated.geojson`, download_csv: `${DATA_BASE_URL}grid_aggregated.csv` }
 };
 
 export const COLORS = {

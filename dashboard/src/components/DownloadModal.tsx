@@ -7,10 +7,9 @@ interface DownloadModalProps {
     showDownload: boolean;
     setShowDownload: (val: boolean) => void;
     isDarkMode: boolean;
-    dataState: any;
 }
 
-export const DownloadModal: React.FC<DownloadModalProps> = ({ showDownload, setShowDownload, isDarkMode, dataState }) => {
+export const DownloadModal: React.FC<DownloadModalProps> = ({ showDownload, setShowDownload, isDarkMode }) => {
     const { t } = useTranslation();
     if (!showDownload) return null;
 
@@ -48,7 +47,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({ showDownload, setS
                                 group_id="DRMN (2024)"
                                 region_id="NUTS 2"
                                 isDark={isDarkMode}
-                                data={dataState.geo['freguesia']}
+                                level="freguesia"
                                 filename="impt_lisbon_freguesias"
                             />
                             <DownloadCard
@@ -56,7 +55,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({ showDownload, setS
                                 id="DRMN (2024)"
                                 region_id="NUTS 2"
                                 isDark={isDarkMode}
-                                data={dataState.geo['municipality']}
+                                level="municipality"
                                 filename="impt_lisbon_municipalities"
                             />
                             <DownloadCard
@@ -65,7 +64,7 @@ export const DownloadModal: React.FC<DownloadModalProps> = ({ showDownload, setS
                                 group_id="DRMNFR (2024)"
                                 region_id="NUTS 2"
                                 isDark={isDarkMode}
-                                data={dataState.geo['hex']}
+                                level="hex"
                                 filename="impt_lisbon_grid"
                             />
                         </div>

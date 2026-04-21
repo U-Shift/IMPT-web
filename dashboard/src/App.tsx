@@ -725,7 +725,6 @@ const Dashboard = () => {
                 showDownload={showDownload}
                 setShowDownload={setShowDownload}
                 isDarkMode={isDarkMode}
-                dataState={dataState}
             />
 
             <AHPModal
