@@ -294,7 +294,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             sources: ['pmus']
         },
         {
-            id: 'mobility_stop_coverage_pct_all_pt',
+            id: 'mobility_stop_coverage_pct',
             label: 'metrics.mobility_stop_coverage_ratio_served_population.label',
             description: 'metrics.mobility_stop_coverage_ratio_served_population.description',
             icon: '🚏',
@@ -735,6 +735,7 @@ export const MODES = [
     // suffixFallback is used only on IMPT dynamic computation 
     // > It tells that for that mode, if no metric with suffix, suffixFallback metric should be used instead 
     { id: 'all', label: 'modes.all', suffix: '', icon: '🌐' },
+    { id: 'all_pt', label: 'modes.all_pt', suffix: '_all_pt', suffixFallback: '', icon: '🌐' },
     { id: 'all_pass', label: 'modes.all_pass', suffix: '_pass', suffixFallback: '', icon: '🌐💳' },
     { id: 'all_no_pass', label: 'modes.all_no_pass', suffix: '_no_pass', suffixFallback: '', icon: '🌐👛' },
     { id: 'pt', label: 'modes.pt', suffix: '_pt', icon: '🚍' },
@@ -743,7 +744,10 @@ export const MODES = [
     { id: 'walk', label: 'modes.walk', suffix: '_walk', icon: '🚶' },
     { id: 'bike', label: 'modes.bike', suffix: '_bike', icon: '🚲' },
     { id: 'bike_segregated', label: 'modes.segregated', suffix: '_bike_segregated', icon: '🚲🪖' },
-    { id: 'car', label: 'modes.car', suffix: '_car', icon: '🚗' }
+    { id: 'car', label: 'modes.car', suffix: '_car', icon: '🚗' },
+    { id: 'metrolr_pt', label: 'modes.metrolr_pt', suffix: '_metrolr_pt', icon: '🚇🚊' },
+    { id: 'trainferry_pt', label: 'modes.trainferry_pt', suffix: '_trainferry_pt', icon: '🚆⛴️' },
+    { id: 'bus_pt', label: 'modes.bus_pt', suffix: '_bus_pt', icon: '🚍' }
 ] as const;
 
 export type ModeId = (typeof MODES)[number]['id'];
