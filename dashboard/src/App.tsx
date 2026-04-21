@@ -361,7 +361,7 @@ const Dashboard = () => {
     const onEachFeature = (feature: any, layer: any) => {
         const props = feature.properties;
         const val = getMetricValue(props, selectedMetric, effectiveMode, effectiveLevel, selectedVariations);
-        const formattedVal = selectedMetric.format(val, currentDomain[0], currentDomain[currentDomain.length - 1]);
+        const formattedVal = selectedMetric.format(val, currentDomain[0], currentDomain[currentDomain.length - 1], effectiveMode.id);
 
         const parentLevel = LEVEL_CONFIG[effectiveLevel].parent;
         const parentName = (parentLevel && props.group_id)
@@ -388,7 +388,7 @@ const Dashboard = () => {
                 <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between; gap: 12px;">
                     <span style="font-size: 10px; font-weight: 900; color: #444; text-transform: uppercase;">${t(selectedMetric.label)}</span>
                     <span style="font-size: 11px; font-weight: 900; background-color: ${metricColor}; color: ${contrastColor}; padding: 3px 10px; border-radius: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); white-space: nowrap;">
-                        ${formattedVal}${selectedMetric.unit ? ' ' + selectedMetric.unit : ''}
+                        ${formattedVal}${selectedMetric.unit ? ' ' + selectedMetric.unit(effectiveMode.id, val) : ''}
                     </span>
                 </div>
                 ` : `<div style="margin-top: 8px; font-size: 9px; font-weight: 900; color: #bbb; text-transform: uppercase;">${t('common.no_data')}</div>`}
@@ -604,13 +604,13 @@ const Dashboard = () => {
                                             style={{ background: getLegendGradient(selectedMetric, currentDomain, isColorBlindMode) }}
                                         />
                                         <div className="flex justify-between text-[13px] font-black opacity-40 uppercase tracking-tighter">
-                                            <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
-                                            <span>{selectedMetric.format(currentDomain[currentDomain.length - 1], currentDomain[0], currentDomain[currentDomain.length - 1])}</span>
+                                            <span>{selectedMetric.format(currentDomain[0], currentDomain[0], currentDomain[currentDomain.length - 1], effectiveMode.id)}</span>
+                                            <span>{selectedMetric.format(currentDomain[currentDomain.length - 1], currentDomain[0], currentDomain[currentDomain.length - 1], effectiveMode.id)}</span>
                                         </div>
                                     </div>
                                 )}
                                 <div className={`pt-4 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
-                                    <p className="text-[13px] font-black leading-tight mb-2 uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit})` : ''}</p>
+                                    <p className="text-[13px] font-black leading-tight mb-2 uppercase tracking-tight">{t(selectedMetric.label)} {selectedMetric.unit ? `(${selectedMetric.unit(effectiveMode.id)})` : ''}</p>
                                     <p className="text-[13px] opacity-40 leading-relaxed font-bold tracking-tight">{selectedMetric.description ? t(selectedMetric.description) : `Spatial distribution and variance of ${t(selectedMetric.label).toLowerCase()} across the ${t(`map.${effectiveLevel}`)} network.`}</p>
                                     {selectedMetric.sources && selectedMetric.sources.length > 0 && (
                                         <p className="text-[10px] opacity-40 mt-2 tracking-tight leading-snug">

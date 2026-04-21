@@ -29,7 +29,7 @@ export type MetricDef = {
     description?: string;
     pallete: string[];
     sources?: string[];
-    unit?: string;
+    unit?: (mode: ModeId, value?: number) => string;
     default?: boolean; // Show by default
     // Display
     scaleMethod?: ScaleMethod;
@@ -38,7 +38,7 @@ export type MetricDef = {
     ignoreValues?: any[]; // Values to ignore when computing the scale
     scaleMin?: number; // Force a minimum value for the scale domain
     scaleMax?: number; // Force a maximum value for the scale domain
-    format: (v: number, min: number, max: number) => string;
+    format: (v: number, min: number, max: number, mode: ModeId) => string;
     legendCategories?: { color: string; label: string }[]; // Specific legend categories for non-continuous layers
     // Area details sidebar (opens on the right, when user clicks on a feature)
     showAlwaysOnDetails?: boolean; // If true, the variable is always visible in the details sidebar. By default, variables are only visible when selected.

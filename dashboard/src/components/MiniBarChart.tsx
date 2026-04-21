@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, LabelList } from 'recharts';
 import { MetricDef } from '../types';
+import { ModeId } from '../constants';
 
-export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: any[], metric: MetricDef, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
+export const MiniBarChart = ({ data, metric, selectedMode, isDark, type, onSelect }: { data: any[], metric: MetricDef, selectedMode?: ModeId, isDark: boolean, type?: 'highest' | 'lowest', onSelect?: (id: string | number) => void }) => {
 
     // Enhance data with a max value for the "ghost" bar that holds labels
     const minValue = useMemo(() => Math.min(...data.map(d => d.value), 0), [data]);
@@ -24,7 +25,7 @@ export const MiniBarChart = ({ data, metric, isDark, type, onSelect }: { data: a
                             >
                                 <div className="text-[10px] font-black opacity-30 uppercase tracking-widest">{d.group || 'District'}</div>
                                 <div className="text-[13px] font-black">{d.name}</div>
-                                <div className="text-[13px] font-black mt-1" style={{ color: d.color }}>{metric.format(d.value, minValue, maxValue)} {metric.unit || ''}</div>
+                                <div className="text-[13px] font-black mt-1" style={{ color: d.color }}>{metric.format(d.value, minValue, maxValue, selectedMode || 'all')} {metric.unit?.(selectedMode || 'all', d.value) || ''}</div>
                             </div>
                         );
                     }
