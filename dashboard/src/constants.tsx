@@ -453,7 +453,7 @@ const METRIC_DATA: Record<string, Omit<MetricDef, 'category'>[]> = {
             description: 'metrics.safety_inner_acidentes_per_1000res.description',
             icon: '⚠️',
             format: (v, _min, _max) => Math.round(v || 0).toString(),
-            scaleMethod: logarithmicScale, steps: 100, ignoreValues: [0, 1800, 2000, 4167, null], // ignoring 4167 not working
+            scaleMethod: logarithmicScale, steps: 100, ignoreValues: [0, 1800, 2000, 4166.67, null],
             pallete: COLORS.WhiteToRed,
             showAlwaysOnDetails: true,
             sources: ['ansr', 'pmus', 'census']
