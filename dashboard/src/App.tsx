@@ -2,7 +2,7 @@ import { useState, useMemo, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, GeoJSON, Pane, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Loader2, Activity, Layers, Globe, Info, X } from 'lucide-react';
+import { Loader2, Activity, Layers, Globe, Info, X, Menu } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { ViewLevel } from './types';
@@ -595,11 +595,14 @@ const Dashboard = () => {
                 onDownloadAHP={handleDownloadAHP}
             />
 
-            <Tutorial 
-                isDarkMode={isDarkMode} 
-                runExternal={runTutorial} 
+            <Tutorial
+                isDarkMode={isDarkMode}
+                runExternal={runTutorial}
                 onSetRunExternal={setRunTutorial}
                 tourType={tutorialType}
+                isMobile={isMobile}
+                isSidebarOpen={isSidebarOpen}
+                setIsSidebarOpen={setIsSidebarOpen}
             />
 
             {/* Map Canvas: Main View */}
@@ -713,6 +716,7 @@ const Dashboard = () => {
                     <button
                         onClick={() => setShowLegendMobile(true)}
                         className={`absolute bottom-8 right-8 z-[1000] w-12 h-12 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-xl border transition-all hover:scale-110 active:scale-95 animate-in fade-in zoom-in duration-300 ${isDarkMode ? 'bg-neutral-900/90 border-neutral-800 text-neutral-400' : 'bg-white/90 border-neutral-100 text-neutral-500'}`}
+                        data-tour="mobile-map-legend"
                     >
                         <Info className="w-6 h-6" />
                     </button>
@@ -823,7 +827,6 @@ const Dashboard = () => {
                     setIsAHPModalOpen(false);
                 }}
             />
-
         </div >
     );
 };

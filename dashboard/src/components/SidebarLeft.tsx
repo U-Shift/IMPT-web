@@ -136,6 +136,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                     <button
                         onClick={handleToggle}
                         className={`p-4 rounded-2xl shadow-xl backdrop-blur-md transition-all self-start pointer-events-auto ${isDarkMode ? 'bg-neutral-900/90 text-white' : 'bg-white/90 text-neutral-900'}`}
+                        data-tour="mobile-menu-btn"
                     >
                         {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
@@ -144,7 +145,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
             {/* Always Visible Mode Selector on Mobile */}
             {isMobile && !isOpen && (
-                <div className="fixed top-[168px] left-4 z-[1002]">
+                <div className="fixed top-[168px] left-4 z-[1002]" data-tour="mobile-mode-selector">
                     <ModeSelector
                         value={selectedMode.id}
                         isDark={isDarkMode}
@@ -525,7 +526,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                             </h4>
                             <div className="flex flex-col gap-4 mt-4">
                                 <div className="flex flex-col gap-4">
-                                    <div className="flex w-full">
+                                    <div className="flex w-full" data-tour="mobile-view-level">
                                         <MapFilterDropdown
                                             isMobile={isMobile}
                                             label={t('map.view_level')}
@@ -541,7 +542,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                             }}
                                         />
                                     </div>
-                                    <div className="w-full">
+                                    <div className="w-full" data-tour="mobile-region">
                                         <MapFilterDropdown
                                             isMobile={isMobile}
                                             label={t('map.region')}
@@ -555,19 +556,21 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                             }}
                                         />
                                     </div>
-                                    <MapTools
-                                        isMobile={true}
-                                        isDarkMode={isDarkMode}
-                                        mapStyle={mapStyle}
-                                        setMapStyle={setMapStyle}
-                                        showBuiltArea={showBuiltArea}
-                                        setShowBuiltArea={setShowBuiltArea}
-                                        onZoomIn={onZoomIn}
-                                        onZoomOut={onZoomOut}
-                                        onChange={() => {
-                                            if (isMobile) setIsOpen?.(false);
-                                        }}
-                                    />
+                                    <div data-tour="mobile-map-tools" className="w-full">
+                                        <MapTools
+                                            isMobile={true}
+                                            isDarkMode={isDarkMode}
+                                            mapStyle={mapStyle}
+                                            setMapStyle={setMapStyle}
+                                            showBuiltArea={showBuiltArea}
+                                            setShowBuiltArea={setShowBuiltArea}
+                                            onZoomIn={onZoomIn}
+                                            onZoomOut={onZoomOut}
+                                            onChange={() => {
+                                                if (isMobile) setIsOpen?.(false);
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </section>

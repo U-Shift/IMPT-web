@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Joyride, Step, EventData, STATUS } from 'react-joyride';
+import { Joyride, Step, EventData, STATUS, Placement } from 'react-joyride';
 import { useTranslation } from 'react-i18next';
-import { Languages } from 'lucide-react';
+import { Languages, PlayCircle, Sidebar } from 'lucide-react';
 
 interface TutorialProps {
     isDarkMode: boolean;
     runExternal?: boolean;
     onSetRunExternal?: (val: boolean) => void;
     tourType?: 'main' | 'dynamic';
+    isMobile?: boolean;
+    isSidebarOpen?: boolean;
+    setIsSidebarOpen?: (val: boolean) => void;
 }
 
-export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onSetRunExternal, tourType = 'main' }) => {
+export const Tutorial: React.FC<TutorialProps> = ({
+    isDarkMode,
+    runExternal,
+    onSetRunExternal,
+    tourType = 'main',
+    isMobile = false,
+    isSidebarOpen,
+    setIsSidebarOpen
+}) => {
     const { t, i18n } = useTranslation();
     const [run, setRun] = useState(false);
     const [showPrompt, setShowPrompt] = useState(false);
@@ -18,6 +29,156 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
     const toggleLanguage = () => {
         i18n.changeLanguage(i18n.language === 'en' ? 'pt' : 'en');
     };
+
+    const mainSteps: Step[] = [
+        {
+            target: 'body',
+            placement: 'center',
+            content: t('tutorial.step_1'),
+            sidebar: 'closed'
+        } as any,
+        ...(isMobile ? [{
+            target: '[data-tour="mobile-menu-btn"]',
+            content: t('tutorial.mobile_step_menu'),
+            placement: 'right' as Placement,
+            sidebar: 'closed'
+        } as any] : [
+            {
+                target: '[data-tour="sidebar-left"]',
+                content: t('tutorial.step_2'),
+                placement: "right",
+                sidebar: 'open'
+            } as any
+        ]),
+        {
+            target: '[data-tour="section-metrics.categories.mobility_poverty_index"]',
+            content: t('tutorial.step_3'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="section-metrics.categories.dimensions"]',
+            content: t('tutorial.step_4'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="tab-indicators"]',
+            content: t('tutorial.step_5'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: isMobile ? '[data-tour="mobile-mode-selector"]' : '[data-tour="mode-selector"]',
+            content: t('tutorial.step_6'),
+            placement: isMobile ? 'right' : 'bottom',
+            sidebar: 'closed'
+        } as any,
+        {
+            target: isMobile ? '[data-tour="mobile-view-level"]' : '[data-tour="view-level"]',
+            content: t('tutorial.step_7'),
+            placement: isMobile ? 'top' : 'bottom',
+            sidebar: 'open'
+        } as any,
+        {
+            target: isMobile ? '[data-tour="mobile-region"]' : '[data-tour="region-selector"]',
+            placement: isMobile ? 'top' : 'bottom',
+            content: t('tutorial.step_8'),
+            sidebar: 'open'
+        } as any,
+        // Skip sidebar-right on mobile
+        ...(!isMobile ? [
+            {
+                target: '[data-tour="sidebar-right"]',
+                content: t('tutorial.step_9'),
+            },
+            {
+                target: '[data-tour="sidebar-right"]',
+                content: t('tutorial.step_10'),
+            },
+        ] : []),
+        {
+            target: isMobile ? '[data-tour="mobile-map-tools"]' : '[data-tour="map-tools"]',
+            content: t('tutorial.step_12'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: isMobile ? '[data-tour="mobile-map-legend"]' : '[data-tour="map-legend"]',
+            content: t('tutorial.step_11'),
+            placement: 'top',
+            sidebar: 'closed'
+        } as any,
+        {
+            target: '[data-tour="top-controls"]',
+            content: t('tutorial.step_13'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="theme-toggle"]',
+            content: t('tutorial.step_14'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="colorblind-toggle"]',
+            content: t('tutorial.step_15'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="language-toggle"]',
+            content: t('tutorial.step_16'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="download-modal-btn"]',
+            content: t('tutorial.step_17'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="about-modal-btn"]',
+            content: t('tutorial.step_18'),
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="tutorial-btn"]',
+            content: t('tutorial.step_19'),
+            sidebar: 'open'
+        } as any,
+        // Skip sidebar-right on mobile
+        ...(isMobile ? [
+            {
+                target: 'body',
+                content: t('tutorial.step_10_mobile'),
+                sidebar: 'closed',
+                placement: 'center'
+            } as any,
+        ] : []),
+    ];
+
+    const dynamicSteps: Step[] = [
+        {
+            target: '[data-tour="dynamic-weights-section"]',
+            content: t('tutorial.dynamic_step_1'),
+            placement: 'right',
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="dynamic-weights-note"]',
+            content: t('tutorial.dynamic_step_1_note'),
+            placement: 'right',
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="ahp-recommendation"]',
+            content: t('tutorial.dynamic_step_2'),
+            placement: 'right',
+            sidebar: 'open'
+        } as any,
+        {
+            target: '[data-tour="download-results-btn"]',
+            content: t('tutorial.dynamic_step_3'),
+            placement: 'right',
+            sidebar: 'open'
+        } as any,
+    ];
+
+    const steps = tourType === 'main' ? mainSteps : dynamicSteps;
 
     useEffect(() => {
         if (runExternal) {
@@ -45,123 +206,39 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
         localStorage.setItem('tutorialCompleted', 'true');
     };
 
-    const handleJoyrideCallback = (data: EventData) => {
-        const { status } = data;
-        const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+    // Fix for Joyride positions when sidebar is animating
+    useEffect(() => {
+        if (run) {
+            const timer = setTimeout(() => {
+                window.dispatchEvent(new Event('resize'));
+            }, 400); // Wait for sidebar transition (300ms) + buffer
+            return () => clearTimeout(timer);
+        }
+    }, [isSidebarOpen, run]);
 
-        if (finishedStatuses.includes(status)) {
-            setRun(false);
-            onSetRunExternal?.(false);
-            const storageKey = tourType === 'main' ? 'tutorialCompleted' : 'dynamicWeightsTutorialCompleted';
-            localStorage.setItem(storageKey, 'true');
+    const handleJoyrideCallback = (data: EventData) => {
+        const { status, type, index } = data;
+        console.log("Joyride callback", status, type, index);
+
+        if (type === 'tour:start') {
+            console.log("Tour started, closing sidebar");
+            if (isMobile) setIsSidebarOpen?.(false);
+        }
+
+        if (isMobile && type === 'step:after') {
+            if (index + 1 < steps.length) {
+                const nextStep = steps[index + 1] as any;
+                console.log("> Preparing next sidebar state: ", nextStep.sidebar);
+                if (nextStep && nextStep.sidebar !== undefined) {
+                    if (nextStep.sidebar === 'open') {
+                        setIsSidebarOpen?.(true);
+                    } else if (nextStep.sidebar === 'closed') {
+                        setIsSidebarOpen?.(false);
+                    }
+                }
+            }
         }
     };
-
-    const mainSteps: Step[] = [
-        {
-            target: 'body',
-            placement: 'center',
-            content: t('tutorial.step_1'),
-        },
-        {
-            target: '[data-tour="sidebar-left"]',
-            content: t('tutorial.step_2'),
-            placement: "right"
-        },
-        {
-            target: '[data-tour="section-metrics.categories.mobility_poverty_index"]',
-            content: t('tutorial.step_3'),
-        },
-        {
-            target: '[data-tour="section-metrics.categories.dimensions"]',
-            content: t('tutorial.step_4'),
-        },
-        {
-            target: '[data-tour="tab-indicators"]',
-            content: t('tutorial.step_5'),
-        },
-        {
-            target: '[data-tour="mode-selector"]',
-            content: t('tutorial.step_6'),
-        },
-        {
-            target: '[data-tour="view-level"]',
-            content: t('tutorial.step_7'),
-        },
-        {
-            target: '[data-tour="region-selector"]',
-            content: t('tutorial.step_8'),
-        },
-        {
-            target: '[data-tour="sidebar-right"]',
-            content: t('tutorial.step_9'),
-        },
-        {
-            target: '[data-tour="sidebar-right"]',
-            content: t('tutorial.step_10'),
-        },
-        {
-            target: '[data-tour="map-legend"]',
-            content: t('tutorial.step_11'),
-        },
-        {
-            target: '[data-tour="map-tools"]',
-            content: t('tutorial.step_12'),
-        },
-        {
-            target: '[data-tour="top-controls"]',
-            content: t('tutorial.step_13'),
-        },
-        {
-            target: '[data-tour="theme-toggle"]',
-            content: t('tutorial.step_14'),
-        },
-        {
-            target: '[data-tour="colorblind-toggle"]',
-            content: t('tutorial.step_15'),
-        },
-        {
-            target: '[data-tour="language-toggle"]',
-            content: t('tutorial.step_16'),
-        },
-        {
-            target: '[data-tour="download-modal-btn"]',
-            content: t('tutorial.step_17'),
-        },
-        {
-            target: '[data-tour="about-modal-btn"]',
-            content: t('tutorial.step_18'),
-        },
-        {
-            target: '[data-tour="tutorial-btn"]',
-            content: t('tutorial.step_19'),
-        },
-    ];
-
-    const dynamicSteps: Step[] = [
-        {
-            target: '[data-tour="dynamic-weights-sliders"]',
-            content: t('tutorial.dynamic_step_1'),
-            placement: 'right',
-        },
-        {
-            target: '[data-tour="ahp-recommendation"]',
-            content: t('tutorial.dynamic_step_2'),
-            placement: 'right',
-        },
-        {
-            target: '[data-tour="download-results-btn"]',
-            content: t('tutorial.dynamic_step_3'),
-            placement: 'right',
-        },
-        {
-            target: '[data-tour="dynamic-weights-note"]',
-            content: t('tutorial.dynamic_step_1_note'),
-            placement: 'right',
-        },
-    ];
-
-    const steps = tourType === 'main' ? mainSteps : dynamicSteps;
 
     return (
         <>
@@ -192,7 +269,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
                 continuous
                 onEvent={handleJoyrideCallback}
                 options={{
-                    zIndex: 1002,
+                    zIndex: 1010,
                     primaryColor: '#075985',
                     backgroundColor: isDarkMode ? '#171717' : '#ffffff',
                     textColor: isDarkMode ? '#f5f5f5' : '#171717',
