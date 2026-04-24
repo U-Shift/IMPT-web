@@ -521,6 +521,9 @@
     "step_16": "Alternar idioma.",
     "step_17": "Descarregar dados.",
     "step_18": "Saber mais sobre o projeto.",
-    "step_19": "Para repetir este tutorial."
+    "step_19": "Para repetir este tutorial.",
+    "dynamic_step_1": "Pode definir os seus próprios pesos para cada dimensão. Utilize estes seletores para ajustar quanto cada dimensão contribui para o seu índice personalizado.",
+    "dynamic_step_2": "Se não tiver a certeza sobre os pesos, recomendamos que faça o questionário AHP. Ajuda-o a derivar pesos consistentes através de simples comparações paritárias.",
+    "dynamic_step_3": "Assim que estiver satisfeito com o seu índice personalizado, pode descarregar os resultados para todas as áreas num ficheiro CSV."
   }
 }

@@ -15,6 +15,7 @@ interface SidebarLeftProps {
     setIsColorBlindMode: (val: boolean) => void;
     setShowDownload: (val: boolean) => void;
     setShowAbout: (val: boolean) => void;
+    startTutorial?: (type: 'main' | 'dynamic') => void;
     selectedMetric: MetricDef;
     selectedMetricId: string;
     setSelectedMetricId: (val: string) => void;
@@ -101,6 +102,16 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
     };
 
     const [activeTab, setActiveTab] = useState<'index' | 'indicators'>('index');
+
+    React.useEffect(() => {
+        const cat = 'metrics.categories.mobility_poverty_index';
+        if (activeTab === 'index' && !collapsedSections[cat] && selectedMetric.isCalculated) {
+            const completed = localStorage.getItem('dynamicWeightsTutorialCompleted');
+            if (!completed) {
+                startTutorial?.('dynamic');
+            }
+        }
+    }, [activeTab, collapsedSections, selectedMetric, startTutorial]);
 
     const categories = Object.keys(METRICS);
     const indexCategories = categories.slice(0, 2);
@@ -189,7 +200,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                 </button>
                             </Tooltip>
                             <Tooltip content={t('tooltips.tutorial')} isDarkMode={true}>
-                                <button data-tour="tutorial-btn" onClick={startTutorial} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="tutorial-btn" onClick={() => startTutorial?.('main')} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     <HelpCircle className="w-5 h-5" />
                                 </button>
                             </Tooltip>
@@ -438,16 +449,23 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
                                         {/* Dynamic Weights Sliders Section (Only for Index -> Mobility Poverty Index) */}
                                         {activeTab === 'index' && cat === 'metrics.categories.mobility_poverty_index' && !collapsedSections[cat] && selectedMetric.isCalculated && (
-                                            <section className={`p-6 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
+                                            <section data-tour="dynamic-weights-section" className={`p-6 border-t ${isDarkMode ? 'border-neutral-800' : 'border-neutral-200'}`}>
                                                 <div className="flex items-center justify-between mb-4">
                                                     <h4 className={`text-[13px] font-black uppercase tracking-[0.2em] flex items-center gap-1.5 ${isDarkMode ? 'text-neutral-500' : 'text-neutral-400'}`}>
                                                         <Activity className="w-3 h-3 text-sky-800" /> {t('sidebar.dimension_weighting')}
                                                     </h4>
-                                                    <button onClick={resetWeights} className="text-[13px] font-bold text-sky-800 hover:text-sky-700 uppercase tracking-widest transition-colors">
-                                                        {t('common.reset')}
-                                                    </button>
+                                                    <div className="flex items-center gap-3">
+                                                        <Tooltip content={t('tooltips.tutorial')} isDarkMode={isDarkMode}>
+                                                            <button onClick={() => startTutorial?.('dynamic')} className="text-sky-800 hover:text-sky-700 transition-colors p-1 rounded-lg hover:bg-sky-800/10">
+                                                                <HelpCircle className="w-4 h-4" />
+                                                            </button>
+                                                        </Tooltip>
+                                                        <button onClick={resetWeights} className="text-[13px] font-bold text-sky-800 hover:text-sky-700 uppercase tracking-widest transition-colors">
+                                                            {t('common.reset')}
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div className="space-y-4 mb-6">
+                                                <div data-tour="dynamic-weights-sliders" className="space-y-4 mb-6">
                                                     {FLAT_METRICS.filter(m => m.isContributory).map(m => (
                                                         <div key={m.id} className="space-y-2">
                                                             <div className="flex justify-between items-center text-[12px] font-bold">
@@ -466,6 +484,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
 
                                                 {onDownloadAHP && (
                                                     <button
+                                                        data-tour="download-results-btn"
                                                         onClick={onDownloadAHP}
                                                         className={`w-full mb-4 py-2.5 rounded-xl ${isDarkMode ? 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300' : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-600'} text-[12px] font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2`}
                                                     >
@@ -474,7 +493,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                     </button>
                                                 )}
 
-                                                <div className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-sky-800/5 border-sky-800/10' : 'bg-sky-50 border-sky-100'}`}>
+                                                <div data-tour="ahp-recommendation" className={`p-4 rounded-2xl border ${isDarkMode ? 'bg-sky-800/5 border-sky-800/10' : 'bg-sky-50 border-sky-100'}`}>
                                                     <p className={`text-[12px] leading-relaxed mb-4 ${isDarkMode ? 'text-neutral-400' : 'text-neutral-500'}`}>
                                                         <strong className="text-sky-800 uppercase tracking-wider">{t('sidebar.ahp_methodology')}</strong><br />
                                                         {(() => {

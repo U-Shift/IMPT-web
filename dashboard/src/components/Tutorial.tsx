@@ -7,9 +7,10 @@ interface TutorialProps {
     isDarkMode: boolean;
     runExternal?: boolean;
     onSetRunExternal?: (val: boolean) => void;
+    tourType?: 'main' | 'dynamic';
 }
 
-export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onSetRunExternal }) => {
+export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onSetRunExternal, tourType = 'main' }) => {
     const { t, i18n } = useTranslation();
     const [run, setRun] = useState(false);
     const [showPrompt, setShowPrompt] = useState(false);
@@ -21,8 +22,11 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
     useEffect(() => {
         if (runExternal) {
             setRun(true);
+            if (tourType === 'dynamic') {
+                setShowPrompt(false);
+            }
         }
-    }, [runExternal]);
+    }, [runExternal, tourType]);
 
     useEffect(() => {
         const completed = localStorage.getItem('tutorialCompleted');
@@ -48,11 +52,12 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
         if (finishedStatuses.includes(status)) {
             setRun(false);
             onSetRunExternal?.(false);
-            localStorage.setItem('tutorialCompleted', 'true');
+            const storageKey = tourType === 'main' ? 'tutorialCompleted' : 'dynamicWeightsTutorialCompleted';
+            localStorage.setItem(storageKey, 'true');
         }
     };
 
-    const steps: Step[] = [
+    const mainSteps: Step[] = [
         {
             target: 'body',
             placement: 'center',
@@ -131,6 +136,26 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
             content: t('tutorial.step_19'),
         },
     ];
+
+    const dynamicSteps: Step[] = [
+        {
+            target: '[data-tour="dynamic-weights-sliders"]',
+            content: t('tutorial.dynamic_step_1'),
+            placement: 'right',
+        },
+        {
+            target: '[data-tour="ahp-recommendation"]',
+            content: t('tutorial.dynamic_step_2'),
+            placement: 'right',
+        },
+        {
+            target: '[data-tour="download-results-btn"]',
+            content: t('tutorial.dynamic_step_3'),
+            placement: 'right',
+        },
+    ];
+
+    const steps = tourType === 'main' ? mainSteps : dynamicSteps;
 
     return (
         <>

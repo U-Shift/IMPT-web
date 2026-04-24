@@ -517,6 +517,9 @@
     "step_16": "Toggle language.",
     "step_17": "Download data.",
     "step_18": "Find out more abut the project.",
-    "step_19": "To revisit this tutorial."
+    "step_19": "To revisit this tutorial.",
+    "dynamic_step_1": "You can define your own weights for each dimension. Use these sliders to adjust how much each dimension contributes to your custom index.",
+    "dynamic_step_2": "If you're not sure about the weights, we recommend taking the AHP survey. It helps you derive consistent weights through simple pairwise comparisons.",
+    "dynamic_step_3": "Once you're satisfied with your custom index, you can download the results for all areas in a CSV file."
   }
 }

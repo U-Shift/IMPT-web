@@ -535,6 +535,12 @@ const Dashboard = () => {
     }, [computedGeoData, effectiveMode, weights, effectiveLevel]);
 
     const [runTutorial, setRunTutorial] = useState(false);
+    const [tutorialType, setTutorialType] = useState<'main' | 'dynamic'>('main');
+
+    const startTutorial = (type: 'main' | 'dynamic' = 'main') => {
+        setTutorialType(type);
+        setRunTutorial(true);
+    };
 
     if (dataState.loading) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-2`}>
@@ -556,7 +562,7 @@ const Dashboard = () => {
                 setIsColorBlindMode={setIsColorBlindMode}
                 setShowDownload={setShowDownload}
                 setShowAbout={setShowAbout}
-                startTutorial={() => setRunTutorial(true)}
+                startTutorial={startTutorial}
                 selectedMetric={selectedMetric}
                 selectedMetricId={selectedMetricId}
                 setSelectedMetricId={setSelectedMetricId}
@@ -592,7 +598,8 @@ const Dashboard = () => {
             <Tutorial 
                 isDarkMode={isDarkMode} 
                 runExternal={runTutorial} 
-                onSetRunExternal={setRunTutorial} 
+                onSetRunExternal={setRunTutorial}
+                tourType={tutorialType}
             />
 
             {/* Map Canvas: Main View */}
