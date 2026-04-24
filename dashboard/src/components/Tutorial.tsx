@@ -299,6 +299,7 @@ export const Tutorial: React.FC<TutorialProps> = ({
                         color: isDarkMode ? '#a3a3a3' : '#525252',
                         fontFamily: 'inherit',
                         fontWeight: 'bold',
+                        display: isMobile ? 'none' : 'block'
                     },
                     buttonSkip: {
                         color: isDarkMode ? '#a3a3a3' : '#525252',
