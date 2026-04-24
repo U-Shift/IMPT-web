@@ -111,6 +111,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
             {showPrompt && (
                 <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm">
                     <div className={`p-8 rounded-[32px] max-w-sm w-full mx-4 shadow-2xl border ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800 text-white' : 'bg-white/95 border-neutral-200 text-neutral-900'}`}>
+                        <img src="images/logo/logo.png" alt="IMPT Logo" className="h-12 lg:h-16 mb-4" />
                         <h2 className="text-xl font-black mb-4 uppercase tracking-tight">{t('tutorial.title_welcome')}</h2>
                         <p className={`mb-8 font-medium leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>{t('tutorial.prompt_tour')}</p>
                         <div className="flex gap-4">
@@ -128,21 +129,20 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
                 steps={steps}
                 run={run}
                 continuous
-                showProgress
-                showSkipButton
                 callback={handleJoyrideCallback}
+                options={{
+                    zIndex: 1002,
+                    primaryColor: '#075985',
+                    backgroundColor: isDarkMode ? '#171717' : '#ffffff',
+                    textColor: isDarkMode ? '#f5f5f5' : '#171717',
+                    arrowColor: isDarkMode ? '#171717' : '#ffffff',
+                    skipBeacon: true
+                }}
                 styles={{
-                    options: {
-                        zIndex: 10000,
-                        primaryColor: '#075985',
-                        backgroundColor: isDarkMode ? '#171717' : '#ffffff',
-                        textColor: isDarkMode ? '#f5f5f5' : '#171717',
-                        arrowColor: isDarkMode ? '#171717' : '#ffffff',
-                    },
                     tooltipContainer: {
                         textAlign: 'left',
                     },
-                    buttonNext: {
+                    buttonPrimary: {
                         backgroundColor: '#075985',
                         borderRadius: '8px',
                         fontFamily: 'inherit',
