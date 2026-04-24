@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Joyride, Step, EventData, STATUS } from 'react-joyride';
 import { useTranslation } from 'react-i18next';
+import { Languages } from 'lucide-react';
 
 interface TutorialProps {
     isDarkMode: boolean;
@@ -9,9 +10,13 @@ interface TutorialProps {
 }
 
 export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onSetRunExternal }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [run, setRun] = useState(false);
     const [showPrompt, setShowPrompt] = useState(false);
+
+    const toggleLanguage = () => {
+        i18n.changeLanguage(i18n.language === 'en' ? 'pt' : 'en');
+    };
 
     useEffect(() => {
         if (runExternal) {
@@ -136,6 +141,10 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onS
                         <h2 className="text-xl font-black mb-4 uppercase tracking-tight">{t('tutorial.title_welcome')}</h2>
                         <p className={`mb-8 font-medium leading-relaxed ${isDarkMode ? 'text-neutral-400' : 'text-neutral-600'}`}>{t('tutorial.prompt_tour')}</p>
                         <div className="flex gap-4">
+                            <button onClick={toggleLanguage} className={`p-3 rounded-xl font-bold transition-all flex items-center gap-2 ${isDarkMode ? 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300' : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-600'}`}>
+                                <Languages className="w-5 h-5" />
+                                <span className="text-sm uppercase">{i18n.language === 'en' ? 'PT' : 'EN'}</span>
+                            </button>
                             <button onClick={handleSkip} className={`flex-1 py-3 rounded-xl font-bold transition-colors ${isDarkMode ? 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300' : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-600'}`}>
                                 {t('tutorial.btn_skip')}
                             </button>
