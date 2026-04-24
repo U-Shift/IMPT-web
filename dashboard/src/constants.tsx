@@ -2,6 +2,7 @@ import React from 'react';
 import { MetricDef, ViewLevel, ScaleMethod } from './types';
 
 export const DATA_BASE_URL = 'https://ushift.tecnico.ulisboa.pt/content/impt/';
+export const AHP_SURVEY_URL = "https://script.google.com/macros/s/AKfycbx1F1XmBbgTDu0WKiRtR6I4ocouXsnVKMDz1DHuMjx79kgfQzP1M8-A-NPL4CjlugmL/exec";
 
 export const LEVEL_CONFIG: Record<ViewLevel, { file: string, parent?: ViewLevel, download_geojson: string, download_csv: string }> = {
     'municipality': { file: `${DATA_BASE_URL}municipios_dashboard.geojson`, download_geojson: `${DATA_BASE_URL}municipios_aggregated.geojson`, download_csv: `${DATA_BASE_URL}municipios_aggregated.csv` },

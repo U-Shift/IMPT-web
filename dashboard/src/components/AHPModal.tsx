@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { X, ChevronRight, ChevronLeft, Check, AlertTriangle } from 'lucide-react';
 import { MetricDef } from '../types';
 import { useTranslation } from 'react-i18next';
+import { AHP_SURVEY_URL } from '../constants';
 
 interface AHPModalProps {
     metrics: MetricDef[];
@@ -35,6 +36,13 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
     const [selections, setSelections] = useState<number[]>(new Array(pairs.length).fill(0));
     const [currentStep, setCurrentStep] = useState(0);
     const [forceConsistency, setForceConsistency] = useState(true);
+
+    // Research Submission state
+    const [role, setRole] = useState<string>('');
+    const [otherRole, setOtherRole] = useState<string>('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState(false);
 
     // Calculate AHP Weights & Consistency
     const results = useMemo(() => {
@@ -115,6 +123,44 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
         }
     };
 
+    const GOOGLE_SCRIPT_URL = AHP_SURVEY_URL;
+
+    const handleSubmitResearch = async () => {
+        if (!results) return;
+        setIsSubmitting(true);
+        setSubmitError(false);
+
+        const finalRole = role === 'other' ? otherRole : role;
+
+        // Prepare data object based on results
+        const data: Record<string, any> = {
+            role: finalRole,
+            CR: results.CR,
+            timestamp: new Date().toISOString()
+        };
+
+        metrics.forEach((m, idx) => {
+            data[`weight_${m.id}`] = results.weights[idx];
+        });
+
+        try {
+            await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'text/plain;charset=utf-8',
+                },
+                body: JSON.stringify(data)
+            });
+            setSubmitSuccess(true);
+        } catch (error) {
+            console.error("Error submitting AHP results:", error);
+            setSubmitError(true);
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
     const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newVal = parseInt(e.target.value);
         const newSelections = [...selections];
@@ -140,7 +186,7 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                 lg:border ${isDarkMode ? 'lg:border-neutral-800' : 'lg:border-neutral-200'}
                 relative w-full h-[100dvh] lg:h-auto lg:max-h-[90vh] lg:max-w-2xl flex flex-col overflow-hidden lg:rounded-3xl shadow-2xl transition-all
             `} onClick={e => e.stopPropagation()}>
-                
+
                 {/* Header */}
                 <div className={`flex items-center justify-between p-5 lg:p-6 border-b shrink-0 ${isDarkMode ? 'border-neutral-800' : 'border-neutral-100'}`}>
                     <div className="flex items-center gap-4">
@@ -266,6 +312,64 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                     </div>
                                 </div>
                             )}
+
+                            {results && results.CR <= 0.1 && (
+                                <div className={`flex flex-col gap-4 p-5 rounded-xl border ${isDarkMode ? 'bg-neutral-800/30 border-neutral-800' : 'bg-neutral-50 border-neutral-100'}`}>
+                                    <div className="space-y-1">
+                                        <h4 className="text-sm lg:text-base font-bold uppercase tracking-wider">{t('ahp.submit_research')}</h4>
+                                        <p className="text-[10px] lg:text-[12px] opacity-70">{t('ahp.submit_research_desc')}</p>
+                                    </div>
+
+                                    {submitSuccess ? (
+                                        <div className="flex items-center gap-2 text-green-500 font-bold text-[10px] lg:text-[12px] uppercase tracking-wider p-2">
+                                            <Check className="w-4 h-4" /> {t('ahp.submit_success')}
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] lg:text-[12px] font-bold uppercase tracking-widest opacity-70">{t('ahp.role_label')}</label>
+                                                <select
+                                                    value={role}
+                                                    onChange={(e) => setRole(e.target.value)}
+                                                    disabled={isSubmitting}
+                                                    className={`w-full p-2.5 rounded-lg text-sm outline-none border transition-colors focus:border-sky-800 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}
+                                                >
+                                                    <option value="">-- {t('ahp.role_label')} --</option>
+                                                    <option value="student">{t('ahp.role_student')}</option>
+                                                    <option value="researcher">{t('ahp.role_researcher')}</option>
+                                                    <option value="professional">{t('ahp.role_professional')}</option>
+                                                    <option value="citizen">{t('ahp.role_citizen')}</option>
+                                                    <option value="other">{t('ahp.role_other')}</option>
+                                                </select>
+                                            </div>
+                                            {role === 'other' && (
+                                                <div className="space-y-2 animate-in slide-in-from-top-2 duration-200">
+                                                    <input
+                                                        type="text"
+                                                        value={otherRole}
+                                                        onChange={(e) => setOtherRole(e.target.value)}
+                                                        disabled={isSubmitting}
+                                                        placeholder={t('ahp.role_other_placeholder')}
+                                                        className={`w-full p-2.5 rounded-lg text-sm outline-none border transition-colors focus:border-sky-800 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}
+                                                    />
+                                                </div>
+                                            )}
+                                            {submitError && (
+                                                <div className="text-red-500 text-[10px] lg:text-[12px] font-bold uppercase tracking-wider p-1">
+                                                    {t('ahp.submit_error')}
+                                                </div>
+                                            )}
+                                            <button
+                                                onClick={handleSubmitResearch}
+                                                disabled={isSubmitting}
+                                                className={`w-full py-2.5 rounded-xl text-[10px] lg:text-[12px] font-bold uppercase tracking-widest transition-all ${isSubmitting ? 'opacity-50 cursor-not-allowed bg-sky-900 text-white' : 'bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30'}`}
+                                            >
+                                                {isSubmitting ? t('ahp.submitting') : t('ahp.submit_button')}
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
@@ -292,7 +396,11 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                     ) : (
                         <>
                             <button
-                                onClick={() => { setCurrentStep(0); }}
+                                onClick={() => {
+                                    setCurrentStep(0);
+                                    setSubmitSuccess(false);
+                                    setSubmitError(false);
+                                }}
                                 className={`px-4 py-2 rounded-xl text-[10px] lg:text-[12px] font-bold uppercase tracking-widest transition-all ${isDarkMode ? 'hover:bg-neutral-800' : 'hover:bg-neutral-200'}`}
                             >
                                 {results && results.CR > 0.1 && forceConsistency ? t('ahp.review_comparisons') : t('ahp.retake_survey')}

@@ -427,7 +427,20 @@
     "inconsistent_pairs_label": "Comparações mais inconsistentes:",
     "apply_weights": "Aplicar Pesos",
     "retake_survey": "Refazer Inquérito",
-    "review_comparisons": "Rever Comparações"
+    "review_comparisons": "Rever Comparações",
+    "submit_research": "Contribua para a Nossa Investigação",
+    "submit_research_desc": "Pedimos que contribua para a nossa investigação partilhando anonimamente as suas preferências.",
+    "role_label": "O seu perfil (Opcional)",
+    "role_student": "Estudante",
+    "role_researcher": "Investigador",
+    "role_professional": "Profissional",
+    "role_citizen": "Cidadão",
+    "role_other": "Outro",
+    "role_other_placeholder": "Especifique...",
+    "submit_button": "Submeter Anonimamente",
+    "submitting": "A submeter...",
+    "submit_success": "Obrigado pela sua contribuição!",
+    "submit_error": "Ocorreu um erro. Tente novamente."
   },
   "download": {
     "title": "Descarregar Dados",

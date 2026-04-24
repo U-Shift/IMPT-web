@@ -421,7 +421,20 @@
     "inconsistent_pairs_label": "Most inconsistent comparisons:",
     "apply_weights": "Apply Weights",
     "retake_survey": "Retake Survey",
-    "review_comparisons": "Review Comparisons"
+    "review_comparisons": "Review Comparisons",
+    "submit_research": "Contribute to Our Research",
+    "submit_research_desc": "We kindly ask you to contribute to our research by sharing your preferences anonymously.",
+    "role_label": "Your Role (Optional)",
+    "role_student": "Student",
+    "role_researcher": "Researcher",
+    "role_professional": "Professional",
+    "role_citizen": "Citizen",
+    "role_other": "Other",
+    "role_other_placeholder": "Please specify...",
+    "submit_button": "Submit Anonymously",
+    "submitting": "Submitting...",
+    "submit_success": "Thank you for your contribution!",
+    "submit_error": "An error occurred. Please try again."
   },
   "download": {
     "title": "Download Data",
