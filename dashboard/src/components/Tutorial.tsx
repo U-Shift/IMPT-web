@@ -4,12 +4,20 @@ import { useTranslation } from 'react-i18next';
 
 interface TutorialProps {
     isDarkMode: boolean;
+    runExternal?: boolean;
+    onSetRunExternal?: (val: boolean) => void;
 }
 
-export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
+export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode, runExternal, onSetRunExternal }) => {
     const { t } = useTranslation();
     const [run, setRun] = useState(false);
     const [showPrompt, setShowPrompt] = useState(false);
+
+    useEffect(() => {
+        if (runExternal) {
+            setRun(true);
+        }
+    }, [runExternal]);
 
     useEffect(() => {
         const completed = localStorage.getItem('tutorialCompleted');
@@ -34,6 +42,7 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
 
         if (finishedStatuses.includes(status)) {
             setRun(false);
+            onSetRunExternal?.(false);
             localStorage.setItem('tutorialCompleted', 'true');
         }
     };
@@ -103,7 +112,19 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
         {
             target: '[data-tour="language-toggle"]',
             content: t('tutorial.step_16'),
-        }
+        },
+        {
+            target: '[data-tour="download-modal-btn"]',
+            content: t('tutorial.step_17'),
+        },
+        {
+            target: '[data-tour="about-modal-btn"]',
+            content: t('tutorial.step_18'),
+        },
+        {
+            target: '[data-tour="tutorial-btn"]',
+            content: t('tutorial.step_19'),
+        },
     ];
 
     return (
@@ -129,14 +150,15 @@ export const Tutorial: React.FC<TutorialProps> = ({ isDarkMode }) => {
                 steps={steps}
                 run={run}
                 continuous
-                callback={handleJoyrideCallback}
+                onEvent={handleJoyrideCallback}
                 options={{
                     zIndex: 1002,
                     primaryColor: '#075985',
                     backgroundColor: isDarkMode ? '#171717' : '#ffffff',
                     textColor: isDarkMode ? '#f5f5f5' : '#171717',
                     arrowColor: isDarkMode ? '#171717' : '#ffffff',
-                    skipBeacon: true
+                    skipBeacon: true,
+                    closeButtonAction: "skip"
                 }}
                 styles={{
                     tooltipContainer: {

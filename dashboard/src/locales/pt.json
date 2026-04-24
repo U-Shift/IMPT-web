@@ -22,7 +22,8 @@
     "toggle_colorblind": "Modo daltónico",
     "download_data": "Descarregar Dados",
     "download_results": "Descarregar Resultados",
-    "about": "Sobre"
+    "about": "Sobre",
+    "tutorial": "Fazer a visita guiada"
   },
   "sidebar": {
     "index": "Índice",
@@ -517,6 +518,9 @@
     "step_13": "Finalmente, utilize estes botões para melhorar a sua experiência.",
     "step_14": "Alternar entre modo claro/escuro.",
     "step_15": "Ativar modo para daltónicos.",
-    "step_16": "Alternar idioma."
+    "step_16": "Alternar idioma.",
+    "step_17": "Descarregar dados.",
+    "step_18": "Saber mais sobre o projeto.",
+    "step_19": "Para repetir este tutorial."
   }
 }

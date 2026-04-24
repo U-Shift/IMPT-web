@@ -534,6 +534,8 @@ const Dashboard = () => {
         document.body.removeChild(link);
     }, [computedGeoData, effectiveMode, weights, effectiveLevel]);
 
+    const [runTutorial, setRunTutorial] = useState(false);
+
     if (dataState.loading) return (
         <div className={`h-screen w-screen ${isDarkMode ? 'bg-neutral-950' : 'bg-neutral-50'} flex flex-col items-center justify-center gap-2`}>
             <Loader2 className="w-12 h-12 text-sky-800 animate-spin" />
@@ -554,6 +556,7 @@ const Dashboard = () => {
                 setIsColorBlindMode={setIsColorBlindMode}
                 setShowDownload={setShowDownload}
                 setShowAbout={setShowAbout}
+                startTutorial={() => setRunTutorial(true)}
                 selectedMetric={selectedMetric}
                 selectedMetricId={selectedMetricId}
                 setSelectedMetricId={setSelectedMetricId}
@@ -586,7 +589,11 @@ const Dashboard = () => {
                 onDownloadAHP={handleDownloadAHP}
             />
 
-            <Tutorial isDarkMode={isDarkMode} />
+            <Tutorial 
+                isDarkMode={isDarkMode} 
+                runExternal={runTutorial} 
+                onSetRunExternal={setRunTutorial} 
+            />
 
             {/* Map Canvas: Main View */}
             <div className="absolute inset-0 bg-neutral-950 z-0">

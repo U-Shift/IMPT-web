@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages, Eye, EyeOff, Layers, Menu, X, Globe } from 'lucide-react';
+import { Sun, Moon, Download, Info, ListFilter, ChevronDown, Activity, Languages, Eye, EyeOff, Layers, Menu, X, Globe, HelpCircle } from 'lucide-react';
 import { MetricDef } from '../types';
 import { METRICS, FLAT_METRICS, REGION_KEYS, REGIONS, MODES } from '../constants';
 import { useTranslation } from 'react-i18next';
@@ -82,6 +82,7 @@ const AuxiliaryDataRenderer: React.FC<{
 
 export const SidebarLeft: React.FC<SidebarLeftProps> = ({
     isDarkMode, setIsDarkMode, isColorBlindMode, setIsColorBlindMode, setShowDownload, setShowAbout,
+    startTutorial,
     selectedMetric, selectedMetricId, setSelectedMetricId,
     collapsedSections, toggleSection,
     weights, setWeights, resetWeights, setIsAHPModalOpen,
@@ -178,13 +179,18 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                 </button>
                             </Tooltip>
                             <Tooltip content={t('tooltips.download_data')} isDarkMode={true}>
-                                <button onClick={() => setShowDownload(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="download-modal-btn" onClick={() => setShowDownload(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     <Download className="w-5 h-5" />
                                 </button>
                             </Tooltip>
                             <Tooltip content={t('tooltips.about')} isDarkMode={true}>
-                                <button onClick={() => setShowAbout(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="about-modal-btn" onClick={() => setShowAbout(true)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     <Info className="w-5 h-5" />
+                                </button>
+                            </Tooltip>
+                            <Tooltip content={t('tooltips.tutorial')} isDarkMode={true}>
+                                <button data-tour="tutorial-btn" onClick={startTutorial} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                    <HelpCircle className="w-5 h-5" />
                                 </button>
                             </Tooltip>
                         </div>

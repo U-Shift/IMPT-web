@@ -22,7 +22,8 @@
     "toggle_colorblind": "Colorblind mode",
     "download_data": "Download Data",
     "download_results": "Download Results",
-    "about": "About"
+    "about": "About",
+    "tutorial": "Take the Tour"
   },
   "sidebar": {
     "index": "Index",
@@ -513,6 +514,9 @@
     "step_13": "Finally, use these buttons to improve your experience.",
     "step_14": "Toggle between dark/light mode.",
     "step_15": "Activate colorblind mode.",
-    "step_16": "Toggle language."
+    "step_16": "Toggle language.",
+    "step_17": "Download data.",
+    "step_18": "Find out more abut the project.",
+    "step_19": "To revisit this tutorial."
   }
 }
