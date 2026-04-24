@@ -88,11 +88,7 @@ export const Tutorial: React.FC<TutorialProps> = ({
             {
                 target: '[data-tour="sidebar-right"]',
                 content: t('tutorial.step_9'),
-            },
-            {
-                target: '[data-tour="sidebar-right"]',
-                content: t('tutorial.step_10'),
-            },
+            }
         ] : []),
         {
             target: isMobile ? '[data-tour="mobile-map-tools"]' : '[data-tour="map-tools"]',
@@ -140,27 +136,18 @@ export const Tutorial: React.FC<TutorialProps> = ({
             content: t('tutorial.step_19'),
             sidebar: 'open'
         } as any,
-        // Skip sidebar-right on mobile
-        ...(isMobile ? [
-            {
-                target: 'body',
-                content: t('tutorial.step_10_mobile'),
-                sidebar: 'closed',
-                placement: 'center'
-            } as any,
-        ] : []),
+        {
+            target: 'body',
+            content: t('tutorial.step_10_mobile'),
+            sidebar: 'closed',
+            placement: 'center'
+        } as any
     ];
 
     const dynamicSteps: Step[] = [
         {
             target: '[data-tour="dynamic-weights-section"]',
             content: t('tutorial.dynamic_step_1'),
-            placement: 'right',
-            sidebar: 'open'
-        } as any,
-        {
-            target: '[data-tour="dynamic-weights-note"]',
-            content: t('tutorial.dynamic_step_1_note'),
             placement: 'right',
             sidebar: 'open'
         } as any,
@@ -176,6 +163,12 @@ export const Tutorial: React.FC<TutorialProps> = ({
             placement: 'right',
             sidebar: 'open'
         } as any,
+        {
+            target: '[data-tour="dynamic-weights-note"]',
+            content: t('tutorial.dynamic_step_1_note'),
+            placement: 'right',
+            sidebar: 'open'
+        } as any
     ];
 
     const steps = tourType === 'main' ? mainSteps : dynamicSteps;
@@ -218,11 +211,26 @@ export const Tutorial: React.FC<TutorialProps> = ({
 
     const handleJoyrideCallback = (data: EventData) => {
         const { status, type, index } = data;
-        console.log("Joyride callback", status, type, index);
+        const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+        if (finishedStatuses.includes(status)) {
+            setRun(false);
+            onSetRunExternal?.(false);
+            const storageKey = tourType === 'main' ? 'tutorialCompleted' : 'dynamicWeightsTutorialCompleted';
+            localStorage.setItem(storageKey, 'true');
+        }
 
         if (type === 'tour:start') {
-            console.log("Tour started, closing sidebar");
-            if (isMobile) setIsSidebarOpen?.(false);
+            console.log("Tour started");
+            // Only close sidebar at start if it's the main tour
+            if (isMobile && tourType === 'main') setIsSidebarOpen?.(false);
+        }
+
+        if (isMobile && type === 'step:before' && index === 0) {
+            const firstStep = steps[0] as any;
+            if (firstStep && firstStep.sidebar !== undefined) {
+                if (firstStep.sidebar === 'open') setIsSidebarOpen?.(true);
+                else if (firstStep.sidebar === 'closed') setIsSidebarOpen?.(false);
+            }
         }
 
         if (isMobile && type === 'step:after') {

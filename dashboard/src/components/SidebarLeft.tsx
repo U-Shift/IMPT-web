@@ -291,7 +291,14 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                                                     return prev;
                                                                 });
                                                             }
-                                                            if (isMobile) setIsOpen?.(false);
+                                                            if (isMobile) {
+                                                                if (m.id === 'mobility_poverty_index') {
+                                                                    const completed = localStorage.getItem('dynamicWeightsTutorialCompleted');
+                                                                    if (completed) setIsOpen?.(false);
+                                                                } else {
+                                                                    setIsOpen?.(false);
+                                                                }
+                                                            }
                                                         }}
                                                             className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[12px] font-bold transition-all ${isSelected
                                                                 ? 'bg-sky-900 text-white shadow-lg'
