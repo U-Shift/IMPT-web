@@ -523,7 +523,7 @@
     "step_10_mobile": "Click any area on the map to see the details.",
     "dynamic_step_1": "You can define your own weights for each dimension. Use these sliders to adjust how much each dimension contributes to your custom index.",
     "dynamic_step_1_note": "Please mind this note before proceeding.",
-    "dynamic_step_2": "If you're not sure about the weights, we recommend taking the AHP survey. It helps you derive consistent weights through simple pairwise comparisons.",
+    "dynamic_step_2": "If you're not sure about the weights, take the AHP survey. It helps you derive consistent weights through simple pairwise comparisons.",
     "dynamic_step_3": "Once you're satisfied with your custom index, you can download the results for all areas in a CSV file."
   }
 }

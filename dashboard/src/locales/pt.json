@@ -527,7 +527,7 @@
     "step_10_mobile": "No mapa, ao clicar sobre uma área, pode ver os seus detalhes",
     "dynamic_step_1": "Pode definir os seus próprios pesos para cada dimensão. Utilize estes seletores para ajustar quanto cada dimensão contribui para o seu índice personalizado.",
     "dynamic_step_1_note": "Por favor tenha em conta esta nota antes de avançar.",
-    "dynamic_step_2": "Se não tiver a certeza sobre os pesos, recomendamos que faça o questionário AHP. Ajuda-o a derivar pesos consistentes através de simples comparações paritárias.",
+    "dynamic_step_2": "Se não tiver a certeza sobre os pesos, faça o questionário AHP. Ajuda-o a derivar pesos consistentes através de simples comparações paritárias.",
     "dynamic_step_3": "Assim que estiver satisfeito com o seu índice personalizado, pode descarregar os resultados para todas as áreas num ficheiro CSV."
   }
 }
