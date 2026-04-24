@@ -24,6 +24,7 @@ import { DownloadModal } from './components/DownloadModal';
 import { MapFilterDropdown } from './components/MapFilterDropdown';
 import { ModeSelector } from './components/ModeSelector';
 import { MapTools } from './components/MapTools';
+import { Tutorial } from './components/Tutorial';
 
 const Dashboard = () => {
     const { t, i18n } = useTranslation();
@@ -585,6 +586,8 @@ const Dashboard = () => {
                 onDownloadAHP={handleDownloadAHP}
             />
 
+            <Tutorial isDarkMode={isDarkMode} />
+
             {/* Map Canvas: Main View */}
             <div className="absolute inset-0 bg-neutral-950 z-0">
                 <style>{`.leaflet-container { outline: none !important; } .leaflet-path { cursor: pointer; outline: none !important; }`}</style>
@@ -592,47 +595,53 @@ const Dashboard = () => {
                 {!isMobile && (
                     <div className="absolute top-8 left-[416px] z-[1002] flex flex-col gap-4 items-start pointer-events-none">
                         <div className="flex gap-4 pointer-events-auto items-center">
-                            <MapFilterDropdown
-                                label={t('map.view_level')}
-                                value={viewLevel}
-                                isDark={isDarkMode}
-                                icon={<Layers className="w-3.5 h-3.5" />}
-                                options={(['hex', 'freguesia', 'municipality'] as const)
-                                    .filter(l => isMetricAvailable(selectedMetricId, l, effectiveMode))
-                                    .map(l => ({ id: l, label: l === 'hex' ? t('map.grid') : t(`map.${l}`) }))}
-                                onChange={(id) => {
-                                    setViewLevel(id as ViewLevel);
-                                    setZoomRequest(null);
-                                    setSelectedFeature(null);
-                                }}
-                            />
+                            <div data-tour="view-level">
+                                <MapFilterDropdown
+                                    label={t('map.view_level')}
+                                    value={viewLevel}
+                                    isDark={isDarkMode}
+                                    icon={<Layers className="w-3.5 h-3.5" />}
+                                    options={(['hex', 'freguesia', 'municipality'] as const)
+                                        .filter(l => isMetricAvailable(selectedMetricId, l, effectiveMode))
+                                        .map(l => ({ id: l, label: l === 'hex' ? t('map.grid') : t(`map.${l}`) }))}
+                                    onChange={(id) => {
+                                        setViewLevel(id as ViewLevel);
+                                        setZoomRequest(null);
+                                        setSelectedFeature(null);
+                                    }}
+                                />
+                            </div>
 
-                            <MapFilterDropdown
-                                label={t('map.region')}
-                                value={nutFilter}
-                                isDark={isDarkMode}
-                                icon={<Globe className="w-3.5 h-3.5" />}
-                                options={REGION_KEYS.map(n => ({ id: n, label: t(REGIONS[n].name) }))}
-                                onChange={(id) => {
-                                    setNutFilter(id as RegionKey);
-                                    setZoomRequest(null);
-                                    setSelectedFeature(null);
-                                }}
-                            />
+                            <div data-tour="region-selector">
+                                <MapFilterDropdown
+                                    label={t('map.region')}
+                                    value={nutFilter}
+                                    isDark={isDarkMode}
+                                    icon={<Globe className="w-3.5 h-3.5" />}
+                                    options={REGION_KEYS.map(n => ({ id: n, label: t(REGIONS[n].name) }))}
+                                    onChange={(id) => {
+                                        setNutFilter(id as RegionKey);
+                                        setZoomRequest(null);
+                                        setSelectedFeature(null);
+                                    }}
+                                />
+                            </div>
                         </div>
 
-                        <ModeSelector
-                            value={effectiveMode.id}
-                            isDark={isDarkMode}
-                            options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel))
-                                .map(m => ({ id: m.id, label: t(m.label), icon: m.icon }))}
-                            onChange={(id) => setSelectedModeId(id as ModeId)}
-                        />
+                        <div data-tour="mode-selector">
+                            <ModeSelector
+                                value={effectiveMode.id}
+                                isDark={isDarkMode}
+                                options={MODES.filter(m => isModeAvailable(m.id, selectedMetricId, effectiveLevel))
+                                    .map(m => ({ id: m.id, label: t(m.label), icon: m.icon }))}
+                                onChange={(id) => setSelectedModeId(id as ModeId)}
+                            />
+                        </div>
                     </div>
                 )}
 
                 {(!isMobile || showLegendMobile) && (
-                    <div className={`absolute bottom-8 right-8 z-[1000] ${isMobile ? 'pointer-events-auto' : 'pointer-events-none'} w-[320px] max-w-[calc(100vw-64px)]`}>
+                    <div data-tour="map-legend" className={`absolute bottom-8 right-8 z-[1000] ${isMobile ? 'pointer-events-auto' : 'pointer-events-none'} w-[320px] max-w-[calc(100vw-64px)]`}>
                         {isMobile && (
                             <button
                                 onClick={() => setShowLegendMobile(false)}

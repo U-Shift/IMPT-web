@@ -71,7 +71,7 @@ export const MapToolsUI: React.FC<MapToolsProps> = ({
     }
 
     return (
-        <div className="absolute bottom-8 left-8 z-[1100] flex flex-row items-center gap-2">
+        <div data-tour="map-tools" className="absolute bottom-8 left-8 z-[1100] flex flex-row items-center gap-2">
             <div className="flex flex-row gap-2">
                 <button
                     onClick={onZoomIn}

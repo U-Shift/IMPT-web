@@ -143,7 +143,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                 </div>
             )}
 
-            <div className={`
+            <div data-tour="sidebar-left" className={`
                 ${isMobile ? 'fixed inset-0 w-full max-h-none rounded-none' : 'absolute top-4 left-4 w-[380px] max-h-[calc(100vh-120px)] rounded-[32px]'}
                 flex flex-col ${isDarkMode ? 'bg-neutral-900/95 border-neutral-800 shadow-2xl' : 'bg-white/95 border-neutral-200 shadow-2xl'} 
                 border backdrop-blur-xl z-[1001] transition-all duration-300 overflow-hidden
@@ -160,20 +160,20 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                         </div>
                     )}
 
-                    <div className="flex items-center justify-between mb-0">
+                    <div data-tour="top-controls" className="flex items-center justify-between mb-0">
                         <div className="flex gap-1">
                             <Tooltip content={t('tooltips.toggle_theme')} isDarkMode={true}>
-                                <button onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="theme-toggle" onClick={() => setIsDarkMode(!isDarkMode)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                                 </button>
                             </Tooltip>
                             <Tooltip content={t('tooltips.toggle_colorblind')} isDarkMode={true}>
-                                <button onClick={() => setIsColorBlindMode(!isColorBlindMode)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="colorblind-toggle" onClick={() => setIsColorBlindMode(!isColorBlindMode)} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     {isColorBlindMode ? <Eye className="w-5 h-5 text-sky-600" /> : <EyeOff className="w-5 h-5" />}
                                 </button>
                             </Tooltip>
                             <Tooltip content={i18n.language === 'en' ? 'Português' : 'English'} isDarkMode={true}>
-                                <button onClick={toggleLanguage} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
+                                <button data-tour="language-toggle" onClick={toggleLanguage} className={`p-2.5 rounded-xl transition-all ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-500'}`}>
                                     <Languages className="w-5 h-5" />
                                 </button>
                             </Tooltip>
@@ -216,6 +216,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                                 {t('sidebar.index')}
                             </button>
                             <button
+                                data-tour="tab-indicators"
                                 onClick={() => setActiveTab('indicators')}
                                 className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-[12px] font-black uppercase tracking-widest transition-all duration-300 ${activeTab === 'indicators'
                                     ? (isDarkMode ? 'bg-sky-800 text-white shadow-lg shadow-sky-900/20' : 'bg-white text-sky-900 shadow-sm')
@@ -232,7 +233,7 @@ export const SidebarLeft: React.FC<SidebarLeftProps> = ({
                         <section>
                             <div className="space-y-4">
                                 {(activeTab === 'index' ? indexCategories : indicatorCategories).map(cat => (
-                                    <div key={cat} className={`border rounded-2xl transition-all ${isDarkMode ? 'border-neutral-800 bg-neutral-800/10' : 'border-neutral-100 bg-neutral-50/30'} ${!collapsedSections[cat] ? 'ring-1 ring-sky-800/20' : ''}`}>
+                                    <div key={cat} data-tour={`section-${cat}`} className={`border rounded-2xl transition-all ${isDarkMode ? 'border-neutral-800 bg-neutral-800/10' : 'border-neutral-100 bg-neutral-50/30'} ${!collapsedSections[cat] ? 'ring-1 ring-sky-800/20' : ''}`}>
                                         <button onClick={() => toggleSection(cat)}
                                             className={`w-full flex items-center justify-between px-4 py-3.5 text-[12px] font-black uppercase tracking-widest transition-colors ${isDarkMode ? 'hover:bg-neutral-800 text-neutral-400' : 'hover:bg-neutral-100 text-neutral-600'}`}
                                         >

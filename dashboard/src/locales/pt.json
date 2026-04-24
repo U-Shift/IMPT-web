@@ -496,5 +496,27 @@
     "_pt": "Paragens de Transportes Públicos",
     "cut_off": "Tempo Máx. Viagem",
     "walking_time": "Tempo Máx. a Pé (entre paragens)"
+  },
+  "tutorial": {
+    "title_welcome": "Bem-vindo(a)!",
+    "prompt_tour": "Gostaria de fazer uma breve visita guiada pelo painel?",
+    "btn_start": "Iniciar Visita",
+    "btn_skip": "Saltar",
+    "step_1": "Bem-vindo ao dashboard do IMPT. Aqui pode visualizar os resultados do Índice de Pobreza nos Transportes para a Área Metropolitana de Lisboa.",
+    "step_2": "Utilize a barra lateral esquerda para alternar as diferentes camadas.",
+    "step_3": "Pode verificar o Índice de Pobreza nos Transportes calculado de acordo com vários critérios (e até calcular um adaptado ao seu contexto local, no IMPT dinâmico).",
+    "step_4": "Pode verificar os valores calculados para cada dimensão agregada.",
+    "step_5": "E ainda analisar cada métrica individual que contribuiu para cada uma das dimensões.",
+    "step_6": "Para cada camada, pode filtrar por modo de transporte.",
+    "step_7": "E ver os dados em diferentes escalas.",
+    "step_8": "Altere a região para adaptar a escala a diferentes áreas.",
+    "step_9": "O painel de contrastes regionais mostra-lhe os 5 melhores e piores valores para a camada selecionada.",
+    "step_10": "Quando clica no mapa, este painel é substituído pelos detalhes da área.",
+    "step_11": "Consulte a escala para detalhes sobre a métrica que selecionou.",
+    "step_12": "Utilize estes controlos no canto inferior esquerdo para adaptar a visualização às suas necessidades.",
+    "step_13": "Finalmente, utilize estes botões para melhorar a sua experiência.",
+    "step_14": "Alternar entre modo claro/escuro.",
+    "step_15": "Ativar modo para daltónicos.",
+    "step_16": "Alternar idioma."
   }
 }

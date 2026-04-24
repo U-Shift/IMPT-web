@@ -40,7 +40,7 @@ export const SidebarRight: React.FC<SidebarRightProps> = ({
     if (isMobile && !selectedFeature) return null;
 
     return (
-        <div className={`
+        <div data-tour="sidebar-right" className={`
             ${isMobile 
                 ? 'fixed inset-0 w-full max-h-none rounded-none z-[1005]' 
                 : 'absolute top-4 right-4 w-[360px] max-h-[calc(100vh-22rem)] rounded-[32px] z-[1001]'}

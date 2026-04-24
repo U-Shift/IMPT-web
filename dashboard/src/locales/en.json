@@ -492,5 +492,27 @@
     "_pt": "Public Transport Stops",
     "cut_off": "Max. Journey Time",
     "walking_time": "Max. Walking Time (egress)"
+  },
+  "tutorial": {
+    "title_welcome": "Welcome!",
+    "prompt_tour": "Would you like to take a quick tour of the dashboard?",
+    "btn_start": "Start Tour",
+    "btn_skip": "Skip",
+    "step_1": "Welcome to the IMPT dashboard, here you can visualise the results of the Mobility Poverty Index for the Lisbon Metropolitan Area.",
+    "step_2": "Use the left sidebar to toggle the different layers.",
+    "step_3": "You can check the Mobility Poverty Index computed according to several criteria (and even compute one adapted to your local context, under IMPT dynamic).",
+    "step_4": "You can check the values computed for each aggregated dimension.",
+    "step_5": "And even analyse each individual metric that contributed to each of the dimensions.",
+    "step_6": "For each layer, you can filter by mode.",
+    "step_7": "And see the data at different scales.",
+    "step_8": "Change the region to adapt the scale to different areas.",
+    "step_9": "Regional contrasts panel show you the 5 best and worst performers for the layer selected.",
+    "step_10": "When you click on the map, it is replaced by the area details.",
+    "step_11": "Refer to the scale for details on the metric you have selected.",
+    "step_12": "Use these controls on the left-bottom corner to adapt the visualization to your needs.",
+    "step_13": "Finally, use these buttons to improve your experience.",
+    "step_14": "Toggle between dark/light mode.",
+    "step_15": "Activate colorblind mode.",
+    "step_16": "Toggle language."
   }
 }
