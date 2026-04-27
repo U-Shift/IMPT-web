@@ -40,6 +40,9 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
     // Research Submission state
     const [role, setRole] = useState<string>('');
     const [otherRole, setOtherRole] = useState<string>('');
+    const [municipality, setMunicipality] = useState<string>('');
+    const [gender, setGender] = useState<string>('');
+    const [transport, setTransport] = useState<string>('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [submitError, setSubmitError] = useState(false);
@@ -135,6 +138,9 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
         // Prepare data object based on results
         const data: Record<string, any> = {
             role: finalRole,
+            municipality,
+            gender,
+            transport,
             CR: results.CR,
             timestamp: new Date().toISOString()
         };
@@ -354,18 +360,67 @@ export const AHPModal: React.FC<AHPModalProps> = ({ metrics, isOpen, onClose, on
                                                     />
                                                 </div>
                                             )}
+
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] lg:text-[12px] font-bold uppercase tracking-widest opacity-70">{t('ahp.municipality_label')}</label>
+                                                <input
+                                                    type="text"
+                                                    value={municipality}
+                                                    onChange={(e) => setMunicipality(e.target.value)}
+                                                    disabled={isSubmitting}
+                                                    placeholder={t('ahp.municipality_placeholder')}
+                                                    className={`w-full p-2.5 rounded-lg text-sm outline-none border transition-colors focus:border-sky-800 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}
+                                                />
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] lg:text-[12px] font-bold uppercase tracking-widest opacity-70">{t('ahp.gender_label')}</label>
+                                                <select
+                                                    value={gender}
+                                                    onChange={(e) => setGender(e.target.value)}
+                                                    disabled={isSubmitting}
+                                                    className={`w-full p-2.5 rounded-lg text-sm outline-none border transition-colors focus:border-sky-800 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}
+                                                >
+                                                    <option value="">-- {t('ahp.gender_label')} --</option>
+                                                    <option value="female">{t('ahp.gender_female')}</option>
+                                                    <option value="male">{t('ahp.gender_male')}</option>
+                                                    <option value="non_binary">{t('ahp.gender_non_binary')}</option>
+                                                    <option value="prefer_not_to_say">{t('ahp.gender_prefer_not_to_say')}</option>
+                                                </select>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="text-[10px] lg:text-[12px] font-bold uppercase tracking-widest opacity-70">{t('ahp.transport_label')}</label>
+                                                <select
+                                                    value={transport}
+                                                    onChange={(e) => setTransport(e.target.value)}
+                                                    disabled={isSubmitting}
+                                                    className={`w-full p-2.5 rounded-lg text-sm outline-none border transition-colors focus:border-sky-800 ${isDarkMode ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}
+                                                >
+                                                    <option value="">-- {t('ahp.transport_label')} --</option>
+                                                    <option value="car">{t('ahp.transport_car')}</option>
+                                                    <option value="pt">{t('ahp.transport_pt')}</option>
+                                                    <option value="active">{t('ahp.transport_active')}</option>
+                                                    <option value="other">{t('ahp.transport_other')}</option>
+                                                </select>
+                                            </div>
                                             {submitError && (
                                                 <div className="text-red-500 text-[10px] lg:text-[12px] font-bold uppercase tracking-wider p-1">
                                                     {t('ahp.submit_error')}
                                                 </div>
                                             )}
-                                            <button
-                                                onClick={handleSubmitResearch}
-                                                disabled={isSubmitting}
-                                                className={`w-full py-2.5 rounded-xl text-[10px] lg:text-[12px] font-bold uppercase tracking-widest transition-all ${isSubmitting ? 'opacity-50 cursor-not-allowed bg-sky-900 text-white' : 'bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30'}`}
-                                            >
-                                                {isSubmitting ? t('ahp.submitting') : t('ahp.submit_button')}
-                                            </button>
+                                            {(() => {
+                                                const isSubmitDisabled = isSubmitting || !role || (role === 'other' && !otherRole) || !municipality || !gender || !transport;
+                                                return (
+                                                    <button
+                                                        onClick={handleSubmitResearch}
+                                                        disabled={isSubmitDisabled}
+                                                        className={`w-full py-2.5 rounded-xl text-[10px] lg:text-[12px] font-bold uppercase tracking-widest transition-all ${isSubmitDisabled ? 'opacity-50 cursor-not-allowed bg-sky-900 text-white' : 'bg-sky-900 hover:bg-sky-800 text-white shadow-lg shadow-sky-800/30'}`}
+                                                    >
+                                                        {isSubmitting ? t('ahp.submitting') : t('ahp.submit_button')}
+                                                    </button>
+                                                );
+                                            })()}
                                         </div>
                                     )}
                                 </div>
