@@ -79,7 +79,7 @@
       "dimensions": "Dimensões Agregadas",
       "mobility": "Mobilidade",
       "accessibility": "Acessibilidade",
-      "safety": "Segurança Rodoviária",
+      "safety": "Segurança rodoviária",
       "affordability": "Acessibilidade Económica",
       "census_population": "População Censos",
       "top_contributors": "Principais Contribuidores",
@@ -115,7 +115,7 @@
       "description": "Métrica de mobilidade agregada, considerando as deslocações pendulares e infraestruturas de mobilidade"
     },
     "safety": {
-      "label": "Segurança Rodoviária",
+      "label": "Segurança rodoviária",
       "description": "Métrica de segurança rodoviária agregada, considerando sinistros"
     },
     "affordability": {
