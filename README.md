@@ -1,5 +1,7 @@
 # IMPT Web Dashboard 
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19888694.svg)](https://doi.org/10.5281/zenodo.19888694)
+
 Web GIS dashboard for IMPT (Index for Monitoring Transport Poverty) project
 
 ## Web app
