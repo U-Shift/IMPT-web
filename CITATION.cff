@@ -9,4 +9,7 @@ authors:
   orcid: https://orcid.org/0000-0002-5642-6006
 title: U-Shift/IMPT: Interactive visualisation and monitoring tool for multimodal transport poverty index
 version: 1.0
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.19888694
 date-released: 2026-04-29
